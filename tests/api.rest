@@ -1,0 +1,18 @@
+
+@baseUrl= https://localhost:44391
+
+###
+# @name GenerateToken
+
+POST {{baseUrl}}/token
+Accept: application/json
+Content-Type: application/json
+
+{
+    "name": "Moritz Haslhofer"
+}
+
+###
+# @name GetUserInfo
+
+GET {{baseUrl}}/oauth2/userInfo
