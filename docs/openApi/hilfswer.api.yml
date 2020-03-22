@@ -1,0 +1,63 @@
+openapi: "3.0.2"
+info:
+  title: Hilfswerk Api
+  version: "1.0"
+servers:
+  - url: https://hilfswerk-api.azurewebsites.net
+
+components:
+  schemas:
+    TokenResponse:
+      type: object
+      properties:
+        token:
+          type: string
+    TokenRequest:
+      type: object
+      properties:
+        name:
+          type: string
+      required:
+        - name
+    UserInfo:
+      type: object
+      properties:
+        name:
+          description: The users username
+          type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+paths:
+  /oauth2/userinfo:
+    get:
+      description: Oauth2 userinformation endpoint for the current user
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserInfo"
+  /token:
+    post:
+      security: []
+      description: Creates an new Access Token for a user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TokenRequest"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TokenResponse"
+
+security:
+  - bearerAuth: []
