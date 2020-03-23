@@ -1,12 +1,14 @@
+using GraphQL.Server;
+using GraphQL.Server.Ui.Playground;
+using GraphQL.Types;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System.Security.Claims;
 
 namespace Api
 {
@@ -23,7 +25,7 @@ namespace Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSimpleTokenAuthentication(_configuration.GetSection("Authentication"));
-
+            services.AddHilfswerkGraphApi();
             services.AddAuthorization(o =>
             {
                 o.DefaultPolicy = new AuthorizationPolicyBuilder(new[] { JwtBearerDefaults.AuthenticationScheme })
@@ -31,6 +33,15 @@ namespace Api
                     .Build();
             });
             services.AddControllers();
+            services.Configure<KestrelServerOptions>(options =>
+            {
+                options.AllowSynchronousIO = true;
+            });
+            services.Configure<IISServerOptions>(options =>
+            {
+                options.AllowSynchronousIO = true;
+            });
+
 
         }
 
@@ -41,18 +52,15 @@ namespace Api
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            
             app.UseRouting();
 
             app.UseAuthentication();
             app.UseAuthorization();
-
+            app.UseGraphQL<ISchema>();
+            app.UseGraphQLPlayground(new GraphQLPlaygroundOptions());
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGet("/", async context =>
-                {
-                    await context.Response.WriteAsync("Hello World!");
-                });
                 endpoints.MapControllers();
             });
         }

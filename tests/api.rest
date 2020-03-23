@@ -16,3 +16,30 @@ Content-Type: application/json
 # @name GetUserInfo
 
 GET {{baseUrl}}/oauth2/userInfo
+
+
+###
+# @name Search
+
+POST https://localhost:44391/graphQL HTTP/1.1
+X-Request-Type: GraphQL
+Content-Type: application/json
+
+{
+  helfer(inPlz:[1170], 
+    taetigkeitIn:[BESORGUNG, TELEFON_KONTAKT]
+    istRisikoGruppe: true,
+    hatAuto: true) {
+      kontakt {
+        vorname
+        nachname
+        strasse
+      },
+      totalEinsaetze
+      taetigkeiten
+      anmerkung
+      hatAuto
+  }
+}
+
+

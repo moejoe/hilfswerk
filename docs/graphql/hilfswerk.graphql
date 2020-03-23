@@ -1,0 +1,36 @@
+type query {
+    helfer: [Helfer!]!
+} 
+type Helfer {
+    id: ID!
+    kontakt: Kontakt!
+    anmerkungen: String!
+    taetigkeiten: [Taetigkeit!]!
+    einsaetze: [Einsatz!]!
+    totalEinsaetze: Int!
+    hatAuto: Boolean!
+}
+type Kontakt {
+    vorname: String!
+    nachname: String!
+    plz: Int!
+    strasse: String
+    telefon: String!
+    email: String!
+}
+
+type Einsatz {
+    helfer: Helfer!
+    hilfesuchender: String!
+    taetigkeit: Taetigkeit!
+    vermitteltDurch: String!
+    vermitteltAm: DateTime!
+    anmerkungen: String!
+}
+
+enum Taetigkeit {
+    BESORGUNG
+    TELEFON_KONTAKT
+    GASSI_GEHEN
+    ANDERE
+}
