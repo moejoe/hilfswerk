@@ -26,12 +26,15 @@ namespace Api
         {
             services.AddSimpleTokenAuthentication(_configuration.GetSection("Authentication"));
             services.AddHilfswerkGraphApi();
+            services.AddHilfswerkEntityFrameworkStores();
+
             services.AddEntityFrameworkInMemoryDatabase();
             services.AddDbContext<HilfswerkDbContext>(opt =>
             {
                 opt.UseInMemoryDatabase(databaseName: "hilfswerk");
                 opt.EnableSensitiveDataLogging(sensitiveDataLoggingEnabled: true);
             });
+
             services.AddAuthorization(o =>
             {
                 o.DefaultPolicy = new AuthorizationPolicyBuilder(new[] { JwtBearerDefaults.AuthenticationScheme })
@@ -45,7 +48,7 @@ namespace Api
                 .AllowAnyMethod()
                 .AllowAnyHeader()
                 .AllowCredentials()
-                .WithOrigins(_configuration.GetValue<string>("FrontendUrl")));
+                .WithOrigins(_configuration.GetValue<string>("FrontendUrl"), "https://localhost:44391"));
             });
 
         }

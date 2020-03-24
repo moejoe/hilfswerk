@@ -1,6 +1,5 @@
 ﻿using Hilfswerk.EntityFramework.Entities;
 using Microsoft.EntityFrameworkCore;
-using System;
 
 namespace Hilfswerk.EntityFramework
 {

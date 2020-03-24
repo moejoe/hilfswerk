@@ -31,28 +31,21 @@ namespace Hilfswerk.EntityFramework.Stores
                 Anmerkung = x.Anmerkung,
                 istRisikogruppe = x.istRisikogrupepe,
                 hatAuto = x.hatAuto,
-                Kontakt = FromEntity(x.Kontakt)
-            };
-        public static Expression<System.Func<Entities.Kontakt, Models.Kontakt>> KontaktProjection =>
-            x => new Models.Kontakt
-            {
-                Email = x.Email,
-                GeoLocation = x.GeoLocation,
-                Nachname = x.Nachname,
-                Plz = x.Plz,
-                Strasse = x.Strasse,
-                Telefon = x.Telefon,
-                Vorname = x.Vorname
+                Kontakt = new Models.Kontakt
+                {
+                    Email = x.Kontakt.Email,
+                    GeoLocation = x.Kontakt.GeoLocation,
+                    Nachname = x.Kontakt.Nachname,
+                    Plz = x.Kontakt.Plz,
+                    Strasse = x.Kontakt.Strasse,
+                    Telefon = x.Kontakt.Telefon,
+                    Vorname = x.Kontakt.Vorname
+                }
             };
 
         public static Models.Taetigkeit TaetigkeitFromId(int id)
         {
             return TaetigkeitProjection.Compile().Invoke(id);
-        }
-
-        public static Models.Kontakt FromEntity(Entities.Kontakt entity)
-        {
-            return KontaktProjection.Compile().Invoke(entity);
         }
     }
 }
