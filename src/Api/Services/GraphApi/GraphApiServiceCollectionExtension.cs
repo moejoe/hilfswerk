@@ -1,10 +1,11 @@
 ﻿using GraphQL;
-using GraphQL.Http;
 using GraphQL.Types;
 using Hilfswerk.GraphApi;
 using GraphQL.Server;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using GraphQL.Authorization;
+using Hilfswerk.EntityFramework;
+using System;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -12,29 +13,37 @@ namespace Microsoft.Extensions.DependencyInjection
     {
         public static IServiceCollection AddHilfswerkGraphApi(this IServiceCollection services)
         {
-            services.AddSingleton<IDependencyResolver>(s => new FuncDependencyResolver(s.GetRequiredService));
-            services.AddSingleton<IDocumentExecuter, DocumentExecuter>();
-            services.AddSingleton<IDocumentWriter, DocumentWriter>();
-            services.TryAddSingleton<IAuthorizationEvaluator, AuthorizationEvaluator>();
-            services.AddHttpContextAccessor();
+            services
+                .AddScoped<HilfswerkSchema>()
+                .AddGraphQL(options =>
+                {
+                    options.EnableMetrics = false;
+                    options.ExposeExceptions = true;
+                    options.UnhandledExceptionDelegate = ctx => { Console.WriteLine(ctx.OriginalException); };
+                })
+                .AddGraphTypes(ServiceLifetime.Scoped)
+                .AddSystemTextJson();
+            //    .AddUserContextBuilder(httpContext => new AuthorizationContext { User = httpContext.User }); ; ;
+
+            //services.AddHttpContextAccessor();
 
 
-            services.AddSingleton<HelferType>();
-            services.AddSingleton<KontaktType>();
-            services.AddSingleton<EinsatzType>();
-            services.AddSingleton<TaetigkeitEnumType>();
-            services.AddSingleton<HilfswerkMutation>();
-            services.AddSingleton<ISchema, HilfswerkSchema>();
+            //services.AddSingleton<HelferType>();
+            //services.AddSingleton<KontaktType>();
+            //services.AddSingleton<EinsatzType>();
+            //services.AddSingleton<TaetigkeitEnumType>();
+            //services.AddSingleton<HilfswerkMutation>();
+            //services.AddSingleton<ISchema, HilfswerkSchema>();
 
-            services.AddSingleton(new HilfswerkQuery(TestData.Helfer));
+            //services.AddSingleton<HilfswerkQuery>();
 
 
-            services.AddGraphQL(options =>
-            {
-                options.EnableMetrics = true;
-                options.ExposeExceptions = true;
-            })
-            .AddUserContextBuilder(httpContext => new AuthorizationContext { User = httpContext.User }); ;
+            //services.AddGraphQL(options =>
+            //{
+            //    options.EnableMetrics = true;
+            //    options.ExposeExceptions = true;
+            //})
+
 
             return services;
         }

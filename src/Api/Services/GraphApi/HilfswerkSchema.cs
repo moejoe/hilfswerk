@@ -1,14 +1,16 @@
 ﻿using GraphQL;
 using GraphQL.Types;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace Hilfswerk.GraphApi
 {
     public class HilfswerkSchema : Schema
     {
-        public HilfswerkSchema(IDependencyResolver resolver) : base(resolver)
+        public HilfswerkSchema(IServiceProvider services) : base(services)
         {
-            Query = resolver.Resolve<HilfswerkQuery>();
-            Mutation = resolver.Resolve<HilfswerkMutation>();
+            Query = services.GetRequiredService<HilfswerkQuery>();
+            Mutation = services.GetRequiredService<HilfswerkMutation>();
         }
     }
 }

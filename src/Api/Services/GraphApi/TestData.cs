@@ -1,10 +1,11 @@
-﻿using Hilfswerk.Core.Models;
+﻿using Hilfswerk.EntityFramework.Entities;
 using System;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
     public static class TestData
     {
+
         public static Helfer[] Helfer => new[]
             {
                 new Helfer
@@ -20,10 +21,7 @@ namespace Microsoft.Extensions.DependencyInjection
                         Telefon = "+43 650 1234567"
                     },
                     Anmerkung = "Ist mit EBE verwandt",
-                    Taetigkeiten = new []
-                    {
-                        Taetigkeit.TELEFON_KONTAKT
-                    },
+                    HelferTaetigkeiten = new [] { HelferTaetigkeit.TELEFON_KONTAKT }
                 },
                 new Helfer
                 {
@@ -38,11 +36,9 @@ namespace Microsoft.Extensions.DependencyInjection
                         Telefon = "+43 650 1234567"
                     },
                     Anmerkung = "???",
-                    Taetigkeiten = new []
-                    {
-                        Taetigkeit.BESORGUNG,
-                        Taetigkeit.TELEFON_KONTAKT
-                    },
+                    HelferTaetigkeiten = new [] { HelferTaetigkeit.BESORGUNG, HelferTaetigkeit.TELEFON_KONTAKT }
+
+
                 },
                 new Helfer
                 {
@@ -56,7 +52,9 @@ namespace Microsoft.Extensions.DependencyInjection
                         Strasse = "Auf dem Göbler",
                         Telefon = "+43 650 1234567"
                     },
-                    Anmerkung = "Kann Deutsch, Enlisch, Kroatisch"
+                    Anmerkung = "Kann Deutsch, Enlisch, Kroatisch",
+                    HelferTaetigkeiten = new [] { HelferTaetigkeit.ANDERE, HelferTaetigkeit.GASSI_GEHEN }
+
                 },
                 new Helfer
                 {
@@ -71,11 +69,7 @@ namespace Microsoft.Extensions.DependencyInjection
                         Telefon = "+43 650 1234567"
                     },
                     Anmerkung = "Wirkt eher verdächtig",
-                    Taetigkeiten = new []
-                    {
-                        Taetigkeit.BESORGUNG,
-                        Taetigkeit.TELEFON_KONTAKT
-                    },
+                    HelferTaetigkeiten = new [] { HelferTaetigkeit.BESORGUNG, HelferTaetigkeit.TELEFON_KONTAKT }
                 },
                 new Helfer
                 {
@@ -90,11 +84,7 @@ namespace Microsoft.Extensions.DependencyInjection
                         Telefon = "+43 650 1234567"
                     },
                     Anmerkung = "Lorem ipsum dolor sit amet",
-                    Taetigkeiten = new []
-                    {
-                        Taetigkeit.GASSI_GEHEN,
-                        Taetigkeit.TELEFON_KONTAKT
-                    },
+                    HelferTaetigkeiten = new [] { HelferTaetigkeit.ANDERE, HelferTaetigkeit.GASSI_GEHEN, HelferTaetigkeit.TELEFON_KONTAKT }
                 },
                 new Helfer
                 {
@@ -109,11 +99,8 @@ namespace Microsoft.Extensions.DependencyInjection
                         Telefon = "+43 650 1234567"
                     },
                     Anmerkung = "Dringender Rückruf",
-                    Taetigkeiten = new []
-                    {
-                        Taetigkeit.BESORGUNG,
-                        Taetigkeit.GASSI_GEHEN
-                    },
+                    HelferTaetigkeiten = new [] { HelferTaetigkeit.BESORGUNG, HelferTaetigkeit.GASSI_GEHEN }
+
                 },
                 new Helfer
                 {
@@ -127,11 +114,7 @@ namespace Microsoft.Extensions.DependencyInjection
                         Strasse = "Zum Seegraben",
                         Telefon = "+43 650 1234567"
                     },
-                    Taetigkeiten = new []
-                    {
-                        Taetigkeit.GASSI_GEHEN,
-                        Taetigkeit.TELEFON_KONTAKT
-                    },
+                    HelferTaetigkeiten = new [] { HelferTaetigkeit.BESORGUNG, HelferTaetigkeit.GASSI_GEHEN, HelferTaetigkeit.TELEFON_KONTAKT },
                     Anmerkung = "Hat bereits bei 2 Einsätzen Probleme gehabt"
                 },
                 new Helfer
@@ -148,37 +131,36 @@ namespace Microsoft.Extensions.DependencyInjection
                     },
                     Anmerkung = "Ist Mittags nicht erreichbar.",
                     hatAuto = false,
-                    Taetigkeiten = new []
-                    {
-                        Taetigkeit.BESORGUNG,
-                        Taetigkeit.GASSI_GEHEN,
-                        Taetigkeit.TELEFON_KONTAKT
-                    },
+                    HelferTaetigkeiten = new [] { HelferTaetigkeit.BESORGUNG, HelferTaetigkeit.GASSI_GEHEN, HelferTaetigkeit.TELEFON_KONTAKT },
+
                     Einsaetze = new Einsatz[]
                     {
                         new Einsatz
                         {
+                            Id = "eb073cce-4ab2-4423-aa61-1898bdb07d9c",
                             Anmerkungen = "keine Anmerkung",
                             Hilfesuchender = "Anna Alisg",
                             VermitteltAm = DateTime.Parse("2020-03-22 14:17:00"),
-                            Taetigkeit = Taetigkeit.BESORGUNG,
+                            TaetigkeitId = Taetigkeit.BESORGUNG.Id,
                             VermitteltDurch = "Martha Mitarbeiterin"
                         },
                         new Einsatz
                         {
+                            Id ="15cb2a4f-2144-4f0f-b895-b2cd2fd0bb18",
+
                             Anmerkungen = "keine Anmerkung",
                             Hilfesuchender = "Anna Alisg",
                             VermitteltAm = DateTime.Parse("2020-03-21 16:17:00"),
-                            Taetigkeit = Taetigkeit.BESORGUNG,
+                            TaetigkeitId = Taetigkeit.BESORGUNG.Id,
                             VermitteltDurch = "Martha Mitarbeiterin"
-                        }
-                        ,
+                        },
                         new Einsatz
                         {
+                            Id = "5ce459a5-fc8b-4cc2-b667-3f70a8ad104f",
                             Anmerkungen = "keine Anmerkung",
                             Hilfesuchender = "Anna Alisg",
                             VermitteltAm = DateTime.Parse("2020-03-20 16:17:00"),
-                            Taetigkeit = Taetigkeit.BESORGUNG,
+                            TaetigkeitId = Taetigkeit.BESORGUNG.Id,
                             VermitteltDurch = "Martha Mitarbeiterin"
                         }
                     }

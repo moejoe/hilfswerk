@@ -1,5 +1,5 @@
 ﻿using GraphQL.Types;
-using Hilfswerk.Core.Models;
+using Hilfswerk.EntityFramework.Entities;
 
 namespace Hilfswerk.GraphApi
 {

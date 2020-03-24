@@ -1,11 +1,15 @@
 using GraphQL.Server;
+using GraphQL.Server.Ui.GraphiQL;
 using GraphQL.Server.Ui.Playground;
 using GraphQL.Types;
+using Hilfswerk.EntityFramework;
+using Hilfswerk.GraphApi;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -26,6 +30,12 @@ namespace Api
         {
             services.AddSimpleTokenAuthentication(_configuration.GetSection("Authentication"));
             services.AddHilfswerkGraphApi();
+            services.AddEntityFrameworkInMemoryDatabase();
+            services.AddDbContext<HilfswerkDbContext>(opt =>
+            {
+                opt.UseInMemoryDatabase(databaseName: "hilfswerk");
+                opt.EnableSensitiveDataLogging(sensitiveDataLoggingEnabled: true);
+            });
             services.AddAuthorization(o =>
             {
                 o.DefaultPolicy = new AuthorizationPolicyBuilder(new[] { JwtBearerDefaults.AuthenticationScheme })
@@ -52,12 +62,12 @@ namespace Api
             {
                 app.UseDeveloperExceptionPage();
             }
-            
+
             app.UseRouting();
 
             app.UseAuthentication();
             app.UseAuthorization();
-            app.UseGraphQL<ISchema>();
+            app.UseGraphQL<HilfswerkSchema>();
             app.UseGraphQLPlayground(new GraphQLPlaygroundOptions());
             app.UseEndpoints(endpoints =>
             {
