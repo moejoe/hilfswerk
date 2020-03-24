@@ -40,10 +40,10 @@ jobs:
       uses: webfactory/ssh-agent@v0.2.0
       with:
         ssh-private-key: ${{ secrets.DEPLOY_KEY }}
-    - name: Deploy
-      uses: JamesIves/github-pages-deploy-action@releases/v2
-      env:
-        SSH: true
-        BASE_BRANCH: master
-        BRANCH: gh-pages
-        FOLDER: src/frontend/dist/frontend
+    - name: GitHub Pages
+      uses: crazy-max/ghaction-github-pages@v1.3.0
+      with:
+        # Git branch where assets will be deployed
+        target_branch: gh-pages
+        # Build directory to deploy
+        build_dir: src/frontend/dist/fronted
