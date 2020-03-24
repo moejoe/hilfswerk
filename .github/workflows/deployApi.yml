@@ -21,7 +21,7 @@ jobs:
     - name: dotnet publish
       run: dotnet publish --no-build -c Release -o packages/api
     - name: deploy on stage
-      uses: azure/webapps-deploy@2
+      uses: azure/webapps-deploy@v2
       if: contains(github.event.pull_request.labels.*.name, 'enhancement') && github.event_name == 'pull_request'
       with:
         app-name: hilfswerl-api
