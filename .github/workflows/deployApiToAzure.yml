@@ -27,11 +27,14 @@ jobs:
         app-name: hilfswerk-api
         publish-profile: ${{ secrets.hilfswerk_api_publish_profile }}
         package: ./packages/api
+    - name: Use Node.js 13.x
+      uses: actions/setup-node@v1
+      with:
+        node-version: '13.x'
     - name: Build
       working-directory: src/frontend
       run: |
-        npm install -g @angular/cli
-        npm install
+        npm ci
         ng build --prod --base-href="/hilfswerk/"
     - name: Deploy
       uses: JamesIves/github-pages-deploy-action@releases/v2
