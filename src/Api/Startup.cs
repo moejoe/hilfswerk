@@ -43,6 +43,14 @@ namespace Api
                     .Build();
             });
             services.AddControllers();
+            services.AddCors(options =>
+            {
+                options.AddPolicy("P", builder => builder
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .AllowCredentials()
+                .WithOrigins("http://localhost:4200", "https://hilfswerk.hilfswerk.hilfswerk"));
+            });
             services.Configure<KestrelServerOptions>(options =>
             {
                 options.AllowSynchronousIO = true;
@@ -64,6 +72,7 @@ namespace Api
             }
 
             app.UseRouting();
+            app.UseCors("P");
 
             app.UseAuthentication();
             app.UseAuthorization();

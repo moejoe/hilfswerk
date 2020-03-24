@@ -1,0 +1,4 @@
+<label for="username">Username</label>
+<input type="text" id="username" [(ngModel)]="username" />
+<button id="login" (click)="login()">Login</button>
+<span *ngIf="loginFehler">Loginfehler</span>
