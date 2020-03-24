@@ -1,4 +1,4 @@
-﻿namespace Hilfswerk.Core.Models
+﻿namespace Hilfswerk.Models
 {
     public class Kontakt
     {

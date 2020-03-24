@@ -1,8 +1,7 @@
 ﻿using System;
 
-namespace Hilfswerk.Core.Models
+namespace Hilfswerk.Models
 {
-    [Flags]
     public enum Taetigkeit
     {
         BESORGUNG = 1,

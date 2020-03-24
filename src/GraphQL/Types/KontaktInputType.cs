@@ -1,13 +1,13 @@
 ﻿using GraphQL.Types;
-using Hilfswerk.EntityFramework.Entities;
+using Hilfswerk.Models;
 
 namespace Hilfswerk.GraphApi
 {
-    public class KontaktType : ObjectGraphType<Kontakt>
+    public class KontaktInputType : InputObjectGraphType<Kontakt>
     {
-        public KontaktType()
+        public KontaktInputType()
         {
-            Name = "Kontakt";
+            Name = "KontaktInput";
             Field(x => x.Vorname);
             Field(x => x.Nachname);
             Field(x => x.Plz);

@@ -1,14 +1,10 @@
-using GraphQL.Server;
-using GraphQL.Server.Ui.GraphiQL;
 using GraphQL.Server.Ui.Playground;
-using GraphQL.Types;
 using Hilfswerk.EntityFramework;
 using Hilfswerk.GraphApi;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -51,15 +47,6 @@ namespace Api
                 .AllowCredentials()
                 .WithOrigins("http://localhost:4200", "https://hilfswerk.hilfswerk.hilfswerk"));
             });
-            services.Configure<KestrelServerOptions>(options =>
-            {
-                options.AllowSynchronousIO = true;
-            });
-            services.Configure<IISServerOptions>(options =>
-            {
-                options.AllowSynchronousIO = true;
-            });
-
 
         }
 
@@ -76,6 +63,7 @@ namespace Api
 
             app.UseAuthentication();
             app.UseAuthorization();
+
             app.UseGraphQL<HilfswerkSchema>();
             app.UseGraphQLPlayground(new GraphQLPlaygroundOptions());
             app.UseEndpoints(endpoints =>

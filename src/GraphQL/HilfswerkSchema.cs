@@ -1,5 +1,6 @@
-﻿using GraphQL;
-using GraphQL.Types;
+﻿using GraphQL.Types;
+using Hilfswerk.GraphApi.Mutations;
+using Hilfswerk.GraphApi.Queries;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 
