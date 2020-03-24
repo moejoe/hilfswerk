@@ -3,10 +3,11 @@ name: Deploy Api
 on:
   push:
     branches: [ master ]
-
+  pull_request:
+    branches: [ master ]
 jobs:
   build:
-
+    
     runs-on: ubuntu-latest
 
     steps:
@@ -19,8 +20,16 @@ jobs:
       run: dotnet build --configuration Release
     - name: dotnet publish
       run: dotnet publish --no-build -c Release -o packages/api
-    - name: deploy on azure
+    - name: deploy on stage
       uses: azure/webapps-deploy@v2
+      if: contains(github.event.pull_request.labels.*.name, 'enhancement') && github.event_name == 'pull_request'
+      with:
+        app-name: hilfswerk-api
+        publish-profile: ${{ secrets.hilfswerk_api_publish_profile_stage }}
+        package: ./packages/api
+    - name: deploy on prod
+      uses: azure/webapps-deploy@v2
+      if: contains(github.event.pull_request.labels.*.name, 'enhancement') && github.event_name == 'push'
       with:
         app-name: hilfswerk-api
         publish-profile: ${{ secrets.hilfswerk_api_publish_profile }}
