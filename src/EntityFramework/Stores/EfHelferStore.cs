@@ -14,7 +14,7 @@ namespace Hilfswerk.EntityFramework.Stores
 
         public EfHelferStore(HilfswerkDbContext db)
         {
-            _db = db ?? throw new System.ArgumentNullException(nameof(db));
+            _db = db ?? throw new ArgumentNullException(nameof(db));
         }
         public async Task<Einsatz[]> GetEinsaetze(string helferId)
         {
