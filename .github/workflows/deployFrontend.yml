@@ -1,9 +1,7 @@
-name: .NET Core
+name: Deploy Frontend
 
 on:
   push:
-    branches: [ master ]
-  pull_request:
     branches: [ master ]
 
 jobs:
@@ -13,20 +11,6 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Setup .NET Core
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: 3.1.101
-    - name: Build with dotnet
-      run: dotnet build --configuration Release
-    - name: dotnet publish
-      run: dotnet publish --no-build -c Release -o packages/api
-    - name: deploy on azure
-      uses: azure/webapps-deploy@v2
-      with:
-        app-name: hilfswerk-api
-        publish-profile: ${{ secrets.hilfswerk_api_publish_profile }}
-        package: ./packages/api
     - name: Use Node.js 13.x
       uses: actions/setup-node@v1
       with:
