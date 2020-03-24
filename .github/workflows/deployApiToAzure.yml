@@ -46,4 +46,4 @@ jobs:
         # Git branch where assets will be deployed
         target_branch: gh-pages
         # Build directory to deploy
-        build_dir: src/frontend/dist/fronted
+        build_dir: src/frontend/dist/frontend
