@@ -37,7 +37,7 @@ namespace Api
                 .AllowAnyMethod()
                 .AllowAnyHeader()
                 .AllowCredentials()
-                .WithOrigins("http://localhost:4200", "https://hilfswerk.hilfswerk.hilfswerk"));
+                .WithOrigins(_configuration.GetValue<string>("FrontendUrl")));
             });
         }
 
