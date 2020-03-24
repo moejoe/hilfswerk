@@ -27,4 +27,16 @@ jobs:
         app-name: hilfswerk-api
         publish-profile: ${{ secrets.hilfswerk_api_publish_profile }}
         package: ./packages/api
-      
+    - name: Build
+      working-directory: src/frontend
+      run: |
+        npm install -g @angular/cli
+        npm install
+        ng build --prod --base-href="/hilfswerk/"
+    - name: Deploy
+      uses: JamesIves/github-pages-deploy-action@releases/v2
+      env:
+        ACCESS_TOKEN: ${{secrets.ACCESS_TOKEN}}
+        BASE_BRANCH: master
+        BRANCH: gh-pages
+        FOLDER: src/frontend/dist/frontend
