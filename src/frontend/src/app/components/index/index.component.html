@@ -1,2 +1,30 @@
-<p>index works!</p>
-<button id="logout" (click)="logout()">Logout</button>
+<ul>
+    <li *ngFor="let bezirk of bezirke">
+        <label for="bezirk-{{bezirk.name}}">{{bezirk.name}}</label>
+        <input type="checkbox" [(ngModel)]="bezirk.checked" id="bezirk-{{bezirk.name}}" (change)="filterChange()">
+    </li>
+</ul>
+<cdk-virtual-scroll-viewport class="results" itemSize="20">
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Einsätze</th>
+                <th>Straße</th>
+                <th>PLZ</th>
+                <th>Anmerkungen</th>
+            </tr>
+        </thead>
+        <tbody>
+            <ng-container *cdkVirtualFor="let h of (helfer$ | async)">
+                <tr>
+                    <td>{{h.kontakt.nachname}} {{h.kontakt.vorname}}</td>
+                    <td>{{h.totalEinsaetze}}</td>
+                    <td>{{h.kontakt.strasse}}</td>
+                    <td>{{h.kontakt.plz}}</td>
+                    <td>{{h.anmerkung}}</td>
+                </tr>
+            </ng-container>
+        </tbody>
+    </table>
+</cdk-virtual-scroll-viewport>

@@ -20,7 +20,12 @@ export class AuthService {
       return false;
     }
     let helper = new JwtHelperService();
-    return !helper.isTokenExpired(token);
+    try {
+      return !helper.isTokenExpired(token);
+    }
+    catch {
+      return false;
+    }
   }
 
   async login(name: string) {
@@ -41,7 +46,7 @@ export class AuthService {
   async logout() {
     localStorage.removeItem("token");
     this.token = null;
-    if(window["PasswordCredential"]) {
+    if (window["PasswordCredential"]) {
       await navigator.credentials.preventSilentAccess();
     }
   }
