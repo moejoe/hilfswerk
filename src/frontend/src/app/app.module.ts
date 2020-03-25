@@ -9,6 +9,7 @@ import { LoginComponent } from './components/login/login.component';
 import { IndexComponent } from './components/index/index.component';
 import { AuthGuard } from './auth-guard';
 import { LoggedoutComponent } from './components/loggedout/loggedout.component';
+import { ScrollingModule } from "@angular/cdk/scrolling";
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { LoggedoutComponent } from './components/loggedout/loggedout.component';
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    ScrollingModule
   ],
   providers: [AuthGuard],
   bootstrap: [AppComponent]
