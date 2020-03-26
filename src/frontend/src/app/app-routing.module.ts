@@ -4,6 +4,7 @@ import { IndexComponent } from './components/index/index.component';
 import { LoginComponent } from './components/login/login.component';
 import { AuthGuard } from './auth-guard';
 import { LoggedoutComponent } from './components/loggedout/loggedout.component';
+import { CreateHelferComponent } from './components/createHelfer/createHelfer.component';
 
 
 const routes: Routes = [
@@ -24,6 +25,10 @@ const routes: Routes = [
   {
     path: 'loggedout',
     component: LoggedoutComponent
+  },
+  {
+    path: 'createHelfer',
+    component: CreateHelferComponent
   },
   {
     path: "**",

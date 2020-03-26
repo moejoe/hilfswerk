@@ -10,13 +10,15 @@ import { IndexComponent } from './components/index/index.component';
 import { AuthGuard } from './auth-guard';
 import { LoggedoutComponent } from './components/loggedout/loggedout.component';
 import { ScrollingModule } from "@angular/cdk/scrolling";
+import { CreateHelferComponent } from './components/createHelfer/createHelfer.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     IndexComponent,
-    LoggedoutComponent
+    LoggedoutComponent,
+    CreateHelferComponent
   ],
   imports: [
     BrowserModule,
