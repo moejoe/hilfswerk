@@ -4,27 +4,46 @@
         <input type="checkbox" [(ngModel)]="bezirk.checked" id="bezirk-{{bezirk.name}}" (change)="filterChange()">
     </li>
 </ul>
-<cdk-virtual-scroll-viewport class="results" itemSize="20">
-    <table>
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Einsätze</th>
-                <th>Straße</th>
-                <th>PLZ</th>
-                <th>Anmerkungen</th>
-            </tr>
-        </thead>
-        <tbody>
-            <ng-container *cdkVirtualFor="let h of (helfer$ | async)">
-                <tr>
-                    <td>{{h.kontakt.nachname}} {{h.kontakt.vorname}}</td>
-                    <td>{{h.totalEinsaetze}}</td>
-                    <td>{{h.kontakt.strasse}}</td>
-                    <td>{{h.kontakt.plz}}</td>
-                    <td>{{h.anmerkung}}</td>
-                </tr>
-            </ng-container>
-        </tbody>
+<ul>
+    <li *ngFor="let taetigkeit of taetigkeiten">
+        <label for="taetigkeit-{{taetigkeit.id}}">{{taetigkeit.name}}</label>
+        <input type="checkbox" [(ngModel)]="taetigkeit.checked" id="taetigkeit-{{taetigkeit.id}}"
+            (change)="filterChange()">
+    </li>
+</ul>
+<label for="hat-auto">Hat Auto</label>
+<input type="checkbox" [(ngModel)]="hatAuto" id="hat-auto" (change)="filterChange()">
+<label for="ist-risikogruppe">Ist Risikogruppe</label>
+<input type="checkbox" [(ngModel)]="istRisikoGruppe" id="ist-risikogruppe" (change)="filterChange()">
+<label for=""></label>
+<ul id="gesetzte-filter">
+    <li *ngFor="let filter of gesetzeFilter">
+        {{filter}}
+    </li>
+</ul>
+<div class="table-container">
+    <table mat-table [dataSource]="helfer$ | async" class="mat-elevation-z8">
+        <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef>Name</th>
+            <td mat-cell *matCellDef="let h">{{h.kontakt.nachname}} {{h.kontakt.vorname}}</td>
+        </ng-container>
+        <ng-container matColumnDef="einsaetze">
+            <th mat-header-cell *matHeaderCellDef>Einsätze</th>
+            <td mat-cell *matCellDef="let h">{{h.totalEinsaetze}}</td>
+        </ng-container>
+        <ng-container matColumnDef="strasse">
+            <th mat-header-cell *matHeaderCellDef>Straße</th>
+            <td mat-cell *matCellDef="let h">{{h.kontakt.strasse}}</td>
+        </ng-container>
+        <ng-container matColumnDef="plz">
+            <th mat-header-cell *matHeaderCellDef>PLZ</th>
+            <td mat-cell *matCellDef="let h">{{h.kontakt.plz}}</td>
+        </ng-container>
+        <ng-container matColumnDef="anmerkung">
+            <th mat-header-cell *matHeaderCellDef>Anmerkungen</th>
+            <td mat-cell *matCellDef="let h">{{h.anmerkung}}</td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky : true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
-</cdk-virtual-scroll-viewport>
+</div>
