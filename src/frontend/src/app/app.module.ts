@@ -12,6 +12,7 @@ import { LoggedoutComponent } from './components/loggedout/loggedout.component';
 import { CreateHelferComponent } from './components/createHelfer/createHelfer.component';
 import { MatTableModule } from "@angular/material/table";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AddEinsatzComponent } from './components/addEinsatz/addEinsatz.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     LoginComponent,
     IndexComponent,
     LoggedoutComponent,
-    CreateHelferComponent
+    CreateHelferComponent,
+    AddEinsatzComponent
   ],
   imports: [
     BrowserModule,

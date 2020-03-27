@@ -13,6 +13,7 @@ export interface HelferFilters {
 }
 
 export interface HelferListenEintrag {
+    id: string;
     kontakt: Kontakt;
     totalEinsaetze: number;
     anmerkung: string;
@@ -33,4 +34,11 @@ export interface HelferCreateInput {
     anmerkung: string;
     taetigkeiten: Taetigkeit[];
     kontakt  : Kontakt;
+}
+
+export interface EinsatzInput {
+  hilfesuchender: string;
+  taetigkeit: Taetigkeit;
+  anmerkungen: string;
+  vermitteltDurch: string;
 }

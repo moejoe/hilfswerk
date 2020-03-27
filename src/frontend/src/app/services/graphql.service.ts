@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { map } from "rxjs/operators";
-import { HelferFilters, HelferListenEintrag, HelferCreateInput } from '../models/graphql-models';
+import { HelferFilters, HelferListenEintrag, HelferCreateInput, EinsatzInput } from '../models/graphql-models';
 
 @Injectable({
   providedIn: 'root'
@@ -21,6 +21,8 @@ export class GraphqlService {
   helfer(inPlz: $inPlz, taetigkeitIn: $taetigkeitIn,istRisikoGruppe : $istRisikoGruppe, hatAuto: $hatAuto) {
     id
     kontakt {
+      email,
+      telefon,
       nachname,
       vorname,
       strasse,
@@ -62,13 +64,47 @@ export class GraphqlService {
       return new ErrorCreateResult([{message: "Error sending graphQL mutation."}]) 
     }
   }
+  async addEinsatz(helferId: string, einsatz: EinsatzInput) {
+    let mutation = `
+    mutation ($helferId: String!, $einsatz: EinsatzInput!) {
+      createEinsatz(helferId: $helferId, einsatz: $einsatz) {
+        vermitteltAm
+      }
+    }`;
+    var request = {
+      "query":mutation,
+      variables: { 
+        "helferId": helferId,
+        "einsatz": einsatz
+      }
+    };
+    try {
+      var result =  await this.httpClient.post<{ data: { createEinsatz: { vermitteltAm: string } }, errors: any[] }>(`${environment.apiUrl}/graphql`, request).toPromise();
+      if(result.errors) {
+        return new ErrorCreateResult(result.errors);
+      }
+      return new SuccessCreateResult(result.data.createEinsatz.vermitteltAm);
+    }
+    catch {
+      return new ErrorCreateResult([{message: "Error sending graphQL mutation."}]) 
+    }
+  }
+
 }
+
+export interface EinsatzCreateResult {
+  id: string;
+  errors: {message: string}[];
+  isSuccess: boolean;
+}
+
 export interface HelferCreateResult {
   id: string;
   errors: { message: string }[];
   isSuccess: boolean;
 }
-class SuccessCreateResult implements HelferCreateResult{
+
+class SuccessCreateResult implements HelferCreateResult, EinsatzCreateResult{
   constructor(id: string) {
     this.id = id;
     this.errors = null;
@@ -78,7 +114,7 @@ class SuccessCreateResult implements HelferCreateResult{
   errors: { message: string; }[];
   isSuccess: boolean;
 }
-class ErrorCreateResult implements HelferCreateResult{
+class ErrorCreateResult implements HelferCreateResult, EinsatzCreateResult{
   constructor(errors: { message: string; }[] ) {
     this.id = null;
     this.errors = errors;

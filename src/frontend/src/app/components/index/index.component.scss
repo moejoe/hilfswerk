@@ -13,3 +13,14 @@
         width: 100%;
     }
 }
+
+.add-einsatz-container {
+    overflow: hidden;
+    display: flex;
+  }
+  tr.expanded-helfer-row {
+    height: 0;
+  }
+  tr.helfer-row:not(.expanded-helfer-row):hover {
+    background: whitesmoke;
+  }
