@@ -34,13 +34,7 @@ export class GraphqlService {
       query: query,
       variables: filters,
     }).pipe(map(d => {
-      let res: HelferListenEintrag[] = [];
-      for(let i = 0; i < 100; i++) {
-        for (let h of d.data.helfer) {
-          res.push(h);
-        }
-      }
-      return res;
+      return d.data.helfer;
     }));
   }
 }
