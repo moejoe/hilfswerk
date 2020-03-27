@@ -1,8 +1,9 @@
+<a routerLink="/createHelfer">Helfer anlegen</a>
 <ul>
     <li *ngFor="let bezirk of bezirke">
         <label for="bezirk-{{bezirk.name}}">{{bezirk.name}}</label>
         <input type="checkbox" [(ngModel)]="bezirk.checked" id="bezirk-{{bezirk.name}}" (change)="filterChange()">
-    </li>
+    </li>   
 </ul>
 <ul>
     <li *ngFor="let taetigkeit of taetigkeiten">

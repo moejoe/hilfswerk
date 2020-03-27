@@ -9,6 +9,7 @@ import { LoginComponent } from './components/login/login.component';
 import { IndexComponent } from './components/index/index.component';
 import { AuthGuard } from './auth-guard';
 import { LoggedoutComponent } from './components/loggedout/loggedout.component';
+import { CreateHelferComponent } from './components/createHelfer/createHelfer.component';
 import { MatTableModule } from "@angular/material/table";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -17,7 +18,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     AppComponent,
     LoginComponent,
     IndexComponent,
-    LoggedoutComponent
+    LoggedoutComponent,
+    CreateHelferComponent
   ],
   imports: [
     BrowserModule,

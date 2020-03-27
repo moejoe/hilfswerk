@@ -1,0 +1,111 @@
+<div class="container">
+    <div *ngIf="createResult && createResult.isSuccess">
+
+        Kontakt erfolgreich angelegt: {{createResult.id}}
+    </div>
+    <div *ngIf="createResult && !createResult.isSuccess">
+        Fehler beim anlgen des Kontakt:
+        <pre>{{createResult.errors | json}}</pre>
+    </div>
+    <a routerLink="/index">Zurück zur Liste</a>
+    <form #createHelferForm="ngForm">
+        <h1>Kontakt</h1>
+        <div>
+            <label for="vorname">Vorname</label>
+            <input type="text" id="vorname" [(ngModel)]="helfer.kontakt.vorname" name="vorname" required
+                #vorname="ngModel" />
+
+            <div *ngIf="vorname.invalid && (vorname.dirty || vorname.touched)">
+                <div *ngIf="vorname.errors.required">
+                    Der Vorname ist ein Pflichtfeld.
+                </div>
+            </div>
+
+            <label for="nachanme">Nachname</label>
+            <input type="text" id="nachname" [(ngModel)]="helfer.kontakt.nachname" name="nachname" required
+                #nachname="ngModel" />
+
+            <div *ngIf="nachname.invalid && (nachname.dirty || nachname.touched)">
+                <div *ngIf="nachname.errors.required">
+                    Der Nachname ist ein Pflichtfeld.
+                </div>
+            </div>
+        </div>
+        <div>
+            <label for="plz">PLZ</label>
+            <input type="text" id="plz" [(ngModel)]="helfer.kontakt.plz" name="plz" required pattern="\d{4}" maxlength="4" minlength="4"
+                #plz="ngModel" [ngModelOptions]="{updateOn: 'blur'}" />
+
+            <div *ngIf="plz.invalid && (plz.dirty || plz.touched)">
+                <div *ngIf="plz.errors.required">
+                    Die Postleizahl ist ein Pflichtfeld.
+                </div>
+                <div *ngIf="plz.errors.pattern || plz.errors.minlength || plz.errors.maxlength">
+                    Bitte als 4 Stellige Nummer eingeben (zb.: 1020)
+                </div>
+            </div>
+
+            <label for="strasse">Strasse</label>
+            <input type="text" id="strasse" [(ngModel)]="helfer.kontakt.strasse" name="strasse" />
+        </div>
+        <div>
+            <label for="telefon">Telefon</label>
+            <input type="text" id="telefon" [(ngModel)]="helfer.kontakt.telefon" name="telefon" required 
+            #telfon="ngModel" minlength="5" maxlength="20" [ngModelOptions]="{updateOn: 'blur'}"/>
+            <div *ngIf="telfon.invalid && (telfon.dirty || telfon.touched)">
+                <div *ngIf="telfon.errors.required">
+                    Die Telefonnummer ist ein Pflichtfeld.
+                </div>
+                <div *ngIf="telfon.errors.minlength">
+                    Telefonnummern müssen zumindest 5 Zeichen lang sein.
+                </div>
+                <div *ngIf="telfon.errors.maxlength">
+                    Telefonnummern dürfen nicht länger als 20 Zeichen lang sein.
+                </div>
+            </div>
+            <label for="email">Email</label>
+            <input type="email" id="email" [(ngModel)]="helfer.kontakt.email" name="email" required #email="ngModel" required email [ngModelOptions]="{updateOn: 'blur'}"/>
+            <div *ngIf="email.invalid && (email.dirty || email.touched)">
+                <div *ngIf="email.errors.required">
+                    Die Postleizahl ist ein Pflichtfeld.
+                </div>
+                <div *ngIf="email.errors.email">
+                    Bitte darauf achten, dass eine gültige Emailadresse eingegeben wurde: beispiel@irgend.wo
+                </div>
+            </div>
+        </div>
+
+        <h1>Tätigkeiten</h1>
+        <div>
+            <div *ngIf="helfer.taetigkeiten.length == 0">
+                Bitte zumindest eine Tätigkeit auswählen.
+            </div>
+            <label for="does_BESORGUNG">Besorgungen?</label>
+            <input type="checkbox" id="does_BESORGUNG" [(ngModel)]="taetigkeiten.BESORGUNG" name="BESORGUNG" (change)="updateTaetigkeiten()"/>
+            <label for="does_TELEFON_KONTAKT">Telefonkontakte?</label>
+            <input type="checkbox" id="does_TELEFON_KONTAKT" [(ngModel)]="taetigkeiten.TELEFON_KONTAKT"
+                name="TELEFON_KONTAKT" (change)="updateTaetigkeiten()"/>
+            <label for="does_GASSI_GEHEN">Gassi gehen?</label>
+            <input type="checkbox" id="does_GASSI_GEHEN" [(ngModel)]="taetigkeiten.GASSI_GEHEN" name="GASSI_GEHEN" (change)="updateTaetigkeiten()"/>
+            <label for="does_ANDERE">andere?</label>
+            <input type="checkbox" id="does_ANDERE" [(ngModel)]="taetigkeiten.ANDERE" name="ANDERE" (change)="updateTaetigkeiten()"/>
+        </div>
+
+        <h1>Sonstiges</h1>
+        <div>
+            <label for="istRisikoGruppe">Risikogruppe?</label>
+            <input type="checkbox" id="istRisikogruppe" [(ngModel)]="helfer.istRisikogruppe" name="istRisikogruppe" />
+            <label for="hatAuto">hat Auto?</label>
+            <input type="checkbox" id="hatAuto" [(ngModel)]="helfer.hatAuto" name="hatAuto" />
+        </div>
+        <h1>Anmerkung</h1>
+        <div>
+            <textarea name="anmerkung" cols="40" rows="5" id="anmerkung" [(ngModel)]="helfer.anmerkung"></textarea>
+        </div>
+
+        
+        <button *ngIf="createHelferForm.valid" type="submit" (click)="createHelfer()" >Anlegen</button>
+        <button *ngIf="createHelferForm.invalid" type="submit" (click)="createHelfer()" disabled >Anlegen</button>
+        <pre>{{helfer | json }}</pre>
+    </form>
+</div>

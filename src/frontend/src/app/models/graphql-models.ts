@@ -21,6 +21,16 @@ export interface HelferListenEintrag {
 export interface Kontakt {
     vorname: string;
     nachname: string;
-    strasse: string;
     plz: number;
+    strasse: string;
+    telefon: string;
+    email: string;
+}
+
+export interface HelferCreateInput {
+    istRisikogruppe: boolean;
+    hatAuto: boolean;
+    anmerkung: string;
+    taetigkeiten: Taetigkeit[];
+    kontakt  : Kontakt;
 }
