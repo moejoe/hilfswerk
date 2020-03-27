@@ -2,8 +2,14 @@
     flex-grow: 1;
     display: flex;
     flex-direction: column;
+    overflow: hidden;
 }
 
-.results {
+.table-container {
     flex-grow: 1;
+    overflow: auto;
+
+    &>table {
+        width: 100%;
+    }
 }
