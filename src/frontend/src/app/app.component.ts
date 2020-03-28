@@ -13,8 +13,22 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    let self = this;
     if (!this.authService.isLoggedIn()) {
       this.router.navigate(["/login"]);
+    } else {
+      function checkToken() {
+        const ONE_HOUR_MS = 1000 * 3600;
+        let exp = this.authService.getExpiration();
+        let expiresMs = +exp - +new Date();
+        if (expiresMs < ONE_HOUR_MS) {
+          setTimeout(() => { this.router.navigate(["/login"]); }, expiresMs);
+        }
+        else {
+          setTimeout(() => { checkToken(); }, ONE_HOUR_MS);
+        }
+      }
+      checkToken();
     }
   }
   async logout() {

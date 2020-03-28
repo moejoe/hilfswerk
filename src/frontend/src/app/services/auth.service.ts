@@ -10,29 +10,37 @@ import { Observable } from 'rxjs';
 export class AuthService {
 
   private token: string;
+  private expirationDate: Date;
 
   constructor(private httpClient: HttpClient) {
     this.token = localStorage.getItem("token");
+    if (null != this.token) {
+      let helper = new JwtHelperService();
+      try {
+        this.expirationDate = helper.getTokenExpirationDate(this.token);
+      }
+      catch {
+        this.expirationDate = null;
+      }
+    }
   }
 
   isLoggedIn(): boolean {
-    let token = localStorage.getItem("token");
-    if (null == token) {
+    if (null == this.token || null == this.expirationDate) {
       return false;
     }
-    let helper = new JwtHelperService();
-    try {
-      return !helper.isTokenExpired(token);
+    if (+this.expirationDate > +new Date()) {
+      return true;
     }
-    catch {
-      return false;
-    }
+    return false;
   }
 
   async login(name: string) {
     try {
       let res = await this.httpClient.post<{ token: string }>(`${environment.apiUrl}/token`, { name }).toPromise();
       this.token = res.token;
+      let helper = new JwtHelperService();
+      this.expirationDate = helper.getTokenExpirationDate(this.token);
       localStorage.setItem("token", res.token);
     }
     catch {
@@ -51,23 +59,29 @@ export class AuthService {
     try {
       let requestHeaders = new HttpHeaders({
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + localStorage.getItem("token")
+        'Authorization': `Bearer ${this.token}`
       });
-      return this.httpClient.get<UserInfo>(`${environment.apiUrl}/oauth2/userinfo`, { headers: requestHeaders, observe: 'response' } );
+      return this.httpClient.get<UserInfo>(`${environment.apiUrl}/oauth2/userinfo`, { headers: requestHeaders, observe: 'response' });
     }
     catch {
       throw new Error("Can't get userinfo");
     }
   }
 
+  getExpiration() {
+    return this.expirationDate;
+  }
+
   async logout() {
     localStorage.removeItem("token");
     this.token = null;
+    this.expirationDate = null;
     if (window["PasswordCredential"]) {
       await navigator.credentials.preventSilentAccess();
     }
   }
 }
+
 export interface UserInfo {
   name: string;
 }

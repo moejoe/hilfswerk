@@ -1,4 +1,6 @@
 ﻿using GraphQL.Server;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using System;
 
 
@@ -17,6 +19,12 @@ namespace Microsoft.Extensions.DependencyInjection
                         options.ExposeExceptions = true;
                         options.UnhandledExceptionDelegate = ctx => { Console.WriteLine(ctx.OriginalException); };
                     })
+                .AddGraphQLAuthorization(d =>
+                {
+                    d.AddPolicy("DefaultPolicy", new AuthorizationPolicyBuilder(new[] { JwtBearerDefaults.AuthenticationScheme })
+                    .RequireAuthenticatedUser()
+                    .Build());
+                })
                 .AddSystemTextJson();
             return services;
             // Authorization ? 

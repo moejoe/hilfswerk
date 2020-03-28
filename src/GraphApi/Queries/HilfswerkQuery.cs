@@ -1,4 +1,5 @@
 ﻿using GraphQL;
+using GraphQL.Authorization;
 using GraphQL.Types;
 using Hilfswerk.Core.Stores;
 using System;
@@ -10,6 +11,7 @@ namespace Hilfswerk.GraphApi.Queries
     {
         public HilfswerkQuery(IHelferStore store)
         {
+            this.AuthorizeWith("DefaultPolicy");
             Name = "Query";
 
             FieldAsync<ListGraphType<HelferType>>(

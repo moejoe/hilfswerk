@@ -3,13 +3,21 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { map } from "rxjs/operators";
 import { HelferFilters, HelferListenEintrag, HelferCreateInput, EinsatzInput } from '../models/graphql-models';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GraphqlService {
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient, private authService: AuthService) { }
+
+
+  private headers() {
+    return {
+      "Authorization": `Bearer ${this.authService.getToken()}`
+    }
+  }
 
   queryHelferListe(filters: HelferFilters) {
     let query = `query HelferListe(
@@ -35,7 +43,7 @@ export class GraphqlService {
     return this.httpClient.post<{ data: { helfer: HelferListenEintrag[] } }>(`${environment.apiUrl}/graphql`, {
       query: query,
       variables: filters,
-    }).pipe(map(d => {
+    }, { headers: this.headers() }).pipe(map(d => {
       return d.data.helfer;
     }));
   }
@@ -48,20 +56,21 @@ export class GraphqlService {
       }
     }`;
     var request = {
-      "query":mutation,
-      variables: { 
+      "query": mutation,
+      variables: {
         "helfer": helfer
       }
     };
     try {
-      var result =  await this.httpClient.post<{ data: { createHelfer: { id: string } }, errors: any[] }>(`${environment.apiUrl}/graphql`, request).toPromise();
-      if(result.errors) {
+      var result = await this.httpClient.post<{ data: { createHelfer: { id: string } }, errors: any[] }>(`${environment.apiUrl}/graphql`, request,
+        { headers: this.headers() }).toPromise();
+      if (result.errors) {
         return new ErrorCreateResult(result.errors);
       }
       return new SuccessCreateResult(result.data.createHelfer.id);
     }
     catch {
-      return new ErrorCreateResult([{message: "Error sending graphQL mutation."}]) 
+      return new ErrorCreateResult([{ message: "Error sending graphQL mutation." }])
     }
   }
   async addEinsatz(helferId: string, einsatz: EinsatzInput) {
@@ -72,21 +81,22 @@ export class GraphqlService {
       }
     }`;
     var request = {
-      "query":mutation,
-      variables: { 
+      "query": mutation,
+      variables: {
         "helferId": helferId,
         "einsatz": einsatz
       }
     };
     try {
-      var result =  await this.httpClient.post<{ data: { createEinsatz: { vermitteltAm: string } }, errors: any[] }>(`${environment.apiUrl}/graphql`, request).toPromise();
-      if(result.errors) {
+      var result = await this.httpClient.post<{ data: { createEinsatz: { vermitteltAm: string } }, errors: any[] }>(`${environment.apiUrl}/graphql`, request,
+        { headers: this.headers() }).toPromise();
+      if (result.errors) {
         return new ErrorCreateResult(result.errors);
       }
       return new SuccessCreateResult(result.data.createEinsatz.vermitteltAm);
     }
     catch {
-      return new ErrorCreateResult([{message: "Error sending graphQL mutation."}]) 
+      return new ErrorCreateResult([{ message: "Error sending graphQL mutation." }])
     }
   }
 
@@ -94,7 +104,7 @@ export class GraphqlService {
 
 export interface EinsatzCreateResult {
   id: string;
-  errors: {message: string}[];
+  errors: { message: string }[];
   isSuccess: boolean;
 }
 export interface HelferCreateResult {
@@ -103,7 +113,7 @@ export interface HelferCreateResult {
   isSuccess: boolean;
 }
 
-class SuccessCreateResult implements HelferCreateResult, EinsatzCreateResult{
+class SuccessCreateResult implements HelferCreateResult, EinsatzCreateResult {
   constructor(id: string) {
     this.id = id;
     this.errors = null;
@@ -113,8 +123,8 @@ class SuccessCreateResult implements HelferCreateResult, EinsatzCreateResult{
   errors: { message: string; }[];
   isSuccess: boolean;
 }
-class ErrorCreateResult implements HelferCreateResult, EinsatzCreateResult{
-  constructor(errors: { message: string; }[] ) {
+class ErrorCreateResult implements HelferCreateResult, EinsatzCreateResult {
+  constructor(errors: { message: string; }[]) {
     this.id = null;
     this.errors = errors;
     this.isSuccess = false;
