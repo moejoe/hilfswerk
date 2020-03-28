@@ -3,6 +3,7 @@ import { GraphqlService } from 'src/app/services/graphql.service';
 import { Observable } from 'rxjs';
 import { HelferListenEintrag, Taetigkeit } from 'src/app/models/graphql-models';
 import { animate, state, style, transition, trigger } from '@angular/animations';
+import { AuthService, UserInfo } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-index',
@@ -28,18 +29,23 @@ export class IndexComponent implements OnInit {
   istRisikoGruppe = false;
   gesetzeFilter: string[];
   selectedHelfer: HelferListenEintrag | null;
+  userinfo: UserInfo;
 
-  constructor(private graphqlService: GraphqlService) {
+  constructor(private graphqlService: GraphqlService, private authService: AuthService) {
 
   }
 
-  ngOnInit(): void {
+  async ngOnInit() {
     this.helfer$ = this.graphqlService.queryHelferListe({});
     this.bezirke = [];
     for (let i = 1010; i <= 1230; i += 10) {
       this.bezirke.push({ name: `${i}`, checked: false, nummer: i });
     }
+    this.authService.getUserInfo().subscribe(resp => {
+      this.userinfo = { ...resp.body };
+    });
   }
+
   onEinsatzAdded(event: string) {
     this.selectedHelfer.totalEinsaetze++;
   }
