@@ -63,7 +63,7 @@
                         <div><mat-icon>chat</mat-icon>Anm: {{helfer.anmerkung}}</div>
                     </div>
                     <div *ngIf="selectedHelfer === helfer">
-                        <app-addEinsatz vermitteltDurch="test" [helferId]="helfer.id" (added)="onEinsatzAdded($event)">
+                        <app-addEinsatz [vermitteltDurch]="userinfo.name" [helferId]="helfer.id" (added)="onEinsatzAdded($event)">
                         </app-addEinsatz>
                     </div>
                 </div>
