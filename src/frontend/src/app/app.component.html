@@ -1,6 +1,8 @@
 <div class="page">
-    <nav>
-        <button id="logout" (click)="logout()">Logout</button>
+    <nav class="root-nav">
+        <div class="root-nav__user-pane">
+            <button id="logout" (click)="logout()" mat-button>Logout</button>
+        </div>
     </nav>
     <router-outlet></router-outlet>
 </div>

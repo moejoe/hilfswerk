@@ -9,21 +9,21 @@
 
     <h2>Gegend:</h2>
     <div class="toggle-filter-container">
-        <mat-button-toggle *ngFor="let bezirk of bezirke" id="bezirk-{{bezirk.name}}" [checked]="bezirk.checked"
+        <mat-button-toggle class="plz-filter" *ngFor="let bezirk of bezirke" id="bezirk-{{bezirk.name}}" [checked]="bezirk.checked"
             (change)="[bezirk.checked = $event.source.checked, filterChange()] " name="bezirk-{{bezirk.name}}">
             {{bezirk.name}}</mat-button-toggle>
     </div>
     <h2>Tätigkeit:</h2>
     <div class="toggle-filter-container">
-        <mat-button-toggle *ngFor="let taetigkeit of taetigkeiten" id="taetigkeit-{{taetigkeit.id}}"
+        <mat-button-toggle class="taetigkeit-filter" *ngFor="let taetigkeit of taetigkeiten" id="taetigkeit-{{taetigkeit.id}}"
             (change)="[taetigkeit.checked = $event.source.checked, filterChange()]" name="taetigkeit-{{taetigkeit.id}}">
             {{taetigkeit.name}}</mat-button-toggle>
     </div>
     <h2>Sonstiges:</h2>
     <div class="toggle-filter-container">
-        <mat-button-toggle id="hat-auto" (change)="[hatAuto = $event.source.checked, filterChange()]">Auto verfügbar
+        <mat-button-toggle id="hat-auto" class="sonstiges-filter" (change)="[hatAuto = $event.source.checked, filterChange()]">Auto verfügbar
         </mat-button-toggle>
-        <mat-button-toggle id="ist-risikogruppe" (change)="[istRisikoGruppe = $event.source.checked, filterChange()]">
+        <mat-button-toggle id="ist-risikogruppe" class="sonstiges-filter" (change)="[istRisikoGruppe = $event.source.checked, filterChange()]">
             Risikogruppe
         </mat-button-toggle>
     </div>
