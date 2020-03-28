@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from "@angular/common/http"
+import { HttpClient, HttpHeaders, HttpResponse } from "@angular/common/http"
 import { JwtHelperService } from "@auth0/angular-jwt";
 import { environment } from 'src/environments/environment';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -43,6 +44,22 @@ export class AuthService {
     return this.token;
   }
 
+  getUserInfo(): Observable<HttpResponse<UserInfo>> {
+    if (!this.isLoggedIn()) {
+      throw new Error("User not logged in.");
+    }
+    try {
+      let requestHeaders = new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + localStorage.getItem("token")
+      });
+      return this.httpClient.get<UserInfo>(`${environment.apiUrl}/oauth2/userinfo`, { headers: requestHeaders, observe: 'response' } );
+    }
+    catch {
+      throw new Error("Can't get userinfo");
+    }
+  }
+
   async logout() {
     localStorage.removeItem("token");
     this.token = null;
@@ -50,4 +67,7 @@ export class AuthService {
       await navigator.credentials.preventSilentAccess();
     }
   }
+}
+export interface UserInfo {
+  name: string;
 }
