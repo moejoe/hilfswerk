@@ -35,7 +35,6 @@ export interface HelferCreateInput {
     taetigkeiten: Taetigkeit[];
     kontakt  : Kontakt;
 }
-
 export interface EinsatzInput {
   hilfesuchender: string;
   taetigkeit: Taetigkeit;

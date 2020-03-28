@@ -97,7 +97,6 @@ export interface EinsatzCreateResult {
   errors: {message: string}[];
   isSuccess: boolean;
 }
-
 export interface HelferCreateResult {
   id: string;
   errors: { message: string }[];
