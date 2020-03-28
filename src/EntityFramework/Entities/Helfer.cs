@@ -12,7 +12,8 @@ namespace Hilfswerk.EntityFramework.Entities
         public ICollection<Einsatz> Einsaetze { get; set; } = new List<Einsatz>();
         public bool hatAuto { get; set; }
         public bool istRisikogrupepe { get; set; }
-
+        public bool istZivildiener { get; set; }
+        public bool istFreiwilliger { get; set; }
     }
 
 }

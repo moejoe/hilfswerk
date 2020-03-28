@@ -31,6 +31,8 @@ namespace Hilfswerk.EntityFramework.Stores
                 Anmerkung = x.Anmerkung,
                 istRisikogruppe = x.istRisikogrupepe,
                 hatAuto = x.hatAuto,
+                istZivildiener = x.istZivildiener,
+                istFreiwilliger = x.istFreiwilliger,
                 Kontakt = new Models.Kontakt
                 {
                     Email = x.Kontakt.Email,

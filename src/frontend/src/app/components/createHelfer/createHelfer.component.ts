@@ -40,12 +40,16 @@ class HelferCreateModel implements HelferCreateInput {
     this.anmerkung = "";
     this.hatAuto = false;
     this.istRisikogruppe = false;
+    this.istZivildiener = false;
+    this.istFreiwilliger = false;
   }
   istRisikogruppe: boolean;
   hatAuto: boolean;
   anmerkung: string;
   taetigkeiten: Taetigkeit[];
   kontakt: Kontakt;
+  istZivildiener: boolean;
+  istFreiwilliger: boolean;
 }
 class KontaktCreateModel implements Kontakt {
   vorname: string;

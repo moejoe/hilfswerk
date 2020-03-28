@@ -13,6 +13,8 @@ namespace Hilfswerk.GraphApi
             Field<ListGraphType<TaetigkeitEnumType>>("taetigkeiten", resolve: context => context.Source.Taetigkeiten);
             Field(p => p.hatAuto);
             Field(p => p.istRisikogruppe);
+            Field(p => p.istZivildiener);
+            Field(p => p.istFreiwilliger);
         }
     }
 }

@@ -25,8 +25,10 @@ export class GraphqlService {
   $taetigkeitIn: [Taetigkeit]
   $istRisikoGruppe: Boolean
   $hatAuto: Boolean
+  $istZivildiener: Boolean
+  $istFreiwilliger: Boolean
 ) {
-  helfer(inPlz: $inPlz, taetigkeitIn: $taetigkeitIn,istRisikoGruppe : $istRisikoGruppe, hatAuto: $hatAuto) {
+  helfer(inPlz: $inPlz, taetigkeitIn: $taetigkeitIn, istRisikoGruppe : $istRisikoGruppe, hatAuto: $hatAuto, istZivildiener: $istZivildiener, istFreiwilliger: $istFreiwilliger) {
     id
     kontakt {
       email,

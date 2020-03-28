@@ -13,6 +13,8 @@ namespace Hilfswerk.EntityFramework
                 hatAuto = createModel.hatAuto,
                 HelferTaetigkeiten = createModel.Taetigkeiten.Select(p => new Entities.HelferTaetigkeit { TaetigkeitId = (int)p }).ToArray(),
                 istRisikogrupepe = createModel.istRisikogruppe,
+                istFreiwilliger = createModel.istFreiwilliger,
+                istZivildiener = createModel.istZivildiener,
                 Kontakt = createModel.Kontakt.ToEntity()
             };
         }

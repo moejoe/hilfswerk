@@ -8,5 +8,7 @@ namespace Hilfswerk.Core.Stores
         public Taetigkeit[] TaetigkeitFilter { get; set; } = System.Array.Empty<Taetigkeit>();
         public bool? IstRisikoGruppeFilter { get; set; }
         public bool? HatAutoFilter { get; set; }
+        public bool? IstZivildienerFilter { get; set; }
+        public bool? IstFreiwilligerFilter { get; set; }
     }
 }

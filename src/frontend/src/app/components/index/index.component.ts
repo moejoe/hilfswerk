@@ -27,6 +27,8 @@ export class IndexComponent implements OnInit {
   { name: "Telefonkontakt", id: Taetigkeit.TELEFON_KONTAKT, checked: false }];
   hatAuto = false;
   istRisikoGruppe = false;
+  istZivildiener = false;
+  istFreiwilliger = false;
   gesetzeFilter: string[];
   selectedHelfer: HelferListenEintrag | null;
   userinfo: UserInfo;
@@ -55,6 +57,9 @@ export class IndexComponent implements OnInit {
     let taetigkeitIn = null
     let hatAuto = this.hatAuto ? true : null;
     let istRisikoGruppe = this.istRisikoGruppe ? true : null;
+    let istZivildiener = this.istZivildiener ? true : null;
+    let istFreiwilliger = this.istFreiwilliger ? true : null;
+
     if (this.bezirke.filter(b => b.checked).length > 0) {
       inPlz = this.bezirke.filter(v => v.checked).map(v => v.nummer);
     }
@@ -64,14 +69,18 @@ export class IndexComponent implements OnInit {
     this.gesetzeFilter = [
       ...this.bezirke.filter(v => v.checked).map(v => v.name),
       ...this.taetigkeiten.filter(v => v.checked).map(v => v.name),
-      ...(hatAuto ? ["Hat Auto"] : []),
-      ...(istRisikoGruppe ? ["Ist Risikogruppe"] : [])
+      ...(hatAuto ? ["Auto verfügbar"] : []),
+      ...(istRisikoGruppe ? ["Ist Risikogruppe"] : []),
+      ...(istFreiwilliger ? ["Ist FW"] : []),
+      ...(istZivildiener ? ["Ist ZDL"] : [])
     ];
     this.helfer$ = this.graphqlService.queryHelferListe({
       inPlz,
       taetigkeitIn,
       hatAuto,
-      istRisikoGruppe
+      istRisikoGruppe,
+      istZivildiener,
+      istFreiwilliger
     });
   }
 }

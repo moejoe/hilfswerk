@@ -57,10 +57,22 @@ namespace Hilfswerk.EntityFramework.Stores
             {
                 helferQuery = helferQuery.Where(p => p.istRisikogrupepe == filter.IstRisikoGruppeFilter.Value);
             }
+
             if (filter.HatAutoFilter.HasValue)
             {
                 helferQuery = helferQuery.Where(p => p.hatAuto == filter.HatAutoFilter.Value);
             }
+            
+            if(filter.IstFreiwilligerFilter.HasValue)
+            {
+                helferQuery = helferQuery.Where(p => p.istFreiwilliger == filter.IstFreiwilligerFilter.Value);
+            }
+
+            if (filter.IstZivildienerFilter.HasValue)
+            {
+                helferQuery = helferQuery.Where(p => p.istZivildiener == filter.IstZivildienerFilter.Value);
+            }
+
             return await helferQuery
                 .Select(Projector.HelferProjection)
                 .ToArrayAsync();
