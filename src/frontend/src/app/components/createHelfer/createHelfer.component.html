@@ -1,6 +1,5 @@
 <div class="container">
     <div *ngIf="createResult && createResult.isSuccess">
-
         Kontakt erfolgreich angelegt: {{createResult.id}}
     </div>
     <div *ngIf="createResult && !createResult.isSuccess">
@@ -10,7 +9,7 @@
     <a routerLink="/index">Zurück zur Liste</a>
     <form #createHelferForm="ngForm">
         <h1>Kontakt</h1>
-        <div>
+        <div class="create-helfer-form__group">
             <label for="vorname">Vorname</label>
             <input type="text" id="vorname" [(ngModel)]="helfer.kontakt.vorname" name="vorname" required
                 #vorname="ngModel" />
@@ -31,7 +30,7 @@
                 </div>
             </div>
         </div>
-        <div>
+        <div class="create-helfer-form__group">
             <label for="plz">PLZ</label>
             <input type="text" id="plz" [(ngModel)]="helfer.kontakt.plz" name="plz" required pattern="\d{4}" maxlength="4" minlength="4"
                 #plz="ngModel" [ngModelOptions]="{updateOn: 'blur'}" />
@@ -48,7 +47,7 @@
             <label for="strasse">Strasse</label>
             <input type="text" id="strasse" [(ngModel)]="helfer.kontakt.strasse" name="strasse" />
         </div>
-        <div>
+        <div class="create-helfer-form__group">
             <label for="telefon">Telefon</label>
             <input type="text" id="telefon" [(ngModel)]="helfer.kontakt.telefon" name="telefon" required 
             #telfon="ngModel" minlength="5" maxlength="20" [ngModelOptions]="{updateOn: 'blur'}"/>
@@ -76,7 +75,7 @@
         </div>
 
         <h1>Tätigkeiten</h1>
-        <div>
+        <div class="create-helfer-form__group">
             <div *ngIf="helfer.taetigkeiten.length == 0">
                 Bitte zumindest eine Tätigkeit auswählen.
             </div>
@@ -92,20 +91,21 @@
         </div>
 
         <h1>Sonstiges</h1>
-        <div>
+        <div class="create-helfer-form__group">
             <label for="istRisikoGruppe">Risikogruppe?</label>
             <input type="checkbox" id="istRisikogruppe" [(ngModel)]="helfer.istRisikogruppe" name="istRisikogruppe" />
             <label for="hatAuto">hat Auto?</label>
             <input type="checkbox" id="hatAuto" [(ngModel)]="helfer.hatAuto" name="hatAuto" />
         </div>
         <h1>Anmerkung</h1>
-        <div>
+        <div class="create-helfer-form__group">
             <textarea name="anmerkung" cols="40" rows="5" id="anmerkung" [(ngModel)]="helfer.anmerkung"></textarea>
         </div>
 
-        
-        <button *ngIf="createHelferForm.valid" type="submit" (click)="createHelfer()" >Anlegen</button>
-        <button *ngIf="createHelferForm.invalid" type="submit" (click)="createHelfer()" disabled >Anlegen</button>
+        <div class="create-helfer-form__group">
+            <button *ngIf="createHelferForm.valid" type="submit" (click)="createHelfer()" >Anlegen</button>
+            <button *ngIf="createHelferForm.invalid" type="submit" (click)="createHelfer()" disabled >Anlegen</button>    
+        </div>
         <pre>{{helfer | json }}</pre>
     </form>
 </div>

@@ -1,0 +1,13 @@
+.create-helfer-form__group {
+    display: flex;
+    padding: 1em;
+    &> mat-form-field {
+        width: 100%;
+        margin: 0.5em 1em 0em 1em;
+      }
+    &> button {
+        margin: 0em 1em 0em 1em;
+        align-self: flex-end;
+    }
+}
+

@@ -28,7 +28,8 @@ const routes: Routes = [
   },
   {
     path: 'createHelfer',
-    component: CreateHelferComponent
+    component: CreateHelferComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: "**",
