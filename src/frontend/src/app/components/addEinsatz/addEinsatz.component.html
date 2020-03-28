@@ -7,41 +7,53 @@
         <pre>{{createResult.errors | json}}</pre>
     </div>
     <form #addEinsatzForm="ngForm">
-        <div>
-            <label for="hilfesuchender">Name des/der Hilfesuchenden</label>
-            <input type="text" id="hilfesuchender" [(ngModel)]="einsatz.hilfesuchender" name="hilfesuchender" required
-                #hilfesuchender="ngModel" />
-
-            <div *ngIf="hilfesuchender.invalid && (hilfesuchender.dirty || hilfesuchender.touched)">
-                <div *ngIf="hilfesuchender.errors.required">
-                    Bitte den Hilfesuchenden eintragen.
+        <div class="add-einsatz-form__group">
+            <label for="hilfesuchender"></label>
+            <mat-form-field appearance="fill">
+                <mat-label>Name des/der Hilfesuchenden</mat-label>
+                <input matInput type="text" placeholder="ex. Rainer Rosenthal" id="hilfesuchender"
+                    [(ngModel)]="einsatz.hilfesuchender" name="hilfesuchender" required #hilfesuchender="ngModel" />
+                <div *ngIf="hilfesuchender.invalid && (hilfesuchender.dirty || hilfesuchender.touched)">
+                    <mat-error *ngIf="hilfesuchender.errors.required">
+                        Bitte den Hilfesuchenden eintragen.
+                    </mat-error>
                 </div>
-            </div>
+            </mat-form-field>
 
-            <label for="taetigkeit">Tätigkeit</label>
-            <select [(ngModel)]="einsatz.taetigkeit" required #taetigkeit="ngModel">
-                <option *ngFor="let taetigkeit of taetigkeiten" [value] = "taetigkeit.key" [selected]="einsatz.taetigkeit == taetigkeit.key">{{taetigkeit.label}}</option>
-            </select>
-            <div *ngIf="taetigkeit.invalid && (taetigkeit.dirty || taetigkeit.touched)">
-                <div *ngIf="taetigkeit.errors.required">
-                    Bitte eine Tätigkeit auswählen!
+            <mat-form-field appearance="fill">
+                <mat-label>Tätigkeit</mat-label>
+                <mat-select required [(ngModel)]="einsatz.taetigkeit" name="taetigkeit" #taetigkeit="ngModel">
+                    <mat-option *ngFor="let taetigkeit of taetigkeiten" [value]="taetigkeit.key">{{taetigkeit.label}}
+                    </mat-option>
+                </mat-select>
+                <div *ngIf="taetigkeit.invalid && (taetigkeit.dirty || taetigkeit.touched)">
+                    <mat-error *ngIf="taetigkeit.errors.required">
+                        Bitte eine Tätigkeit auswählen!
+                    </mat-error>
                 </div>
-            </div>
-            <input type="text" id="vermittlerin" name="hilfesuchender" [value]= "einsatz.vermitteltDurch" disabled />
-            <input type="text" id="vermitteltAm" name="vermitteltAm" [value]= "vermitteltAm" disabled />
-
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+                <mat-label for="hilfesuchender">vermittlet Durch</mat-label>
+                <input matInput type="text" id="vermittlerin" name="vermittlerin" [value]="einsatz.vermitteltDurch"
+                    disabled />
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+                <input matInput type="text" id="vermitteltAm" name="vermitteltAm" [value]="vermitteltAm" disabled />
+            </mat-form-field>
         </div>
-        <div>
-            <label for="anmerkungen">Anmerkungen</label>
-            <textarea name="anmerkungen" cols="40" rows="5" id="anmerkungen" [(ngModel)]="einsatz.anmerkungen"></textarea>
+        <div class="add-einsatz-form__group">
+            <mat-form-field appearance="fill">
+                <mat-label for="anmerkungen">Anmerkungen</mat-label>
+                <textarea matInput name="anmerkungen" rows="5" width="100%" id="anmerkungen"
+                    placeholder="Anmerkungen zur vermittelten Tätigkeit" [(ngModel)]="einsatz.anmerkungen"></textarea>
+            </mat-form-field>
         </div>
-              
-
-        
-        <button *ngIf="addEinsatzForm.valid" type="submit" (click)="addEinsatz()" >Einsatz Protokolieren</button>
-        <button *ngIf="addEinsatzForm.invalid" type="submit" (click)="addEinsatz()" disabled >Einsatz Protokolieren</button>
-        <pre>{{ einsatz | json }}</pre>
-        <pre>{{ helferId | json }}</pre>
+        <div class="add-einsatz-form__group">
+            <button mat-flat-button color="primary" *ngIf="addEinsatzForm.valid" type="submit"
+                (click)="addEinsatz()">Einsatz Protokolieren</button>
+            <button mat-flat-button color="primary" *ngIf="addEinsatzForm.invalid" type="submit" (click)="addEinsatz()"
+                disabled>Einsatz
+                Protokolieren</button>
+        </div>
     </form>
 </div>
-

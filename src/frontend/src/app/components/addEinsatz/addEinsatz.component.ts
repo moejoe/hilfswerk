@@ -46,6 +46,7 @@ export class AddEinsatzComponent implements OnInit {
 class EinsatzInputModel implements EinsatzInput {
   constructor(vermittler: string) {
     this.vermitteltDurch = vermittler;
+    this.anmerkungen = "";
   }
   hilfesuchender: string;
   taetigkeit: Taetigkeit;
