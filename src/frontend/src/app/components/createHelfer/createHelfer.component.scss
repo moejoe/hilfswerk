@@ -1,0 +1,26 @@
+.create-helfer-form__group {
+    display: flex;
+    margin: 1em;
+    &> mat-form-field {
+        width: 100%;
+        margin: 0em 1em 0em 0em;
+      }
+    &> button {
+        margin: 0em 1em 0em 0em;
+        align-self: flex-end;
+    }
+}
+.create-helfer-form__sonstiges {
+    display: flex;
+    padding: 1em;
+    &> mat-checkbox {
+        margin: 0.5em 1em 0em 1em;
+    }
+}
+
+.create-helfer-form__submit {
+    padding: 1em;
+    &> mat-checkbox {
+        margin: 0.5em 1em 0em 1em;
+    }
+}

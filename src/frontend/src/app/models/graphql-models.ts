@@ -33,11 +33,23 @@ export interface HelferCreateInput {
     hatAuto: boolean;
     anmerkung: string;
     taetigkeiten: Taetigkeit[];
-    kontakt  : Kontakt;
+    kontakt: Kontakt;
 }
+export interface HelferCreateResult {
+    id: string;
+    kontakt: Kontakt;
+    errors: { message: string }[];
+    isSuccess: boolean;
+}
+
 export interface EinsatzInput {
-  hilfesuchender: string;
-  taetigkeit: Taetigkeit;
-  anmerkungen: string;
-  vermitteltDurch: string;
+    hilfesuchender: string;
+    taetigkeit: Taetigkeit;
+    anmerkungen: string;
+    vermitteltDurch: string;
+}
+export interface EinsatzCreateResult {
+    id: string;
+    errors: { message: string }[];
+    isSuccess: boolean;
 }

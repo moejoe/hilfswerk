@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { map } from "rxjs/operators";
-import { HelferFilters, HelferListenEintrag, HelferCreateInput, EinsatzInput } from '../models/graphql-models';
+import { HelferFilters, HelferListenEintrag, HelferCreateInput, EinsatzInput, Kontakt, HelferCreateResult, EinsatzCreateResult } from '../models/graphql-models';
 import { AuthService } from './auth.service';
 
 @Injectable({
@@ -53,6 +53,11 @@ export class GraphqlService {
     mutation createHelfer($helfer: HelferInput!) {
       createHelfer(helfer: $helfer) {
         id
+        kontakt {
+          vorname
+          nachname
+          plz
+        }
       }
     }`;
     var request = {
@@ -62,12 +67,13 @@ export class GraphqlService {
       }
     };
     try {
-      var result = await this.httpClient.post<{ data: { createHelfer: { id: string } }, errors: any[] }>(`${environment.apiUrl}/graphql`, request,
+
+      var result = await this.httpClient.post<{ data: { createHelfer: { id: string, kontakt: Kontakt } }, errors: any[] }>(`${environment.apiUrl}/graphql`, request,
         { headers: this.headers() }).toPromise();
       if (result.errors) {
         return new ErrorCreateResult(result.errors);
       }
-      return new SuccessCreateResult(result.data.createHelfer.id);
+      return new SuccessCreateResult(result.data.createHelfer.id, result.data.createHelfer.kontakt);
     }
     catch {
       return new ErrorCreateResult([{ message: "Error sending graphQL mutation." }])
@@ -93,7 +99,7 @@ export class GraphqlService {
       if (result.errors) {
         return new ErrorCreateResult(result.errors);
       }
-      return new SuccessCreateResult(result.data.createEinsatz.vermitteltAm);
+      return new SuccessCreateResult(result.data.createEinsatz.vermitteltAm, null);
     }
     catch {
       return new ErrorCreateResult([{ message: "Error sending graphQL mutation." }])
@@ -101,25 +107,15 @@ export class GraphqlService {
   }
 
 }
-
-export interface EinsatzCreateResult {
-  id: string;
-  errors: { message: string }[];
-  isSuccess: boolean;
-}
-export interface HelferCreateResult {
-  id: string;
-  errors: { message: string }[];
-  isSuccess: boolean;
-}
-
-class SuccessCreateResult implements HelferCreateResult, EinsatzCreateResult {
-  constructor(id: string) {
+class SuccessCreateResult implements HelferCreateResult, EinsatzCreateResult{
+  constructor(id: string, kontakt: Kontakt) {
     this.id = id;
     this.errors = null;
+    this.kontakt = kontakt;
     this.isSuccess = true;
-  };
+  }
   id: string;
+  kontakt: Kontakt;
   errors: { message: string; }[];
   isSuccess: boolean;
 }
@@ -130,6 +126,7 @@ class ErrorCreateResult implements HelferCreateResult, EinsatzCreateResult {
     this.isSuccess = false;
   };
   id: string;
+  kontakt: Kontakt;
   errors: { message: string; }[];
   isSuccess: boolean;
 }
