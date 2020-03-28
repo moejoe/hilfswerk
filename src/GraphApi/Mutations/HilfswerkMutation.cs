@@ -1,4 +1,5 @@
 ﻿using GraphQL;
+using GraphQL.Authorization;
 using GraphQL.Types;
 using Hilfswerk.Core.Stores;
 using Hilfswerk.Models;
@@ -10,7 +11,7 @@ namespace Hilfswerk.GraphApi.Mutations
         public HilfswerkMutation(IHelferStore store)
         {
             Name = "Mutation";
-
+            this.AuthorizeWith("DefaultPolicy");
             FieldAsync<HelferType>("createHelfer",
                 arguments: new QueryArguments(
                     new QueryArgument<NonNullGraphType<HelferInputType>> { Name = "helfer" }),

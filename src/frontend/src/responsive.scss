@@ -1,0 +1,14 @@
+$media-mobile-split: 800px;
+$media-desktop: $media-mobile-split - 1px;
+
+@mixin media-desktop {
+    @media (min-width: $media-mobile-split) {
+        @content;
+    }
+}
+
+@mixin media-mobile {
+    @media (max-width: $media-desktop) {
+        @content;
+    }
+}

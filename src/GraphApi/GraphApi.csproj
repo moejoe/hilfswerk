@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="GraphQL" Version="3.0.0-preview-1490" />
+    <PackageReference Include="GraphQL.Authorization" Version="2.1.29" />
   </ItemGroup>
 
   <ItemGroup>
