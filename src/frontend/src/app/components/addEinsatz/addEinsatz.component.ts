@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { GraphqlService, HelferCreateResult, EinsatzCreateResult } from 'src/app/services/graphql.service';
-import { EinsatzInput, Taetigkeit, Kontakt, HelferListenEintrag } from 'src/app/models/graphql-models';
+import { GraphqlService } from 'src/app/services/graphql.service';
+import { EinsatzInput, Taetigkeit, EinsatzCreateResult } from 'src/app/models/graphql-models';
 
 @Component({
   selector: 'app-addEinsatz',

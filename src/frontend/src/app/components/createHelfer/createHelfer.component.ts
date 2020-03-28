@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { GraphqlService, HelferCreateResult } from 'src/app/services/graphql.service';
-import { HelferCreateInput, Taetigkeit, Kontakt } from 'src/app/models/graphql-models';
+import { GraphqlService } from 'src/app/services/graphql.service';
+import { HelferCreateInput, Taetigkeit, Kontakt, HelferCreateResult } from 'src/app/models/graphql-models';
 
 @Component({
   selector: 'app-createHelfer',
@@ -10,14 +10,11 @@ import { HelferCreateInput, Taetigkeit, Kontakt } from 'src/app/models/graphql-m
 export class CreateHelferComponent implements OnInit {
 
   helfer: HelferCreateInput;
-  taetigkeiten: any;
-  createResult: HelferCreateResult;
+  createResults: HelferCreateResult[];
 
   constructor(private graphqlService: GraphqlService) {
     this.helfer = new HelferCreateModel();
-    this.taetigkeiten = {
-    };
-    this.createResult = null;
+    this.createResults = [];
   }
 
   ngOnInit(): void {
@@ -26,31 +23,16 @@ export class CreateHelferComponent implements OnInit {
 
   private _reset(): void {
     this.helfer = new HelferCreateModel();
-    this.taetigkeiten = {};
   }
 
   async createHelfer() {
-    this.createResult = await this.graphqlService.createHelfer(this.helfer);
-    if (this.createResult.isSuccess) {
+    let result = await this.graphqlService.createHelfer(this.helfer);
+    this.createResults.push(result);
+    if (result) {
       this._reset();
     }
   }
-
-  public updateTaetigkeiten() {
-    var taetigkeitenMap = this.taetigkeiten;
-    this.helfer.taetigkeiten = [];
-    Object.keys(taetigkeitenMap).map(function (key, index, taetigkeiten) {
-      if (taetigkeitenMap[key] === true) {
-        this.push(key);
-      }
-    }, this.helfer.taetigkeiten);
-  }
-
 }
-
-
-
-
 class HelferCreateModel implements HelferCreateInput {
   constructor() {
     this.kontakt = new KontaktCreateModel();
@@ -72,5 +54,4 @@ class KontaktCreateModel implements Kontakt {
   strasse: string;
   telefon: string;
   email: string;
-
 }
