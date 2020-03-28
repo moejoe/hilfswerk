@@ -13,13 +13,31 @@
         width: 100%;
     }
 }
+.toggle-filter-container {
+  display: flex;
+  flex-wrap: wrap;
+  padding-left: 4em;
+  padding-right: 4em;
+}
+mat-button-toggle {
+  flex: 0 0 10.5%; /* explanation below */
+
+  & >.mat-button-toggle-button {
+    border: 1pt solid black;
+  }
+}
+
 
 .add-einsatz-container {
     overflow: hidden;
     display: flex;
+    align-items: center;
   }
   tr.expanded-helfer-row {
     height: 0;
+  }
+  tr.example-expanded-row {
+    background-color: whitesmoke;
   }
   tr.helfer-row:not(.expanded-helfer-row):hover {
     background: whitesmoke;
