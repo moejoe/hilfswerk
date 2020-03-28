@@ -2,11 +2,19 @@ import { Component, OnInit } from '@angular/core';
 import { GraphqlService } from 'src/app/services/graphql.service';
 import { Observable } from 'rxjs';
 import { HelferListenEintrag, Taetigkeit } from 'src/app/models/graphql-models';
+import { animate, state, style, transition, trigger } from '@angular/animations';
 
 @Component({
   selector: 'app-index',
   templateUrl: './index.component.html',
-  styleUrls: ['./index.component.scss']
+  styleUrls: ['./index.component.scss'],
+  animations: [
+    trigger('detailExpand', [
+      state('collapsed', style({ height: '0px', minHeight: '0' })),
+      state('expanded', style({ height: '*' })),
+      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+    ]),
+  ],
 })
 export class IndexComponent implements OnInit {
   helfer$: Observable<HelferListenEintrag[]>;
@@ -19,6 +27,7 @@ export class IndexComponent implements OnInit {
   hatAuto = false;
   istRisikoGruppe = false;
   gesetzeFilter: string[];
+  selectedHelfer: HelferListenEintrag | null;
 
   constructor(private graphqlService: GraphqlService) {
 
@@ -30,6 +39,9 @@ export class IndexComponent implements OnInit {
     for (let i = 1010; i <= 1230; i += 10) {
       this.bezirke.push({ name: `${i}`, checked: false, nummer: i });
     }
+  }
+  onEinsatzAdded(event: string) {
+    this.selectedHelfer.totalEinsaetze++;
   }
 
   filterChange() {

@@ -11,7 +11,17 @@ import { AuthGuard } from './auth-guard';
 import { LoggedoutComponent } from './components/loggedout/loggedout.component';
 import { CreateHelferComponent } from './components/createHelfer/createHelfer.component';
 import { MatTableModule } from "@angular/material/table";
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AddEinsatzComponent } from './components/addEinsatz/addEinsatz.component';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import {MatSelectModule} from '@angular/material/select';
+
+
 
 @NgModule({
   declarations: [
@@ -19,7 +29,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     LoginComponent,
     IndexComponent,
     LoggedoutComponent,
-    CreateHelferComponent
+    CreateHelferComponent,
+    AddEinsatzComponent
   ],
   imports: [
     BrowserModule,
@@ -27,7 +38,14 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     HttpClientModule,
     FormsModule,
     BrowserAnimationsModule,
-    MatTableModule
+    MatTableModule,
+    MatButtonToggleModule,
+    MatExpansionModule,
+    MatButtonModule,
+    MatIconModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule
   ],
   providers: [AuthGuard],
   bootstrap: [AppComponent]

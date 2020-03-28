@@ -1,29 +1,38 @@
-<a routerLink="/createHelfer">Helfer anlegen</a>
-<ul>
-    <li *ngFor="let bezirk of bezirke">
-        <label for="bezirk-{{bezirk.name}}">{{bezirk.name}}</label>
-        <input type="checkbox" [(ngModel)]="bezirk.checked" id="bezirk-{{bezirk.name}}" (change)="filterChange()">
-    </li>   
-</ul>
-<ul>
-    <li *ngFor="let taetigkeit of taetigkeiten">
-        <label for="taetigkeit-{{taetigkeit.id}}">{{taetigkeit.name}}</label>
-        <input type="checkbox" [(ngModel)]="taetigkeit.checked" id="taetigkeit-{{taetigkeit.id}}"
-            (change)="filterChange()">
-    </li>
-</ul>
-<label for="hat-auto">Hat Auto</label>
-<input type="checkbox" [(ngModel)]="hatAuto" id="hat-auto" (change)="filterChange()">
-<label for="ist-risikogruppe">Ist Risikogruppe</label>
-<input type="checkbox" [(ngModel)]="istRisikoGruppe" id="ist-risikogruppe" (change)="filterChange()">
-<label for=""></label>
-<ul id="gesetzte-filter">
-    <li *ngFor="let filter of gesetzeFilter">
-        {{filter}}
-    </li>
-</ul>
+<mat-expansion-panel>
+    <mat-expansion-panel-header>
+        <mat-panel-title>Filter</mat-panel-title>
+        <mat-panel-description>
+            <button mat-stroked-button color="primary" *ngFor="let filter of gesetzeFilter">{{filter}}</button>
+            <span *ngIf="!gesetzeFilter || gesetzeFilter.length == 0">Keine Filter gesetzt</span>
+        </mat-panel-description>
+    </mat-expansion-panel-header>
+
+    <h2>Gegend:</h2>
+    <div class="toggle-filter-container">
+        <mat-button-toggle *ngFor="let bezirk of bezirke" id="bezirk-{{bezirk.name}}" [checked]="bezirk.checked"
+            (change)="[bezirk.checked = $event.source.checked, filterChange()] " name="bezirk-{{bezirk.name}}">
+            {{bezirk.name}}</mat-button-toggle>
+    </div>
+    <h2>Tätigkeit:</h2>
+    <div class="toggle-filter-container">
+        <mat-button-toggle *ngFor="let taetigkeit of taetigkeiten" id="taetigkeit-{{taetigkeit.id}}"
+            (change)="[taetigkeit.checked = $event.source.checked, filterChange()]" name="taetigkeit-{{taetigkeit.id}}">
+            {{taetigkeit.name}}</mat-button-toggle>
+    </div>
+    <h2>Sonstiges:</h2>
+    <div class="toggle-filter-container">
+        <mat-button-toggle id="hat-auto" (change)="[hatAuto = $event.source.checked, filterChange()]">Auto verfügbar
+        </mat-button-toggle>
+        <mat-button-toggle id="ist-risikogruppe" (change)="[istRisikoGruppe = $event.source.checked, filterChange()]">
+            Risikogruppe
+        </mat-button-toggle>
+    </div>
+</mat-expansion-panel>
+
+<h1>Helfer</h1>
+<a routerLink="/createHelfer">Neuen Helfer anlegen</a>
 <div class="table-container">
-    <table mat-table [dataSource]="helfer$ | async" class="mat-elevation-z8">
+    <table mat-table [dataSource]="helfer$ | async" multiTemplateDataRows>
         <ng-container matColumnDef="name">
             <th mat-header-cell *matHeaderCellDef>Name</th>
             <td mat-cell *matCellDef="let h">{{h.kontakt.nachname}} {{h.kontakt.vorname}}</td>
@@ -44,7 +53,27 @@
             <th mat-header-cell *matHeaderCellDef>Anmerkungen</th>
             <td mat-cell *matCellDef="let h">{{h.anmerkung}}</td>
         </ng-container>
+        <ng-container matColumnDef="expandedHelfer">
+            <td mat-cell *matCellDef="let helfer" [attr.colspan]="5">
+                <div class="add-einsatz-container"
+                    [@detailExpand]="helfer == selectedHelfer ? 'expanded' : 'collapsed'">
+                    <div>
+                        <div><mat-icon>phone</mat-icon>{{helfer.kontakt.telefon}}</div>
+                        <div><mat-icon>email</mat-icon>{{helfer.kontakt.email}}</div>
+                        <div><mat-icon>chat</mat-icon>Anm: {{helfer.anmerkung}}</div>
+                    </div>
+                    <div *ngIf="selectedHelfer === helfer">
+                        <app-addEinsatz vermitteltDurch="test" [helferId]="helfer.id" (added)="onEinsatzAdded($event)">
+                        </app-addEinsatz>
+                    </div>
+                </div>
+            </td>
+        </ng-container>
+
         <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky : true"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="helfer-row"
+            [class.example-expanded-row]="selectedHelfer === row"
+            (click)="selectedHelfer = selectedHelfer === row ? null : row"></tr>
+        <tr mat-row *matRowDef="let row; columns: ['expandedHelfer']" class="expanded-helfer-row"></tr>
     </table>
 </div>
