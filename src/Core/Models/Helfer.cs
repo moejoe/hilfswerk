@@ -16,6 +16,8 @@ namespace Hilfswerk.Models
         public Einsatz[] Einsaetze { get; set; } = Array.Empty<Einsatz>();
         public bool hatAuto { get; set; }
         public bool istRisikogruppe { get; set; }
+        public bool istZivildiener { get; set; }
+        public bool istFreiwilliger { get; set; }
 
     }
 }

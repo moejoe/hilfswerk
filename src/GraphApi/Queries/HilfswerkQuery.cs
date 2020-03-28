@@ -3,7 +3,6 @@ using GraphQL.Authorization;
 using GraphQL.Types;
 using Hilfswerk.Core.Stores;
 using System;
-using System.Linq;
 
 namespace Hilfswerk.GraphApi.Queries
 {
@@ -19,7 +18,9 @@ namespace Hilfswerk.GraphApi.Queries
                 arguments: new QueryArguments(new QueryArgument<ListGraphType<IntGraphType>> { Name = "inPlz" },
                     new QueryArgument<ListGraphType<TaetigkeitEnumType>> { Name = "taetigkeitIn" },
                     new QueryArgument<BooleanGraphType> { Name = "istRisikoGruppe" },
-                    new QueryArgument<BooleanGraphType> { Name = "hatAuto" }
+                    new QueryArgument<BooleanGraphType> { Name = "hatAuto" },
+                    new QueryArgument<BooleanGraphType> { Name = "istZivildiener" },
+                    new QueryArgument<BooleanGraphType> { Name = "istFreiwilliger" }
                     ),
                 resolve: async context =>
                 {
@@ -29,7 +30,9 @@ namespace Hilfswerk.GraphApi.Queries
                         PlzFilter = context.GetArgument<int[]>("inPlz") ?? Array.Empty<int>(),
                         TaetigkeitFilter = context.GetArgument<Models.Taetigkeit[]>("taetigkeitIn") ?? Array.Empty<Models.Taetigkeit>(),
                         HatAutoFilter = context.GetArgument<bool?>("hatAuto"),
-                        IstRisikoGruppeFilter = context.GetArgument<bool?>("istRisikoGruppe")
+                        IstRisikoGruppeFilter = context.GetArgument<bool?>("istRisikoGruppe"),
+                        IstZivildienerFilter = context.GetArgument<bool?>("istZivildiener"),
+                        IstFreiwilligerFilter = context.GetArgument<bool?>("istFreiwilliger")
                     };
                     return await store.FindHelfer(filter);
                 }

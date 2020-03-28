@@ -7,5 +7,7 @@
         public Taetigkeit[] Taetigkeiten { get; set; }
         public bool hatAuto { get; set; }
         public bool istRisikogruppe { get; set; }
+        public bool istZivildiener { get; set; }
+        public bool istFreiwilliger { get; set; }
     }
 }

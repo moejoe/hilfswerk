@@ -26,6 +26,12 @@
         <mat-button-toggle id="ist-risikogruppe" class="sonstiges-filter" (change)="[istRisikoGruppe = $event.source.checked, filterChange()]">
             Risikogruppe
         </mat-button-toggle>
+        <mat-button-toggle id="ist-freiwilliger" class="sonstiges-filter" (change)="[istFreiwilliger = $event.source.checked, filterChange()]">
+            Freiwilliger
+        </mat-button-toggle>
+        <mat-button-toggle id="ist-zivildiener" class="sonstiges-filter" (change)="[istZivildiener = $event.source.checked, filterChange()]">
+            Zivildiener
+        </mat-button-toggle>
     </div>
 </mat-expansion-panel>
 

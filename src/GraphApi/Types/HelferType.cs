@@ -32,6 +32,8 @@ namespace Hilfswerk.GraphApi
             );
             Field(x => x.hatAuto);
             Field(x => x.istRisikogruppe);
+            Field(x => x.istFreiwilliger);
+            Field(x => x.istZivildiener);
         }
     }
 }

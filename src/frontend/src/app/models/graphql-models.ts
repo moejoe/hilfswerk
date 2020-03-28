@@ -10,6 +10,8 @@ export interface HelferFilters {
     taetigkeitIn?: Taetigkeit[];
     istRisikoGruppe?: boolean;
     hatAuto?: boolean;
+    istZivildiener?: boolean;
+    istFreiwilliger?: boolean;
 }
 
 export interface HelferListenEintrag {
@@ -34,7 +36,10 @@ export interface HelferCreateInput {
     anmerkung: string;
     taetigkeiten: Taetigkeit[];
     kontakt: Kontakt;
+    istZivildiener: boolean;
+    istFreiwilliger: boolean;
 }
+
 export interface HelferCreateResult {
     id: string;
     kontakt: Kontakt;
