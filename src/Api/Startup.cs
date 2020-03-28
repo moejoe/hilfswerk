@@ -9,15 +9,22 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System.IO;
+using System.Reflection;
 
 namespace Api
 {
     public class Startup
     {
         private readonly IConfiguration _configuration;
-        public Startup(IConfiguration configuration)
+
+        private readonly IWebHostEnvironment _webHostEnvironment;
+
+        public Startup(IConfiguration configuration, IWebHostEnvironment environment)
         {
             _configuration = configuration;
+            _webHostEnvironment = environment;
+            environment.WebRootPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -31,7 +38,8 @@ namespace Api
             services.AddEntityFrameworkInMemoryDatabase();
             services.AddDbContext<HilfswerkDbContext>(opt =>
             {
-                opt.UseInMemoryDatabase(databaseName: "hilfswerk");
+                opt.UseSqlite($"Data Source={_webHostEnvironment.WebRootPath}\\App_Data\\hilfswerk.db",
+                    sql => sql.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name));
                 opt.EnableSensitiveDataLogging(sensitiveDataLoggingEnabled: true);
             });
 
