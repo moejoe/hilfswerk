@@ -1,12 +1,9 @@
-<div class="container">
     <div *ngIf="createResult && createResult.isSuccess">
-        Einsatz erfolgreich angelegt: {{createResult.id}}
+        <h2>Einsatz erfolgreich protokoliert:</h2>
+        <p>Tätigkeit für Hilfesuchender am Datum</p> 
+        <button mat-flat-button color="primary" *ngIf="addEinsatzForm.valid" type="submit">Neuen Einsatz Protokolieren</button>
     </div>
-    <div *ngIf="createResult && !createResult.isSuccess">
-        Fehler beim anlgen des Einsatzes:
-        <pre>{{createResult.errors | json}}</pre>
-    </div>
-    <form #addEinsatzForm="ngForm">
+    <form class="add-einsatz-form" #addEinsatzForm="ngForm">
         <div class="add-einsatz-form__group">
             <mat-form-field appearance="fill">
                 <mat-label>Name des/der Hilfesuchenden</mat-label>
@@ -36,9 +33,6 @@
                 <input matInput type="text" id="vermittlerin" name="vermittlerin" [value]="einsatz.vermitteltDurch"
                     disabled />
             </mat-form-field>
-            <mat-form-field appearance="fill">
-                <input matInput type="text" id="vermitteltAm" name="vermitteltAm" [value]="vermitteltAm" disabled />
-            </mat-form-field>
         </div>
         <div class="add-einsatz-form__group">
             <mat-form-field appearance="fill">
@@ -54,5 +48,8 @@
                 disabled>Einsatz
                 Protokolieren</button>
         </div>
+        <div *ngIf="createResult && !createResult.isSuccess">
+            <h2>Fehler beim anlgen des Einsatzes:</h2>
+            <pre>{{createResult.errors | json}}</pre>
+        </div>
     </form>
-</div>

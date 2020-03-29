@@ -63,15 +63,13 @@
             <td mat-cell *matCellDef="let helfer" [attr.colspan]="5">
                 <div class="add-einsatz-container"
                     [@detailExpand]="helfer == selectedHelfer ? 'expanded' : 'collapsed'">
-                    <div>
+                    <div class="helfer-details">
                         <div><mat-icon>phone</mat-icon>{{helfer.kontakt.telefon}}</div>
                         <div><mat-icon>email</mat-icon>{{helfer.kontakt.email}}</div>
-                        <div><mat-icon>chat</mat-icon>Anm: {{helfer.anmerkung}}</div>
+                        <div class="helfer-details-anmerkung">{{helfer.anmerkung}}</div>
                     </div>
-                    <div *ngIf="selectedHelfer === helfer">
-                        <app-addEinsatz [vermitteltDurch]="userinfo.name" [helferId]="helfer.id" (added)="onEinsatzAdded($event)">
-                        </app-addEinsatz>
-                    </div>
+                    <app-addEinsatz *ngIf="selectedHelfer === helfer" [vermitteltDurch]="userinfo.name" [helferId]="helfer.id" (added)="onEinsatzAdded($event)">
+                    </app-addEinsatz>
                 </div>
             </td>
         </ng-container>

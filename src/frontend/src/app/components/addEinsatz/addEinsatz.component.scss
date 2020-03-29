@@ -1,13 +1,16 @@
+
+.add-einsatz-form {
+    padding:1em 0em;
+}
+
 .add-einsatz-form__group {
     display: flex;
-    padding: 1em;
     &> mat-form-field {
         width: 100%;
-        margin: 0.5em 1em 0em 1em;
+        margin: 0em 0.5em;
       }
     &> button {
-        margin: 0em 1em 0em 1em;
-        align-self: flex-end;
+        margin: 0em 1em 0em 0.5em;
     }
 }
 

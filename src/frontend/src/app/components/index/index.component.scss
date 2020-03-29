@@ -31,12 +31,31 @@ mat-button-toggle {
   }
 }
 
+app-addeinsatz {
+  width:100%;
+}
 
 .add-einsatz-container {
   overflow: hidden;
   display: flex;
-  align-items: center;
 }
+
+
+.helfer-details {
+  flex-shrink:0;
+  flex-basis:25%;
+}
+
+.helfer-details mat-icon {
+  font-size:1em;
+  line-height:3em;
+  text-align:center;
+}
+
+.helfer-details-anmerkung {
+  margin-top:1em;
+}
+
 
 tr.expanded-helfer-row {
   height: 0;
