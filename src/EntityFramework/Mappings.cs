@@ -38,6 +38,7 @@ namespace Hilfswerk.EntityFramework
             entity.Anmerkungen = model.Anmerkungen;
             entity.TaetigkeitId = (int)model.Taetigkeit;
             entity.Hilfesuchender = model.Hilfesuchender;
+            entity.VermitteltDurch = model.VermitteltDurch;
         }
     }
 }
