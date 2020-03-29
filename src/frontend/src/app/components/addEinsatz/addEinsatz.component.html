@@ -1,4 +1,4 @@
-    <div *ngIf="state == State.SUCCESS">
+    <div class="add-einsatz-feedback-panel" *ngIf="state == State.SUCCESS">
         <h2>Einsatz erfolgreich protokoliert:</h2>
         <p>{{createResult.taetigkeit}} für {{createResult.hilfesuchender}} am {{ vermitteltAm | date:'shortDate' }}</p> 
         <button mat-flat-button color="primary" (click)="newEinsatz()" type="reset">Neuen Einsatz Protokolieren</button>

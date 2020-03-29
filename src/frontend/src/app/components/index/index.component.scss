@@ -24,6 +24,8 @@
 
 mat-button-toggle {
   flex: 0 0 10.5%;
+  margin:0.5em;
+  padding: 0 0.5em;
   /* explanation below */
 
   &>.mat-button-toggle-button {
@@ -88,4 +90,34 @@ h1 {
   text-transform: uppercase;
   font-weight: bold;
   margin: 2rem 0 1rem 0;
+}
+
+.active-filters {
+  background: #EDE7F6;
+  margin: 0 0.5em;
+}
+
+mat-panel-title {
+  line-height:40px;
+  font-weight:bold;
+}
+
+mat-expansion-indicator {
+  line-height:40px;
+}
+
+mat-panel-description {
+
+  &> span {
+    line-height:40px;
+    text-align:center;
+  }
+}
+
+mat-expansion-panel-header {
+  background: #eeeeee;
+}
+
+.mat-expansion-panel h2 {
+  margin-top:1em;
 }
