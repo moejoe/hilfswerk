@@ -1,9 +1,9 @@
-    <div *ngIf="createResult && createResult.isSuccess">
+    <div *ngIf="state == State.SUCCESS">
         <h2>Einsatz erfolgreich protokoliert:</h2>
-        <p>Tätigkeit für Hilfesuchender am Datum</p> 
-        <button mat-flat-button color="primary" *ngIf="addEinsatzForm.valid" type="submit">Neuen Einsatz Protokolieren</button>
+        <p>{{createResult.taetigkeit}} für {{createResult.hilfesuchender}} am {{ vermitteltAm | date:'shortDate' }}</p> 
+        <button mat-flat-button color="primary" (click)="newEinsatz()" type="reset">Neuen Einsatz Protokolieren</button>
     </div>
-    <form class="add-einsatz-form" #addEinsatzForm="ngForm">
+    <form class="add-einsatz-form" #addEinsatzForm="ngForm" *ngIf="state == State.EDIT || state == State.ERROR || state == State.SAVING ">
         <div class="add-einsatz-form__group">
             <mat-form-field appearance="fill">
                 <mat-label>Name des/der Hilfesuchenden</mat-label>
@@ -15,7 +15,6 @@
                     </mat-error>
                 </div>
             </mat-form-field>
-
             <mat-form-field appearance="fill">
                 <mat-label>Tätigkeit</mat-label>
                 <mat-select required [(ngModel)]="einsatz.taetigkeit" name="taetigkeit" #taetigkeit="ngModel">
@@ -42,14 +41,21 @@
             </mat-form-field>
         </div>
         <div class="add-einsatz-form__group">
-            <button mat-flat-button color="primary" *ngIf="addEinsatzForm.valid" type="submit"
+            <button mat-flat-button color="primary" *ngIf="addEinsatzForm.valid && state == State.EDIT" type="submit"
                 (click)="addEinsatz()">Einsatz Protokolieren</button>
-            <button mat-flat-button color="primary" *ngIf="addEinsatzForm.invalid" type="submit" (click)="addEinsatz()"
+            <button mat-flat-button color="primary" *ngIf="addEinsatzForm.invalid || state == State.SAVING" type="submit" (click)="addEinsatz()"
                 disabled>Einsatz
                 Protokolieren</button>
+            <button mat-flat-button color="primary" type="submit" (click)="createError()"
+                >Fehler erzeugen</button>
         </div>
-        <div *ngIf="createResult && !createResult.isSuccess">
-            <h2>Fehler beim anlgen des Einsatzes:</h2>
+        <div *ngIf="state == State.ERROR" class="add-einsatz-form__error">
+            <h2>Fehler beim anlegen des Einsatzes:</h2>
             <pre>{{createResult.errors | json}}</pre>
+            <div class="add-einsatz-form__group">
+                <button mat-flat-button color="primary" *ngIf="addEinsatzForm.valid" type="submit"
+                (click)="addEinsatz()">Erneut probieren</button>
+                <button mat-flat-button color="primary" (click)="newEinsatz()" type="reset">Abbrechen</button>
+            </div>
         </div>
     </form>

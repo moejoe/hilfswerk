@@ -14,6 +14,8 @@ export class AddEinsatzComponent implements OnInit {
   @Input() helferId: string;
 
   @Output() added = new EventEmitter<string>();
+
+  State = State;
   
   einsatz: EinsatzInput;
   createResult: EinsatzCreateResult;
@@ -36,12 +38,37 @@ export class AddEinsatzComponent implements OnInit {
   }
 
   async addEinsatz() {
+    this.state = State.SUCCESS;
     this.createResult = await this.graphqlService.addEinsatz(this.helferId, this.einsatz);
     if (this.createResult.isSuccess) {
-      //changeState to success
+      this.state = State.SUCCESS;
       this.added.emit(this.helferId);
     }
+    else {
+      this.state = State.ERROR;
+    }
   }
+  newEinsatz() : void {
+    let newEinsatz =  new EinsatzInputModel(this.vermitteltDurch);
+    newEinsatz.hilfesuchender = this.einsatz.hilfesuchender;
+    this.einsatz = newEinsatz;
+    this.state = State.EDIT;
+  }
+  createError(): void {
+    this.state = State.ERROR;
+    this.createResult = {
+      "hilfesuchender": null,
+      "taetigkeit": null,
+      "errors": [{"message": "Das ist eine Testfehlermeldung."}],
+      "isSuccess": false
+    };
+  }
+}
+enum State {
+  EDIT,
+  SAVING,
+  SUCCESS,
+  ERROR
 }
 class EinsatzInputModel implements EinsatzInput {
   constructor(vermittler: string) {
@@ -53,10 +80,4 @@ class EinsatzInputModel implements EinsatzInput {
   anmerkungen: string;
   vermitteltDurch: string;
   
-}
-enum State {
-  EDIT,
-  SAVING,
-  SUCCESS,
-  ERROR
 }

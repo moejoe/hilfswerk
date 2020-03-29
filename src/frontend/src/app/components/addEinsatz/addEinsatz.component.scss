@@ -1,3 +1,4 @@
+@import '../../variables';
 
 .add-einsatz-form {
     padding:1em 0em;
@@ -14,3 +15,6 @@
     }
 }
 
+.add-einsatz-form__error {
+    color: $warn;
+}
