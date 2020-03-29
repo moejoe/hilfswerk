@@ -36,7 +36,7 @@
 </mat-expansion-panel>
 
 <h1>Helfer</h1>
-<a routerLink="/createHelfer">Neuen Helfer anlegen</a>
+<button mat-flat-button color="primary" routerLink="/createHelfer">Neuen Helfer anlegen </button>
 <div class="table-container">
     <table mat-table [dataSource]="helfer$ | async" multiTemplateDataRows>
         <ng-container matColumnDef="name">
