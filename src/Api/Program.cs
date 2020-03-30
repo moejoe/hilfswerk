@@ -1,14 +1,10 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Hilfswerk.EntityFramework;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 
 namespace Api
 {
@@ -30,6 +26,10 @@ namespace Api
             using (var scope = host.Services.CreateScope())
             {
                 var services = scope.ServiceProvider;
+                if(services.GetRequiredService<IHostEnvironment>().IsProduction())
+                {
+                    return;
+                }
                 using (var context = services.GetRequiredService<HilfswerkDbContext>())
                 {
                     if (context.Helfer.Any())
@@ -49,6 +49,7 @@ namespace Api
         {
             var host = CreateHostBuilder(args).Build();
             await MigrateDatabase(host);
+            
             await InsertTestData(host);
             await host.RunAsync();
         }
