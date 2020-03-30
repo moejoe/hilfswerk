@@ -42,13 +42,13 @@ steps:
   inputs:
     command: 'custom'
     workingDir: 'src/frontend'
-    customCommand: 'run build -- --prod --base-href="/hilfswerk/"'
+    customCommand: 'run build -- --prod --base-href="/hilfswerk/" --output-path="$(Build.ArtifactStagingDirectory)\Frontend\Prod"'
 
-- task: CopyFiles@2
+- task: Npm@1
   inputs:
-    SourceFolder: 'src/frontend/dist/frontend'
-    TargetFolder: '$(Build.ArtifactStagingDirectory)\Fronted-Prod'
-    flattenFolders: true
+    command: 'custom'
+    workingDir: 'src/frontend'
+    customCommand: 'run build -- --prod --base-href="/hilfswerk/" --output-path="$(Build.ArtifactStagingDirectory)\Frontend\Stage"'
 
 - task: PublishBuildArtifacts@1
   inputs:
@@ -58,6 +58,12 @@ steps:
 
 - task: PublishBuildArtifacts@1
   inputs:
-      PathtoPublish: '$(Build.ArtifactStagingDirectory)\Frontend-Prod'
+      PathtoPublish: '$(Build.ArtifactStagingDirectory)\Frontend\Prod'
       ArtifactName: 'Frontend-Prod'
+      publishLocation: 'Container'
+
+- task: PublishBuildArtifacts@1
+  inputs:
+      PathtoPublish: '$(Build.ArtifactStagingDirectory)\Frontend\Stage'
+      ArtifactName: 'Frontend-Stage'
       publishLocation: 'Container'
