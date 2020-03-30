@@ -54,7 +54,8 @@ export interface EinsatzInput {
     vermitteltDurch: string;
 }
 export interface EinsatzCreateResult {
-    id: string;
+    hilfesuchender: string;
+    taetigkeit: Taetigkeit;
     errors: { message: string }[];
     isSuccess: boolean;
 }

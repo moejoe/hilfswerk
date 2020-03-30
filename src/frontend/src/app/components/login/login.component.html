@@ -1,4 +1,8 @@
-<label for="username">Username</label>
-<input type="text" id="username" [(ngModel)]="username" />
-<button id="login" (click)="login()">Login</button>
+<div class="login-window">
+	<h1>Nachbarschaftshilfe DB</h1>
+	<label for="username">Mitarbeiter Kürzel:</label>
+	<input type="text" id="username" [(ngModel)]="username" />
+	<button id="login" mat-flat-button color="primary" (click)="login()">Anmelden</button>
+	<p class="help">Das MA Kürzel besteht aus 3 Buchstaben (1 Vorname + 2 Nachname) sowie der Zentrumsnummer mit NZ davor.<br/>Beispiel: MMUNZ01 Für Maria Musterfrau aus dem NZ 01</p>
+</div>
 <span *ngIf="loginFehler">Loginfehler</span>

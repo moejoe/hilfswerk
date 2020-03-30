@@ -2,7 +2,7 @@
     <mat-expansion-panel-header>
         <mat-panel-title>Filter</mat-panel-title>
         <mat-panel-description>
-            <button mat-stroked-button color="primary" *ngFor="let filter of gesetzeFilter">{{filter}}</button>
+            <button class="active-filters" mat-stroked-button color="primary" *ngFor="let filter of gesetzeFilter">{{filter}}</button>
             <span *ngIf="!gesetzeFilter || gesetzeFilter.length == 0">Keine Filter gesetzt</span>
         </mat-panel-description>
     </mat-expansion-panel-header>
@@ -36,7 +36,7 @@
 </mat-expansion-panel>
 
 <h1>Helfer</h1>
-<a routerLink="/createHelfer">Neuen Helfer anlegen</a>
+<button mat-flat-button color="primary" routerLink="/createHelfer">Neuen Helfer anlegen </button>
 <div class="table-container">
     <table mat-table [dataSource]="helfer$ | async" multiTemplateDataRows>
         <ng-container matColumnDef="name">
@@ -63,15 +63,13 @@
             <td mat-cell *matCellDef="let helfer" [attr.colspan]="5">
                 <div class="add-einsatz-container"
                     [@detailExpand]="helfer == selectedHelfer ? 'expanded' : 'collapsed'">
-                    <div>
+                    <div class="helfer-details">
                         <div><mat-icon>phone</mat-icon>{{helfer.kontakt.telefon}}</div>
                         <div><mat-icon>email</mat-icon>{{helfer.kontakt.email}}</div>
-                        <div><mat-icon>chat</mat-icon>Anm: {{helfer.anmerkung}}</div>
+                        <div class="helfer-details-anmerkung">{{helfer.anmerkung}}</div>
                     </div>
-                    <div *ngIf="selectedHelfer === helfer">
-                        <app-addEinsatz [vermitteltDurch]="userinfo.name" [helferId]="helfer.id" (added)="onEinsatzAdded($event)">
-                        </app-addEinsatz>
-                    </div>
+                    <app-addEinsatz *ngIf="selectedHelfer === helfer" [vermitteltDurch]="userinfo.name" [helferId]="helfer.id" (added)="onEinsatzAdded($event)">
+                    </app-addEinsatz>
                 </div>
             </td>
         </ng-container>

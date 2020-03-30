@@ -112,6 +112,7 @@
                 (click)="[createHelfer(),  createHelferForm.reset()]">Anlegen</button>
             <button mat-flat-button color="primary" *ngIf="createHelferForm.invalid" type="submit"
                 (click)="createHelfer()" disabled>Anlegen</button>
+            <button mat-flat-button color="primary" routerLink="/index">&laquo; Zurück zur Liste</button>
             <mat-list>
                 <mat-list-item *ngFor="let createResult of createResults">
                     <div *ngIf="createResult && createResult.isSuccess">
@@ -127,7 +128,6 @@
     
                 </mat-list-item>
             </mat-list>
-            <button mat-flat-button color="primary" routerLink="/index">Zurück zur Liste</button>
         </div>
     </form>
 </div>
