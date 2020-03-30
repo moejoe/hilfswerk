@@ -42,13 +42,13 @@ steps:
   inputs:
     command: 'custom'
     workingDir: 'src/frontend'
-    customCommand: 'run build -- --prod --base-href="/hilfswerk/" --output-path="$(Build.ArtifactStagingDirectory)\Frontend\Prod"'
+    customCommand: 'run build -- --prod --base-href="/" --output-path="$(Build.ArtifactStagingDirectory)\Frontend\Prod"'
 
 - task: Npm@1
   inputs:
     command: 'custom'
     workingDir: 'src/frontend'
-    customCommand: 'run build -- --prod --base-href="/hilfswerk/" --output-path="$(Build.ArtifactStagingDirectory)\Frontend\Stage"'
+    customCommand: 'run build -- --configuration=staging --base-href="/" --output-path="$(Build.ArtifactStagingDirectory)\Frontend\Stage"'
 
 - task: PublishBuildArtifacts@1
   inputs:
