@@ -1,0 +1,63 @@
+# ASP.NET Core (.NET Framework)
+# Build and test ASP.NET Core projects targeting the full .NET Framework.
+# Add steps that publish symbols, save build artifacts, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
+
+trigger:
+- master
+
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+  solution: 'Hilfswerk.sln'
+  buildPlatform: 'Any CPU'
+  buildConfiguration: 'Release'
+
+steps:
+- task: NuGetToolInstaller@1
+
+- task: NuGetCommand@2
+  inputs:
+    restoreSolution: '$(solution)'
+
+- task: VSBuild@1
+  inputs:
+    solution: '$(solution)'
+    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:DesktopBuildPackageLocation="$(build.artifactStagingDirectory)\WebDeployPackage\WebApp.zip"'
+    platform: '$(buildPlatform)'
+    configuration: '$(buildConfiguration)'
+
+- task: VSTest@2
+  inputs:
+    platform: '$(buildPlatform)'
+    configuration: '$(buildConfiguration)'
+
+- task: Npm@1
+  inputs:
+    command: 'ci'
+    workingDir: 'src/frontend'
+
+- task: Npm@1
+  inputs:
+    command: 'custom'
+    workingDir: 'src/frontend'
+    customCommand: 'run build -- --prod --base-href="/hilfswerk/"'
+
+- task: CopyFiles@2
+  inputs:
+    SourceFolder: 'src/frontend/dist/frontend'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)\Fronted-Prod'
+    flattenFolders: true
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)\WebDeployPackage'
+    ArtifactName: 'Api'
+    publishLocation: 'Container'
+
+- task: PublishBuildArtifacts@1
+  inputs:
+      PathtoPublish: '$(Build.ArtifactStagingDirectory)\Frontend-Prod'
+      ArtifactName: 'Frontend-Prod'
+      publishLocation: 'Container'
