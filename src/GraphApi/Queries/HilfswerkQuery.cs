@@ -20,7 +20,8 @@ namespace Hilfswerk.GraphApi.Queries
                     new QueryArgument<BooleanGraphType> { Name = "istRisikoGruppe" },
                     new QueryArgument<BooleanGraphType> { Name = "hatAuto" },
                     new QueryArgument<BooleanGraphType> { Name = "istZivildiener" },
-                    new QueryArgument<BooleanGraphType> { Name = "istFreiwilliger" }
+                    new QueryArgument<BooleanGraphType> { Name = "istFreiwilliger" },
+                    new QueryArgument<BooleanGraphType> { Name = "istAusgelastet" }
                     ),
                 resolve: async context =>
                 {
@@ -32,7 +33,8 @@ namespace Hilfswerk.GraphApi.Queries
                         HatAutoFilter = context.GetArgument<bool?>("hatAuto"),
                         IstRisikoGruppeFilter = context.GetArgument<bool?>("istRisikoGruppe"),
                         IstZivildienerFilter = context.GetArgument<bool?>("istZivildiener"),
-                        IstFreiwilligerFilter = context.GetArgument<bool?>("istFreiwilliger")
+                        IstFreiwilligerFilter = context.GetArgument<bool?>("istFreiwilliger"),
+                        IstAusgelastetFilter = context.GetArgument<bool?>("istAusgelastet")
                     };
                     return await store.FindHelfer(filter);
                 }

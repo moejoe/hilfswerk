@@ -18,6 +18,7 @@ namespace Hilfswerk.Models
         public bool istRisikogruppe { get; set; }
         public bool istZivildiener { get; set; }
         public bool istFreiwilliger { get; set; }
+        public bool istAusgelastet { get; set; }
 
     }
 }

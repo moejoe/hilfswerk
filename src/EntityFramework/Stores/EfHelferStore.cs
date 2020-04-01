@@ -72,6 +72,10 @@ namespace Hilfswerk.EntityFramework.Stores
             {
                 helferQuery = helferQuery.Where(p => p.istZivildiener == filter.IstZivildienerFilter.Value);
             }
+            if (filter.IstAusgelastetFilter.HasValue)
+            {
+                helferQuery = helferQuery.Where(p => p.istAusgelastet == filter.IstAusgelastetFilter.Value);
+            }
 
             return await helferQuery
                 .Select(Projector.HelferProjection)

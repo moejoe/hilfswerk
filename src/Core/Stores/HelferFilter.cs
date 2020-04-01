@@ -10,5 +10,6 @@ namespace Hilfswerk.Core.Stores
         public bool? HatAutoFilter { get; set; }
         public bool? IstZivildienerFilter { get; set; }
         public bool? IstFreiwilligerFilter { get; set; }
+        public bool? IstAusgelastetFilter { get; set; }
     }
 }
