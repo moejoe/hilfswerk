@@ -6,6 +6,7 @@ namespace Hilfswerk.Core.Stores
     public interface IHelferStore
     {
         Task<Helfer[]> FindHelfer(HelferFilter filter);
+        Task<Helfer[]> FindByName(string searchTerm);
         Task<Helfer> GetHelfer(string helferId);
         Task<Einsatz[]> GetEinsaetze(string helferId);
         Task<int> CountEinsaetze(string helferId);

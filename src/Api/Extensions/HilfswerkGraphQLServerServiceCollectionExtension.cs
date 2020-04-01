@@ -1,4 +1,5 @@
 ﻿using GraphQL.Server;
+using Hilfswerk.GraphApi.Queries;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using System;
@@ -8,10 +9,10 @@ namespace Microsoft.Extensions.DependencyInjection
 {
     public static class HilfswerkGraphQLServerServiceCollectionExtension
     {
-        public static IServiceCollection AddHilfswerkGraphApi(this IServiceCollection services)
+        public static IServiceCollection AddHilfswerkGraphApi(this IServiceCollection services, Action<GraphQLAuthorizationOptions> configureOptions)
         {
             services
-                .AddHilfswerkGraphSchema();
+                .AddHilfswerkGraphSchema(configureOptions);
             services
                 .AddGraphQL(options =>
                     {
@@ -27,9 +28,6 @@ namespace Microsoft.Extensions.DependencyInjection
                 })
                 .AddSystemTextJson();
             return services;
-            // Authorization ? 
-            //.AddUserContextBuilder(httpContext => new AuthorizationContext { User = httpContext.User }); ; ;
-            //services.AddHttpContextAccessor();
         }
     }
 }

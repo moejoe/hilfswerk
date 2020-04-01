@@ -2,16 +2,33 @@
 using GraphQL.Authorization;
 using GraphQL.Types;
 using Hilfswerk.Core.Stores;
+using Microsoft.Extensions.Options;
 using System;
 
 namespace Hilfswerk.GraphApi.Queries
 {
+    public class GraphQLAuthorizationOptions 
+    {
+        public string AuthorizationPolicy { get; set; }
+    }
     public class HilfswerkQuery : ObjectGraphType
     {
-        public HilfswerkQuery(IHelferStore store)
+        public HilfswerkQuery(IHelferStore store, IOptionsSnapshot<GraphQLAuthorizationOptions> options)
         {
-            this.AuthorizeWith("DefaultPolicy");
+            if(!string.IsNullOrWhiteSpace(options.Value.AuthorizationPolicy)) {
+                this.AuthorizeWith(options.Value.AuthorizationPolicy);
+            }
+            
             Name = "Query";
+
+            FieldAsync<ListGraphType<HelferType>>(
+                name: "helferByName",
+                arguments: new QueryArguments(new QueryArgument<NonNullGraphType<StringGraphType>> { Name = "nameSearchTerms" }),
+                resolve: async context =>
+                {
+                    return await store.FindByName(context.GetArgument<string>("nameSearchTerms"));
+                }
+            );
 
             FieldAsync<ListGraphType<HelferType>>(
                 name: "helfer",

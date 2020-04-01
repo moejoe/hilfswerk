@@ -3,6 +3,7 @@ using Hilfswerk.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Hilfswerk.EntityFramework.Stores
@@ -62,8 +63,8 @@ namespace Hilfswerk.EntityFramework.Stores
             {
                 helferQuery = helferQuery.Where(p => p.hatAuto == filter.HatAutoFilter.Value);
             }
-            
-            if(filter.IstFreiwilligerFilter.HasValue)
+
+            if (filter.IstFreiwilligerFilter.HasValue)
             {
                 helferQuery = helferQuery.Where(p => p.istFreiwilliger == filter.IstFreiwilligerFilter.Value);
             }
@@ -112,6 +113,17 @@ namespace Hilfswerk.EntityFramework.Stores
             _db.Add(einsatz);
             await _db.SaveChangesAsync();
             return Projector.EinsatzProjection.Compile().Invoke(einsatz);
+        }
+
+        public Task<Helfer[]> FindByName(string searchTerm)
+        {
+            var terms = Regex.Split(searchTerm, @"\s+");
+            var query = _db.Helfer.AsQueryable();
+            foreach (var term in terms)
+            {
+                query = query.Where(p => p.Kontakt.Nachname.ToUpper().Contains(term.ToUpper()) || p.Kontakt.Vorname.ToUpper().Contains(term.ToUpper()));
+            }
+            return query.Select(Projector.HelferProjection).ToArrayAsync();
         }
     }
 }
