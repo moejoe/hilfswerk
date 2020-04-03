@@ -7,4 +7,4 @@ Eine Demo des Frontends kann hier getestet werden:
 
 https://hilfswerk-staging.azurewebsites.net/
 
-OLD -https://moejoe.github.io/hilfswerk/index-
+OLD ~~https://moejoe.github.io/hilfswerk/index~~
