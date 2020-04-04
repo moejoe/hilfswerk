@@ -5,7 +5,7 @@ import { map } from "rxjs/operators";
 import {
   HelferFilters, HelferListenEintrag, HelferCreateInput,
   HelferEditInput, EinsatzInput, Kontakt, HelferCreateResult,
-  EinsatzCreateResult, Taetigkeit, HelferEditResult
+  EinsatzCreateResult, Taetigkeit, HelferEditResult, HelferDetail
 } from '../models/graphql-models';
 import { AuthService } from './auth.service';
 
@@ -143,6 +143,44 @@ export class GraphqlService {
       return d.data.helferById;
     })).toPromise();
   }
+
+  async getHelferDetail(helferId: string) {
+    let query = `query GetHelfer($helferId: ID) {
+      helferById(helferId: $helferId) {
+        id
+        istRisikogruppe
+        istZivildiener
+        istFreiwilliger
+        hatAuto
+        anmerkung
+        taetigkeiten,
+        einsaetze {
+          taetigkeit
+          anmerkungen
+          vermitteltDurch
+          vermitteltAm
+          hilfesuchender
+        }
+        kontakt {
+          email
+          telefon
+          nachname
+          vorname
+          strasse
+          plz
+        }
+      }
+    }`;
+    return this.httpClient.post<{ data: { helferById: HelferDetail } }>(`${environment.apiUrl}/graphql`, {
+      query: query,
+      variables: {
+        "helferId": helferId
+      },
+    }, { headers: this.headers() }).pipe(map(d => {
+      return d.data.helferById;
+    })).toPromise();
+  }
+
   async editHelfer(id: string, helfer: HelferEditInput) {
     let mutation = `
     mutation editHelfer($helfer: HelferEditInput!, $id : ID) {

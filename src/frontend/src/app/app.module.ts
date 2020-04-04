@@ -25,6 +25,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatListModule } from '@angular/material/list';
 import { MatCardModule } from '@angular/material/card';
+import { HelferDetailComponent } from './components/helfer-detail/helfer-detail.component';
 
 
 
@@ -37,7 +38,8 @@ import { MatCardModule } from '@angular/material/card';
     CreateHelferComponent,
     AddEinsatzComponent,
     SearchHelferComponent,
-    EditHelferComponent
+    EditHelferComponent,
+    HelferDetailComponent
   ],
   imports: [
     BrowserModule,

@@ -63,28 +63,14 @@
             </ng-container>
             <ng-container matColumnDef="expandedHelfer">
                 <td mat-cell *matCellDef="let helfer" [attr.colspan]="5">
-                    <div class="add-einsatz-container"
-                        [@detailExpand]="helfer == selectedHelfer ? 'expanded' : 'collapsed'">
-                        <div class="helfer-details">
-                            <div>
-                                <mat-icon>phone</mat-icon>{{helfer.kontakt.telefon}}
-                            </div>
-                            <div>
-                                <mat-icon>email</mat-icon>{{helfer.kontakt.email}}
-                            </div>
-                            <div class="helfer-details-anmerkung">{{helfer.anmerkung}}</div>
-                        </div>
-                        <app-addEinsatz *ngIf="selectedHelfer === helfer" [vermitteltDurch]="userinfo.name"
-                            [helferId]="helfer.id" (added)="onEinsatzAdded($event)">
-                        </app-addEinsatz>
-                    </div>
+                    <helfer-detail [@detailExpand]="helfer == selectedHelfer ? 'expanded' : 'collapsed'"
+                        [helfer]="selectedHelferDetail" class="helfer-details-container"></helfer-detail>
                 </td>
             </ng-container>
 
             <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky : true"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="helfer-row"
-                [class.example-expanded-row]="selectedHelfer === row"
-                (click)="selectedHelfer = selectedHelfer === row ? null : row"></tr>
+                [class.example-expanded-row]="selectedHelfer === row" (click)="rowClick(row)"></tr>
             <tr mat-row *matRowDef="let row; columns: ['expandedHelfer']" class="expanded-helfer-row"></tr>
         </table>
     </div>

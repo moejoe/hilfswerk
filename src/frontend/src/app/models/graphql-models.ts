@@ -23,6 +23,26 @@ export interface HelferListenEintrag {
     istAusgelastet?: boolean;
 }
 
+export interface HelferDetail {
+    id : string;
+    istRisikoGruppe?: boolean;
+    hatAuto?: boolean;
+    istZivildiener?: boolean;
+    istFreiwilliger?: boolean;
+    anmerkung: string;
+    taetigkeiten: Taetigkeit[];
+    kontakt: Kontakt;
+    einsaetze: EinsatzListenEintrag[];
+}
+
+export interface EinsatzListenEintrag {
+    hilfesuchender: string;
+    taetigkeit: Taetigkeit;
+    anmerkungen: string;
+    vermitteltDurch: string;
+    vermitteltAm: Date;
+}
+
 export interface Kontakt {
     vorname: string;
     nachname: string;

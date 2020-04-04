@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { GraphqlService } from 'src/app/services/graphql.service';
 import { Observable } from 'rxjs';
-import { HelferListenEintrag, Taetigkeit } from 'src/app/models/graphql-models';
+import { HelferListenEintrag, Taetigkeit, HelferDetail } from 'src/app/models/graphql-models';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { AuthService, UserInfo } from 'src/app/services/auth.service';
 
@@ -31,6 +31,7 @@ export class IndexComponent implements OnInit {
   istFreiwilliger = false;
   gesetzeFilter: string[];
   selectedHelfer: HelferListenEintrag | null;
+  selectedHelferDetail: HelferDetail | null;
   userinfo: UserInfo;
 
   constructor(private graphqlService: GraphqlService, private authService: AuthService) {
@@ -50,6 +51,14 @@ export class IndexComponent implements OnInit {
 
   onEinsatzAdded(event: string) {
     this.selectedHelfer.totalEinsaetze++;
+  }
+
+  async rowClick(row: HelferListenEintrag) {
+    this.selectedHelfer = this.selectedHelfer === row ? null : row;
+    this.selectedHelferDetail = null;
+    if (null != this.selectedHelfer) {
+      this.selectedHelferDetail = await this.graphqlService.getHelferDetail(this.selectedHelfer.id);
+    }
   }
 
   filterChange() {

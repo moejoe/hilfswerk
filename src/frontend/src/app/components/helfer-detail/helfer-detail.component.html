@@ -1,0 +1,60 @@
+<table class="helfer-detail__info-block" *ngIf="helfer">
+    <tbody>
+        <tr class="helfer-detail__info-row">
+            <td class="helfer-detail__info-cell">
+                <mat-icon>phone</mat-icon> {{helfer.kontakt.telefon}}
+            </td>
+            <td class="helfer-detail__info-cell">
+                <mat-icon>assignment_turned_in</mat-icon> {{taetigkeiten}}
+            </td>
+        </tr>
+        <tr class="helfer-detail__info-row">
+            <td class="helfer-detail__info-cell">
+                <mat-icon>email</mat-icon> {{helfer.kontakt.email}}
+            </td>
+            <td class="helfer-detail__info-cell">
+                <mat-icon>label</mat-icon> {{labels}}
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                {{helfer.anmerkung}}
+            </td>
+        </tr>
+    </tbody>
+</table>
+<table class="helfer-detail__einsaetze-table" *ngIf="helfer">
+    <thead>
+        <tr>
+            <th>Einsätze</th>
+            <th>MA</th>
+            <th>Hilfesuchende/r</th>
+            <th>Tätigkeit</th>
+            <th>Anmerkungen</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let einsatz of helfer.einsaetze">
+            <td>
+                {{einsatz.vermitteltAm | date}}
+            </td>
+            <td>
+                {{einsatz.vermitteltDurch}}
+            </td>
+            <td>
+                {{einsatz.hilfesuchende}}
+            </td>
+            <td>
+                {{formatTaetigkeit(einsatz.taetigkeit)}}
+            </td>
+            <td>
+                {{einsatz.anmerkungen}}
+            </td>
+        </tr>
+    </tbody>
+</table>
+<div class="helfer-detail__button-pane" *ngIf="helfer">
+    <a mat-raised-button color="primary" [routerLink]="['/helfer_innen', helfer.id, 'einsaetze', 'new' ]" type="reset">Einsatz
+        protokollieren</a>
+    <a mat-stroked-button [routerLink]="['/helfer_innen', helfer.id ]" type="reset">Helfer:in bearbeiten</a>
+</div>
