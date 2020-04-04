@@ -29,17 +29,17 @@ const routes: Routes = [
     component: LoggedoutComponent
   },
   {
-    path: 'createHelfer',
+    path: 'helfer_innen/new',
     component: CreateHelferComponent,
     canActivate: [AuthGuard]
   },
   {
-    path: 'searchHelfer',
+    path: 'helfer_innen',
     component: SearchHelferComponent,
     canActivate: [AuthGuard]
   },
   {
-    path: 'editHelfer/:helferId',
+    path: 'helfer_innen/:helferId',
     component: EditHelferComponent,
     canActivate: [AuthGuard]
   },

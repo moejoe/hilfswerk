@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { GraphqlService } from 'src/app/services/graphql.service';
 import { Taetigkeit, Kontakt, HelferEditInput } from 'src/app/models/graphql-models';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Location } from '@angular/common';
 
@@ -15,7 +15,7 @@ export class EditHelferComponent implements OnInit, OnDestroy {
   helfer: HelferEditInput;
   blaSub: Subscription;
 
-  constructor(private graphqlService: GraphqlService, private route: ActivatedRoute, private router: Router, private location: Location) {
+  constructor(private graphqlService: GraphqlService, private route: ActivatedRoute, private location: Location) {
   }
   ngOnDestroy(): void {
     this.blaSub.unsubscribe();

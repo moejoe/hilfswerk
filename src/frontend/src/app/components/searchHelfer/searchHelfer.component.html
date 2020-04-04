@@ -28,7 +28,7 @@
             <td mat-cell *matCellDef="let h">
                 <span *ngIf="h != selectedHelfer">{{h.anmerkung}}</span>
                 <div class="actions" *ngIf="h === selectedHelfer">
-                    <button mat-flat-button color="primary" [routerLink]="['/editHelfer', h.id ]">Helfer:in Bearbeiten</button>
+                    <button mat-flat-button color="primary" [routerLink]="['/helfer_innen', h.id ]">Helfer:in Bearbeiten</button>
                     <button *ngIf="h.istAusgelastet" mat-flat-button color="primary" (click)="entlasten(h.id)">Wieder Verfügbar</button>
                 </div>
             </td>
