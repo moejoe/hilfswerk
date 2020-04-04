@@ -12,6 +12,7 @@ export interface HelferFilters {
     hatAuto?: boolean;
     istZivildiener?: boolean;
     istFreiwilliger?: boolean;
+    istAusgelastet?: boolean;
 }
 
 export interface HelferListenEintrag {

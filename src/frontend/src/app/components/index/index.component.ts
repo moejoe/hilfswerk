@@ -38,7 +38,7 @@ export class IndexComponent implements OnInit {
   }
 
   async ngOnInit() {
-    this.helfer$ = this.graphqlService.queryHelferListe({});
+    this.helfer$ = this.graphqlService.queryHelferListe({ istAusgelastet: false });
     this.bezirke = [];
     for (let i = 1010; i <= 1230; i += 10) {
       this.bezirke.push({ name: `${i}`, checked: false, nummer: i });
@@ -80,7 +80,8 @@ export class IndexComponent implements OnInit {
       hatAuto,
       istRisikoGruppe,
       istZivildiener,
-      istFreiwilliger
+      istFreiwilliger,
+      istAusgelastet: false
     });
   }
 }
