@@ -113,6 +113,35 @@ export class GraphqlService {
     }
   }
 
+  async getHelferEditModel(helferId: string) {
+    let query = `query GetHelfer($helferId: ID) {
+      helferById(helferId: $helferId) {
+        istRisikogruppe
+        hatAuto
+        anmerkung
+        taetigkeiten
+        kontakt {
+          email
+          telefon
+          nachname
+          vorname
+          strasse
+          plz
+        }
+        istZivildiener
+        istFreiwilliger
+        istAusgelastet
+      }
+    }`;
+    return this.httpClient.post<{ data: { helferById: HelferEditInput } }>(`${environment.apiUrl}/graphql`, {
+      query: query,
+      variables: {
+        "helferId": helferId
+      },
+    }, { headers: this.headers() }).pipe(map(d => {
+      return d.data.helferById;
+    })).toPromise();
+  }
   async editHelfer(id: string, helfer: HelferEditInput) {
     let mutation = `
     mutation editHelfer($helfer: HelferEditInput!, $id : ID) {

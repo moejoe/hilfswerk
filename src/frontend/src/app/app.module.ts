@@ -11,6 +11,7 @@ import { AuthGuard } from './auth-guard';
 import { LoggedoutComponent } from './components/loggedout/loggedout.component';
 import { CreateHelferComponent } from './components/createHelfer/createHelfer.component';
 import { SearchHelferComponent } from './components/searchHelfer/searchHelfer.component';
+import { EditHelferComponent } from './components/editHelfer/editHelfer.component';
 import { MatTableModule } from "@angular/material/table";
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -35,7 +36,8 @@ import { MatCardModule } from '@angular/material/card';
     LoggedoutComponent,
     CreateHelferComponent,
     AddEinsatzComponent,
-    SearchHelferComponent
+    SearchHelferComponent,
+    EditHelferComponent
   ],
   imports: [
     BrowserModule,

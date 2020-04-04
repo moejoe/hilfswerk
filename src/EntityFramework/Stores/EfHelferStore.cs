@@ -131,8 +131,24 @@ namespace Hilfswerk.EntityFramework.Stores
         {
             var helfer = await _db.Helfer
                 .Include(h => h.Kontakt)
+                .Include(h => h.HelferTaetigkeiten)
                 .SingleOrDefaultAsync(p => p.Id == helferId) ?? throw new InvalidOperationException($"Helfer {helferId} not found");
             editModel.ApplyTo(helfer);
+            var newTaetigkeiten = editModel.Taetigkeiten.Select(p => new Entities.HelferTaetigkeit { TaetigkeitId = (int)p }).ToArray();
+            foreach (var existingTaetigkeit in helfer.HelferTaetigkeiten)
+            {
+                if (newTaetigkeiten.All(p => p.TaetigkeitId != existingTaetigkeit.TaetigkeitId))
+                {
+                    _db.Remove(existingTaetigkeit);
+                }
+            }
+            foreach(var newTaetigkeit in newTaetigkeiten)
+            {
+                if (helfer.HelferTaetigkeiten.All(p => p.TaetigkeitId != newTaetigkeit.TaetigkeitId))
+                {
+                    _db.Add(newTaetigkeit);
+                }
+            }
             await _db.SaveChangesAsync();
         }
 
