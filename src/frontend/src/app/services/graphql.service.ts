@@ -2,7 +2,11 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { map } from "rxjs/operators";
-import { HelferFilters, HelferListenEintrag, HelferCreateInput, EinsatzInput, Kontakt, HelferCreateResult, EinsatzCreateResult, Taetigkeit } from '../models/graphql-models';
+import {
+  HelferFilters, HelferListenEintrag, HelferCreateInput,
+  HelferEditInput, EinsatzInput, Kontakt, HelferCreateResult,
+  EinsatzCreateResult, Taetigkeit, HelferEditResult
+} from '../models/graphql-models';
 import { AuthService } from './auth.service';
 
 @Injectable({
@@ -52,7 +56,7 @@ export class GraphqlService {
 
   async createHelfer(helfer: HelferCreateInput) {
     let mutation = `
-    mutation createHelfer($helfer: HelferInput!) {
+    mutation createHelfer($helfer: HelferCreateInput!) {
       createHelfer(helfer: $helfer) {
         id
         kontakt {
@@ -81,6 +85,32 @@ export class GraphqlService {
       return new ErrorCreateResult([{ message: "Error sending graphQL mutation." }])
     }
   }
+
+  async editHelfer(id: string, helfer: HelferEditInput) {
+    let mutation = `
+    mutation editHelfer($helfer: HelferEditInput!, $id : ID) {
+      editHelfer(id : $id, helfer: $helfer)
+    }`;
+    var request = {
+      "query": mutation,
+      variables: {
+        "helfer": helfer,
+        "id": id
+      }
+    };
+    try {
+      var result = await this.httpClient.post<{ data: { editHelfer: Boolean }, errors: any[] }>(`${environment.apiUrl}/graphql`, request,
+        { headers: this.headers() }).toPromise();
+      if (result.errors || result.data.editHelfer) {
+        return new ErrorEditResult(result.errors);
+      }
+      return new SuccessEditResult();
+    }
+    catch {
+      return new ErrorEditResult([{ message: "Error sending graphQL mutation." }])
+    }
+  }
+
   async addEinsatz(helferId: string, einsatz: EinsatzInput) {
     let mutation = `
     mutation ($helferId: String!, $einsatz: EinsatzInput!) {
@@ -110,7 +140,7 @@ export class GraphqlService {
   }
 
 }
-class AddEinsatzSuccessResult implements EinsatzCreateResult{
+class AddEinsatzSuccessResult implements EinsatzCreateResult {
   constructor(hilfesuchender: string, taetigkeit: Taetigkeit) {
     this.hilfesuchender = hilfesuchender;
     this.taetigkeit = taetigkeit;
@@ -133,7 +163,7 @@ class EinsatzCreateErrorResult implements EinsatzCreateResult {
 }
 
 
-class SuccessCreateResult implements HelferCreateResult{
+class SuccessCreateResult implements HelferCreateResult {
   constructor(id: string, kontakt: Kontakt) {
     this.id = id;
     this.errors = null;
@@ -153,6 +183,21 @@ class ErrorCreateResult implements HelferCreateResult {
   };
   id: string;
   kontakt: Kontakt;
+  errors: { message: string; }[];
+  isSuccess: boolean;
+}
+
+class SuccessEditResult implements HelferEditResult {
+  constructor() {
+    this.isSuccess = true;
+  }
+  isSuccess: boolean;
+}
+class ErrorEditResult implements HelferEditResult {
+  constructor(errors: { message: string; }[]) {
+    this.errors = errors;
+    this.isSuccess = false;
+  };
   errors: { message: string; }[];
   isSuccess: boolean;
 }

@@ -3,15 +3,16 @@ using Hilfswerk.Models;
 
 namespace Hilfswerk.GraphApi
 {
-    public class HelferInputType : InputObjectGraphType<HelferCreateModel>
+    public class EditHelferInputType : InputObjectGraphType<HelferEditModel>
     {
-        public HelferInputType()
+        public EditHelferInputType()
         {
-            Name = "HelferInput";
+            Name = "HelferEditInput";
             Field(p => p.Anmerkung);
             Field<KontaktInputType>("kontakt", resolve: context => context.Source.Kontakt);
             Field<ListGraphType<TaetigkeitEnumType>>("taetigkeiten", resolve: context => context.Source.Taetigkeiten);
             Field(p => p.hatAuto);
+            Field(p => p.istAusgelastet);
             Field(p => p.istRisikogruppe);
             Field(p => p.istZivildiener);
             Field(p => p.istFreiwilliger);

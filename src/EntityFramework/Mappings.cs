@@ -33,6 +33,17 @@ namespace Hilfswerk.EntityFramework
             };
         }
 
+        public static void ApplyTo(this Kontakt model, Entities.Kontakt kontakt)
+        {
+            kontakt.Email = model.Email;
+            kontakt.GeoLocation = model.GeoLocation;
+            kontakt.Nachname = model.Nachname;
+            kontakt.Plz = model.Plz;
+            kontakt.Strasse = model.Strasse;
+            kontakt.Telefon = model.Telefon;
+            kontakt.Vorname = model.Vorname;
+        }
+
         public static void ApplyTo(this EinsatzCreateModel model, Entities.Einsatz entity)
         {
             entity.Anmerkungen = model.Anmerkungen;
@@ -49,7 +60,8 @@ namespace Hilfswerk.EntityFramework
             entity.istRisikogrupepe = model.istRisikogruppe;
             entity.istFreiwilliger = model.istFreiwilliger;
             entity.istZivildiener = model.istZivildiener;
-            entity.Kontakt = model.Kontakt.ToEntity();
+            entity.istAusgelastet = model.istAusgelastet;
+            model.Kontakt.ApplyTo(entity.Kontakt);
         }
     }
 }
