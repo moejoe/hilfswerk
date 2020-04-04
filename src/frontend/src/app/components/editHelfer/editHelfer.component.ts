@@ -1,8 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { GraphqlService } from 'src/app/services/graphql.service';
 import { Taetigkeit, Kontakt, HelferEditInput } from 'src/app/models/graphql-models';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-editHelfer',
@@ -14,7 +15,7 @@ export class EditHelferComponent implements OnInit, OnDestroy {
   helfer: HelferEditInput;
   blaSub: Subscription;
 
-  constructor(private graphqlService: GraphqlService, private route: ActivatedRoute) {
+  constructor(private graphqlService: GraphqlService, private route: ActivatedRoute, private router: Router, private location: Location) {
   }
   ngOnDestroy(): void {
     this.blaSub.unsubscribe();
@@ -25,7 +26,7 @@ export class EditHelferComponent implements OnInit, OnDestroy {
       this.helferId = params['helferId'];
       if (this.helferId) {
         this.graphqlService.getHelferEditModel(this.helferId).then(p => {
-          this.helfer = p 
+          this.helfer = p
         });
       }
     });
@@ -35,8 +36,11 @@ export class EditHelferComponent implements OnInit, OnDestroy {
   async editHelfer() {
     let result = await this.graphqlService.editHelfer(this.helferId, this.helfer);
     if (result.isSuccess) {
-      // return
+      this.back();
     }
+  }
+  back() : void {
+    this.location.back();
   }
 }
 class HelferEditModel implements HelferEditInput {

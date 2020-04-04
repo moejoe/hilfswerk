@@ -109,12 +109,17 @@
             </mat-form-field>
         </div>
 
+        <div class="edit-helfer-form__group">
+            <mat-checkbox id="istAusgelastet" [(ngModel)]="helfer.istAusgelastet" name="istAusgelastet">Helfer:in ist
+                voll ausgelastet</mat-checkbox>
+        </div>
+
         <div class="edit-helfer-form__submit">
             <button mat-flat-button color="primary" *ngIf="editHelferForm.valid" type="reset"
                 (click)="editHelfer()">Helfer:in speichern</button>
-            <button mat-flat-button color="primary" *ngIf="editHelferForm.invalid" type="submit"
-                (click)="editHelfer()" disabled>Helfer:in speichern</button>
-            <button mat-flat-button color="primary" routerLink="/index">&laquo; Zurück zur Liste</button>
+            <button mat-flat-button color="primary" *ngIf="editHelferForm.invalid" type="submit" (click)="editHelfer()"
+                disabled>Helfer:in speichern</button>
+            <button mat-flat-button color="primary" (click)="back()">Abbrechen</button>
         </div>
     </form>
 </div>
