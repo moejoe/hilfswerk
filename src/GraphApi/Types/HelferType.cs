@@ -1,6 +1,7 @@
 ﻿using GraphQL.Types;
 using Hilfswerk.Models;
 using Hilfswerk.Core.Stores;
+using System.Linq;
 
 namespace Hilfswerk.GraphApi
 {
@@ -13,21 +14,21 @@ namespace Hilfswerk.GraphApi
                 .Description("Id");
             Field<KontaktType>("kontakt", resolve: context => context.Source.Kontakt);
             Field(x => x.Anmerkung);
-            FieldAsync<ListGraphType<TaetigkeitEnumType>>("taetigkeiten", 
+            FieldAsync<ListGraphType<TaetigkeitEnumType>>("taetigkeiten",
                 resolve: async context =>
                 {
                     return await store.GetTaetigkeiten(context.Source.Id);
                 });
-            FieldAsync<ListGraphType<EinsatzType>>("einsaetze", 
-                resolve: async context =>
+            Field<ListGraphType<EinsatzType>>("einsaetze",
+                resolve: context =>
                 {
-                    return await store.GetEinsaetze(context.Source.Id);
+                    return context.Source.Einsaetze;
                 }
             );
-            FieldAsync<IntGraphType>("totalEinsaetze", 
-                resolve: async context =>
+            Field<IntGraphType>("totalEinsaetze",
+                resolve: context =>
                 {
-                    return await store.CountEinsaetze(context.Source.Id);
+                    return context.Source.Einsaetze.Count();
                 }
             );
             Field(x => x.hatAuto);
