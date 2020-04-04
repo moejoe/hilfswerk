@@ -79,6 +79,7 @@ namespace Hilfswerk.EntityFramework.Stores
             }
 
             return await helferQuery
+                .Include(v => v.Einsaetze)
                 .Select(Projector.HelferProjection)
                 .ToArrayAsync();
         }

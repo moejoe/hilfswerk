@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Linq.Expressions;
 
 namespace Hilfswerk.EntityFramework.Stores
@@ -45,7 +46,20 @@ namespace Hilfswerk.EntityFramework.Stores
                     Strasse = x.Kontakt.Strasse,
                     Telefon = x.Kontakt.Telefon,
                     Vorname = x.Kontakt.Vorname
-                }
+                },
+                Einsaetze = x.Einsaetze.Select(d => new Models.Einsatz
+                {
+                    Id = d.Id,
+                    Anmerkungen = d.Anmerkungen,
+                    Hilfesuchender = d.Hilfesuchender,
+                    Taetigkeit = TaetigkeitFromId(d.TaetigkeitId),
+                    VermitteltAm = d.VermitteltAm,
+                    VermitteltDurch = d.VermitteltDurch,
+                    Helfer = new Models.Helfer
+                    {
+                        Id = d.Helfer.Id
+                    }
+                })
             };
 
         private static Func<int, Models.Taetigkeit> CompiledTaetigkeitProjection = TaetigkeitProjection.Compile();
