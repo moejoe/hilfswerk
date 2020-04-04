@@ -12,6 +12,7 @@ namespace Hilfswerk.GraphApi
             Field<TaetigkeitEnumType>("taetigkeit", resolve: p => p.Source.Taetigkeit);
             Field(p => p.VermitteltDurch);
             Field(p => p.Anmerkungen);
+            Field(p => p.HelferAusgelastet);
         }
     }
 }

@@ -111,6 +111,7 @@ namespace Hilfswerk.EntityFramework.Stores
             };
             createModel.ApplyTo(einsatz);
             _db.Add(einsatz);
+            helfer.istAusgelastet = createModel.HelferAusgelastet;
             await _db.SaveChangesAsync();
             return Projector.EinsatzProjection.Compile().Invoke(einsatz);
         }
