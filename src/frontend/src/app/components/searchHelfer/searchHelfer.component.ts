@@ -41,6 +41,7 @@ export class SearchHelferComponent implements OnInit {
 
   async entlasten(helferId: string) {
     await this.graphqlService.setAusgelastet(helferId, false);
+    this.updateList(this.searchTerms);
   }
 
 
