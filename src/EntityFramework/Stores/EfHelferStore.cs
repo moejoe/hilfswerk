@@ -134,7 +134,7 @@ namespace Hilfswerk.EntityFramework.Stores
                 .Include(h => h.HelferTaetigkeiten)
                 .SingleOrDefaultAsync(p => p.Id == helferId) ?? throw new InvalidOperationException($"Helfer {helferId} not found");
             editModel.ApplyTo(helfer);
-            var newTaetigkeiten = editModel.Taetigkeiten.Select(p => new Entities.HelferTaetigkeit { TaetigkeitId = (int)p }).ToArray();
+            var newTaetigkeiten = editModel.Taetigkeiten.Select(p => new Entities.HelferTaetigkeit { TaetigkeitId = (int)p, HelferId = helfer.Id }).ToArray();
             foreach (var existingTaetigkeit in helfer.HelferTaetigkeiten)
             {
                 if (newTaetigkeiten.All(p => p.TaetigkeitId != existingTaetigkeit.TaetigkeitId))
