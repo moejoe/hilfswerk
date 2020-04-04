@@ -41,13 +41,15 @@
             </mat-form-field>
         </div>
         <div class="add-einsatz-form__group">
+            <mat-checkbox id="istAusgelastet" [(ngModel)]="einsatz.helferAusgelastet" name="istAusgelastet">Helfer:in ist
+                voll ausgelastet</mat-checkbox>
+        </div>
+        <div class="add-einsatz-form__group">
             <button mat-flat-button color="primary" *ngIf="addEinsatzForm.valid && state == State.EDIT" type="submit"
                 (click)="addEinsatz()">Einsatz Protokolieren</button>
             <button mat-flat-button color="primary" *ngIf="addEinsatzForm.invalid || state == State.SAVING" type="submit" (click)="addEinsatz()"
                 disabled>Einsatz
                 Protokolieren</button>
-            <button mat-flat-button color="primary" type="submit" (click)="createError()"
-                >Fehler erzeugen</button>
         </div>
         <div *ngIf="state == State.ERROR" class="add-einsatz-form__error">
             <h2>Fehler beim anlegen des Einsatzes:</h2>
