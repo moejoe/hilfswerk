@@ -41,10 +41,25 @@ export interface HelferCreateInput {
     istFreiwilliger: boolean;
 }
 
+export interface HelferEditInput {
+    istRisikogruppe: boolean;
+    hatAuto: boolean;
+    anmerkung: string;
+    taetigkeiten: Taetigkeit[];
+    kontakt: Kontakt;
+    istZivildiener: boolean;
+    istFreiwilliger: boolean;
+    istAusgelastet: boolean;
+}
+
 export interface HelferCreateResult {
     id: string;
     kontakt: Kontakt;
     errors: { message: string }[];
+    isSuccess: boolean;
+}
+
+export interface HelferEditResult {
     isSuccess: boolean;
 }
 

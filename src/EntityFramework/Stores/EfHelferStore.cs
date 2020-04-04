@@ -129,8 +129,19 @@ namespace Hilfswerk.EntityFramework.Stores
 
         public async Task EditHelfer(string helferId, HelferEditModel editModel)
         {
-            var helfer = await _db.Helfer.SingleOrDefaultAsync(p => p.Id == helferId) ?? throw new InvalidOperationException($"Helfer {helferId} not found");
+            var helfer = await _db.Helfer
+                .Include(h => h.Kontakt)
+                .SingleOrDefaultAsync(p => p.Id == helferId) ?? throw new InvalidOperationException($"Helfer {helferId} not found");
             editModel.ApplyTo(helfer);
+            await _db.SaveChangesAsync();
+        }
+
+        public async Task SetAusgelastet(string helferId, bool istAusgelastet)
+        {
+            var helfer = await _db.Helfer
+                   .Include(h => h.Kontakt)
+                   .SingleOrDefaultAsync(p => p.Id == helferId) ?? throw new InvalidOperationException($"Helfer {helferId} not found");
+            helfer.istAusgelastet = istAusgelastet;
             await _db.SaveChangesAsync();
         }
     }

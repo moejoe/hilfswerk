@@ -13,6 +13,7 @@ namespace Hilfswerk.Core.Stores
         Task<Taetigkeit[]> GetTaetigkeiten(string helferId);
         Task<Helfer> AddHelfer(HelferCreateModel createModel);
         Task EditHelfer(string helferId, HelferEditModel editModel);
+        Task SetAusgelastet(string helferId, bool istAusgelastet);
         Task<Einsatz> AddEinsatz(string helferId, EinsatzCreateModel createModel);
     }
 }
