@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { GraphqlService } from 'src/app/services/graphql.service';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { HelferListenEintrag } from 'src/app/models/graphql-models';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
 @Component({
   selector: 'app-index',
@@ -13,9 +14,25 @@ export class SearchHelferComponent implements OnInit {
   displayedColumns: string[] = ['name', 'einsaetze', 'strasse', 'plz', 'anmerkung'];
   selectedHelfer: HelferListenEintrag | null;
   searchTerms: string;
+  filterChange = new Subject<string>();
 
   constructor(private graphqlService: GraphqlService) {
+    this.filterChange.pipe(
+      debounceTime(400),
+      distinctUntilChanged())
+      .subscribe(value => {
+        this.searchTerms = value;
+        this.updateList(value);
+      });
+  }
 
+  private updateList(value: string)  {
+    if (!value || value == '') {
+      this.helfer$ = this.graphqlService.queryHelferListe({});
+    }
+    else {
+      this.helfer$ = this.graphqlService.queryHelferByName(value);
+    }
   }
 
   async ngOnInit() {
@@ -23,14 +40,8 @@ export class SearchHelferComponent implements OnInit {
   }
 
   async entlasten(helferId: string) {
-    this.selectedHelfer.istAusgelastet = !this.selectedHelfer.istAusgelastet;
+    await this.graphqlService.setAusgelastet(helferId, false);
   }
-  filterChange() {
-    if(!this.searchTerms || this.searchTerms == '') {
-      this.helfer$ = this.graphqlService.queryHelferListe({});
-    }
-    else {
-      this.helfer$ = this.graphqlService.queryHelferByName(this.searchTerms);
-    }
-  }
+
+
 }

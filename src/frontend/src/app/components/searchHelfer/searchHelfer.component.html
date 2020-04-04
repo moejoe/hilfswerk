@@ -3,7 +3,7 @@
     <button mat-flat-button color="primary" routerLink="/index">Zurück zur Liste</button>
 </div>
 <mat-form-field>
-    <input matInput id="search-input" placeholder="Helfer:innen Name" type="text" [(ngModel)]="searchTerms" (change)="filterChange()" />
+    <input matInput id="search-input" placeholder="Helfer:innen Name" type="text" [(ngModel)]="searchTerms" (ngModelChange)="filterChange.next($event)"/>
 </mat-form-field>
 <div class="table-container">
     <table mat-table [dataSource]="helfer$ | async" multiTemplateDataRows>
@@ -28,9 +28,8 @@
             <td mat-cell *matCellDef="let h">
                 <span *ngIf="h != selectedHelfer">{{h.anmerkung}}</span>
                 <div class="actions" *ngIf="h === selectedHelfer">
-                    <button mat-flat-button color="primary" routerLink="['/editHelfer', h.Id ]">Helfer:in Bearbeiten</button>
-                    <button *ngIf="h.istAusgelastet" mat-flat-button color="primary" (click)="entlasten(h.Id)">Wieder Verfügbar</button>
-                    <button *ngIf="h.istAusgelastet === false" mat-flat-button color="primary" (click)="entlasten(h.Id)">nichtmehr verfügbar</button>
+                    <button mat-flat-button color="primary" [routerLink]="['/editHelfer', h.id ]">Helfer:in Bearbeiten</button>
+                    <button *ngIf="h.istAusgelastet" mat-flat-button color="primary" (click)="entlasten(h.id)">Wieder Verfügbar</button>
                 </div>
             </td>
         </ng-container>
