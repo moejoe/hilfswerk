@@ -1,20 +1,17 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { GraphqlService } from 'src/app/services/graphql.service';
 import { EinsatzInput, Taetigkeit, EinsatzCreateResult } from 'src/app/models/graphql-models';
+import { ActivatedRoute } from '@angular/router';
+import { Location } from '@angular/common';
+import { AuthService } from 'src/app/services/auth.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-addEinsatz',
   templateUrl: './addEinsatz.component.html',
   styleUrls: ['./addEinsatz.component.scss']
 })
-export class AddEinsatzComponent implements OnInit {
-
-  @Input() vermitteltDurch: string;
-
-  @Input() helferId: string;
-
-  @Output() added = new EventEmitter<string>();
-
+export class AddEinsatzComponent implements OnInit, OnDestroy {
   State = State;
   
   einsatz: EinsatzInput;
@@ -27,11 +24,25 @@ export class AddEinsatzComponent implements OnInit {
   ];
   vermitteltAm: Date;
   state: State;
+  paramSubscription: Subscription;
+  authServiceSubscription: Subscription;
+  helferId: any;
+  userinfo: { name: string; };
 
-  constructor(private graphqlService: GraphqlService) {}
+  constructor(private graphqlService: GraphqlService,  private route: ActivatedRoute, private authService: AuthService, private location: Location ) {}
+  ngOnDestroy(): void {
+    this.paramSubscription.unsubscribe();
+  }
 
   ngOnInit(): void {
-    this.einsatz = new EinsatzInputModel(this.vermitteltDurch);
+    
+    this.authServiceSubscription = this.authService.getUserInfo().subscribe(resp => {
+      this.userinfo = { ...resp.body };
+      this.einsatz = new EinsatzInputModel(this.userinfo.name);
+    });
+    this.paramSubscription = this.route.params.subscribe(params => {
+      this.helferId = params['helferId'];
+    });
     this.createResult = null;
     this.vermitteltAm = new Date();
     this.state = State.EDIT;
@@ -42,14 +53,14 @@ export class AddEinsatzComponent implements OnInit {
     this.createResult = await this.graphqlService.addEinsatz(this.helferId, this.einsatz);
     if (this.createResult.isSuccess) {
       this.state = State.SUCCESS;
-      this.added.emit(this.helferId);
+      this.location.back();
     }
     else {
       this.state = State.ERROR;
     }
   }
   newEinsatz() : void {
-    let newEinsatz =  new EinsatzInputModel(this.vermitteltDurch);
+    let newEinsatz =  new EinsatzInputModel(this.userinfo.name);
     newEinsatz.hilfesuchender = this.einsatz.hilfesuchender;
     this.einsatz = newEinsatz;
     this.state = State.EDIT;
@@ -74,10 +85,11 @@ class EinsatzInputModel implements EinsatzInput {
   constructor(vermittler: string) {
     this.vermitteltDurch = vermittler;
     this.anmerkungen = "";
+    this.helferAusgelastet = true;
   }
   hilfesuchender: string;
   taetigkeit: Taetigkeit;
   anmerkungen: string;
   vermitteltDurch: string;
-  
+  helferAusgelastet: boolean;  
 }

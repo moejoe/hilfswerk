@@ -7,6 +7,7 @@ import { LoggedoutComponent } from './components/loggedout/loggedout.component';
 import { CreateHelferComponent } from './components/createHelfer/createHelfer.component';
 import { SearchHelferComponent } from './components/searchHelfer/searchHelfer.component';
 import { EditHelferComponent } from './components/editHelfer/editHelfer.component';
+import { AddEinsatzComponent } from './components/addEinsatz/addEinsatz.component';
 
 
 const routes: Routes = [
@@ -41,6 +42,11 @@ const routes: Routes = [
   {
     path: 'helfer_innen/:helferId',
     component: EditHelferComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'helfer_innen/:helferId/einsaetze/new',
+    component: AddEinsatzComponent,
     canActivate: [AuthGuard]
   },
   {
