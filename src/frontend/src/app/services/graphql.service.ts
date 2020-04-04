@@ -19,6 +19,31 @@ export class GraphqlService {
     }
   }
 
+  queryHelferByName(searchTerms: string) {
+    let query = `query HeferByName($searchTerms: String!) {
+  helferByName(nameSearchTerms: $searchTerms)
+  {
+    id
+    kontakt {
+      email,
+      telefon,
+      nachname,
+      vorname,
+      strasse,
+      plz
+    },
+    totalEinsaetze,
+    anmerkung
+  }
+}`;
+    return this.httpClient.post<{ data: { helferByName: HelferListenEintrag[] } }>(`${environment.apiUrl}/graphql`, {
+      query: query,
+      variables: {
+        "searchTerms": searchTerms
+      }
+    }, { headers: this.headers() }).pipe(map(d => { return d.data.helferByName }));
+  }
+
   queryHelferListe(filters: HelferFilters) {
     let query = `query HelferListe(
   $inPlz: [Int]
@@ -110,7 +135,7 @@ export class GraphqlService {
   }
 
 }
-class AddEinsatzSuccessResult implements EinsatzCreateResult{
+class AddEinsatzSuccessResult implements EinsatzCreateResult {
   constructor(hilfesuchender: string, taetigkeit: Taetigkeit) {
     this.hilfesuchender = hilfesuchender;
     this.taetigkeit = taetigkeit;
@@ -133,7 +158,7 @@ class EinsatzCreateErrorResult implements EinsatzCreateResult {
 }
 
 
-class SuccessCreateResult implements HelferCreateResult{
+class SuccessCreateResult implements HelferCreateResult {
   constructor(id: string, kontakt: Kontakt) {
     this.id = id;
     this.errors = null;

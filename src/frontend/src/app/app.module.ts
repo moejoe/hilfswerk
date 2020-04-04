@@ -10,6 +10,7 @@ import { IndexComponent } from './components/index/index.component';
 import { AuthGuard } from './auth-guard';
 import { LoggedoutComponent } from './components/loggedout/loggedout.component';
 import { CreateHelferComponent } from './components/createHelfer/createHelfer.component';
+import { SearchHelferComponent } from './components/searchHelfer/searchHelfer.component';
 import { MatTableModule } from "@angular/material/table";
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -33,7 +34,8 @@ import { MatCardModule } from '@angular/material/card';
     IndexComponent,
     LoggedoutComponent,
     CreateHelferComponent,
-    AddEinsatzComponent
+    AddEinsatzComponent,
+    SearchHelferComponent
   ],
   imports: [
     BrowserModule,

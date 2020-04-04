@@ -5,6 +5,7 @@ import { LoginComponent } from './components/login/login.component';
 import { AuthGuard } from './auth-guard';
 import { LoggedoutComponent } from './components/loggedout/loggedout.component';
 import { CreateHelferComponent } from './components/createHelfer/createHelfer.component';
+import { SearchHelferComponent } from './components/searchHelfer/searchHelfer.component';
 
 
 const routes: Routes = [
@@ -29,6 +30,11 @@ const routes: Routes = [
   {
     path: 'createHelfer',
     component: CreateHelferComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'searchHelfer',
+    component: SearchHelferComponent,
     canActivate: [AuthGuard]
   },
   {
