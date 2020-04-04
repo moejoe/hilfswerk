@@ -3,14 +3,16 @@ using System;
 using Hilfswerk.EntityFramework;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Hilfswerk.Api.Migrations
 {
     [DbContext(typeof(HilfswerkDbContext))]
-    partial class HilfswerkDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200404115932_#37-Auslastung")]
+    partial class _37Auslastung
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -32,7 +32,13 @@ namespace Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSimpleTokenAuthentication(_configuration.GetSection("Authentication"));
-            services.AddHilfswerkGraphApi();
+            services.AddHilfswerkGraphApi(opt =>
+            {
+                if(!_webHostEnvironment.IsDevelopment())
+                {
+                    opt.AuthorizationPolicy = "DefaultPolicy";
+                }
+            });
             services.AddHilfswerkEntityFrameworkStores();
 
             services.AddEntityFrameworkInMemoryDatabase();

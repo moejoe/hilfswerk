@@ -2,16 +2,33 @@
 using GraphQL.Authorization;
 using GraphQL.Types;
 using Hilfswerk.Core.Stores;
+using Microsoft.Extensions.Options;
 using System;
 
 namespace Hilfswerk.GraphApi.Queries
 {
+    public class GraphQLAuthorizationOptions 
+    {
+        public string AuthorizationPolicy { get; set; }
+    }
     public class HilfswerkQuery : ObjectGraphType
     {
-        public HilfswerkQuery(IHelferStore store)
+        public HilfswerkQuery(IHelferStore store, IOptionsSnapshot<GraphQLAuthorizationOptions> options)
         {
-            this.AuthorizeWith("DefaultPolicy");
+            if(!string.IsNullOrWhiteSpace(options.Value.AuthorizationPolicy)) {
+                this.AuthorizeWith(options.Value.AuthorizationPolicy);
+            }
+            
             Name = "Query";
+
+            FieldAsync<ListGraphType<HelferType>>(
+                name: "helferByName",
+                arguments: new QueryArguments(new QueryArgument<NonNullGraphType<StringGraphType>> { Name = "nameSearchTerms" }),
+                resolve: async context =>
+                {
+                    return await store.FindByName(context.GetArgument<string>("nameSearchTerms"));
+                }
+            );
 
             FieldAsync<ListGraphType<HelferType>>(
                 name: "helfer",
@@ -20,7 +37,8 @@ namespace Hilfswerk.GraphApi.Queries
                     new QueryArgument<BooleanGraphType> { Name = "istRisikoGruppe" },
                     new QueryArgument<BooleanGraphType> { Name = "hatAuto" },
                     new QueryArgument<BooleanGraphType> { Name = "istZivildiener" },
-                    new QueryArgument<BooleanGraphType> { Name = "istFreiwilliger" }
+                    new QueryArgument<BooleanGraphType> { Name = "istFreiwilliger" },
+                    new QueryArgument<BooleanGraphType> { Name = "istAusgelastet" }
                     ),
                 resolve: async context =>
                 {
@@ -32,7 +50,8 @@ namespace Hilfswerk.GraphApi.Queries
                         HatAutoFilter = context.GetArgument<bool?>("hatAuto"),
                         IstRisikoGruppeFilter = context.GetArgument<bool?>("istRisikoGruppe"),
                         IstZivildienerFilter = context.GetArgument<bool?>("istZivildiener"),
-                        IstFreiwilligerFilter = context.GetArgument<bool?>("istFreiwilliger")
+                        IstFreiwilligerFilter = context.GetArgument<bool?>("istFreiwilliger"),
+                        IstAusgelastetFilter = context.GetArgument<bool?>("istAusgelastet")
                     };
                     return await store.FindHelfer(filter);
                 }

@@ -14,6 +14,7 @@ namespace Hilfswerk.EntityFramework.Entities
         public bool istRisikogrupepe { get; set; }
         public bool istZivildiener { get; set; }
         public bool istFreiwilliger { get; set; }
+        public bool istAusgelastet { get; set; }
     }
 
 }

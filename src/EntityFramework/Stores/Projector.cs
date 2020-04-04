@@ -1,4 +1,5 @@
-﻿using System.Linq.Expressions;
+﻿using System;
+using System.Linq.Expressions;
 
 namespace Hilfswerk.EntityFramework.Stores
 {
@@ -7,6 +8,7 @@ namespace Hilfswerk.EntityFramework.Stores
         public static Expression<System.Func<Entities.Einsatz, Models.Einsatz>> EinsatzProjection =>
             x => new Models.Einsatz
             {
+                Id = x.Id,
                 Anmerkungen = x.Anmerkungen,
                 Hilfesuchender = x.Hilfesuchender,
                 Taetigkeit = TaetigkeitFromId(x.TaetigkeitId),
@@ -18,13 +20,13 @@ namespace Hilfswerk.EntityFramework.Stores
                 }
             };
 
-        public static Expression<System.Func<int, Models.Taetigkeit>> TaetigkeitProjection =>
+        public static Expression<Func<int, Models.Taetigkeit>> TaetigkeitProjection =>
             x => x == Entities.Taetigkeit.GASSI_GEHEN.Id ? Models.Taetigkeit.GASSI_GEHEN :
                     x == Entities.Taetigkeit.BESORGUNG.Id ? Models.Taetigkeit.BESORGUNG :
                     x == Entities.Taetigkeit.TELEFON_KONTAKT.Id ? Models.Taetigkeit.TELEFON_KONTAKT :
                         Models.Taetigkeit.ANDERE;
 
-        public static Expression<System.Func<Entities.Helfer, Models.Helfer>> HelferProjection =>
+        public static Expression<Func<Entities.Helfer, Models.Helfer>> HelferProjection =>
             x => new Models.Helfer
             {
                 Id = x.Id,
@@ -33,6 +35,7 @@ namespace Hilfswerk.EntityFramework.Stores
                 hatAuto = x.hatAuto,
                 istZivildiener = x.istZivildiener,
                 istFreiwilliger = x.istFreiwilliger,
+                istAusgelastet = x.istAusgelastet,
                 Kontakt = new Models.Kontakt
                 {
                     Email = x.Kontakt.Email,
@@ -45,9 +48,10 @@ namespace Hilfswerk.EntityFramework.Stores
                 }
             };
 
+        private static Func<int, Models.Taetigkeit> CompiledTaetigkeitProjection = TaetigkeitProjection.Compile();
         public static Models.Taetigkeit TaetigkeitFromId(int id)
         {
-            return TaetigkeitProjection.Compile().Invoke(id);
+            return CompiledTaetigkeitProjection.Invoke(id);
         }
     }
 }
