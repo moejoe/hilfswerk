@@ -101,7 +101,32 @@ export class GraphqlService {
     try {
       var result = await this.httpClient.post<{ data: { editHelfer: Boolean }, errors: any[] }>(`${environment.apiUrl}/graphql`, request,
         { headers: this.headers() }).toPromise();
-      if (result.errors || result.data.editHelfer) {
+      if (result.errors || !result.data.editHelfer) {
+        return new ErrorEditResult(result.errors);
+      }
+      return new SuccessEditResult();
+    }
+    catch {
+      return new ErrorEditResult([{ message: "Error sending graphQL mutation." }])
+    }
+  }
+
+  async setAusgelastet(id: string, istAusgelastet: boolean) {
+    let mutation = `
+    mutation setAusgelastet($istAusgelastet : Boolean, $id : ID) {
+      setAusgelastet(id : $id, istAusgelastet: $istAusgelastet)
+    }`;
+    var request = {
+      "query": mutation,
+      variables: {
+        "istAusgelastet": istAusgelastet,
+        "id": id
+      }
+    };
+    try {
+      var result = await this.httpClient.post<{ data: { istAusgelastet: Boolean }, errors: any[] }>(`${environment.apiUrl}/graphql`, request,
+        { headers: this.headers() }).toPromise();
+      if (result.errors || !result.data.istAusgelastet) {
         return new ErrorEditResult(result.errors);
       }
       return new SuccessEditResult();

@@ -49,6 +49,24 @@ namespace Hilfswerk.GraphApi.Mutations
                         return false;
                     }
                 });
+            FieldAsync<BooleanGraphType>("setAusgelastet",
+                arguments: new QueryArguments(
+                    new QueryArgument<BooleanGraphType> { Name = "istAusgelastet" },
+                    new QueryArgument<IdGraphType> { Name = "id" }),
+                resolve: async context =>
+                {
+                    var istAusgelastet = context.GetArgument<bool>("istAusgelastet");
+                    var id = context.GetArgument<string>("id");
+                    try
+                    {
+                        await store.SetAusgelastet(id, istAusgelastet);
+                        return true;
+                    }
+                    catch (InvalidOperationException)
+                    {
+                        return false;
+                    }
+                });
         }
     }
 }
