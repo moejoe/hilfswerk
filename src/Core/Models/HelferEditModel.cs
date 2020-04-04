@@ -1,6 +1,6 @@
 ﻿namespace Hilfswerk.Models
 {
-    public class HelferCreateModel
+    public class HelferEditModel
     {
         public Kontakt Kontakt { get; set; }
         public string Anmerkung { get; set; }

@@ -40,5 +40,16 @@ namespace Hilfswerk.EntityFramework
             entity.Hilfesuchender = model.Hilfesuchender;
             entity.VermitteltDurch = model.VermitteltDurch;
         }
+
+        public static void ApplyTo(this HelferEditModel model, Entities.Helfer entity)
+        {
+            entity.Anmerkung = model.Anmerkung;
+            entity.hatAuto = model.hatAuto;
+            entity.HelferTaetigkeiten = model.Taetigkeiten.Select(p => new Entities.HelferTaetigkeit { TaetigkeitId = (int)p }).ToArray();
+            entity.istRisikogrupepe = model.istRisikogruppe;
+            entity.istFreiwilliger = model.istFreiwilliger;
+            entity.istZivildiener = model.istZivildiener;
+            entity.Kontakt = model.Kontakt.ToEntity();
+        }
     }
 }

@@ -15,6 +15,7 @@ namespace Hilfswerk.GraphApi
             Field(p => p.VermitteltDurch);
             Field(p => p.VermitteltAm);
             Field(p => p.Anmerkungen);
+            Field(p => p.Id);
         }
     }
 }
