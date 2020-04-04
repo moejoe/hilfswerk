@@ -89,6 +89,7 @@ export interface EinsatzInput {
     taetigkeit: Taetigkeit;
     anmerkungen: string;
     vermitteltDurch: string;
+    helferAusgelastet: boolean;
 }
 export interface EinsatzCreateResult {
     hilfesuchender: string;
