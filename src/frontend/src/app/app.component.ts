@@ -19,7 +19,7 @@ export class AppComponent implements OnInit {
     } else {
       function checkToken() {
         const ONE_HOUR_MS = 1000 * 3600;
-        let exp = this.authService.getExpiration();
+        let exp = self.authService.getExpiration();
         let expiresMs = +exp - +new Date();
         if (expiresMs < ONE_HOUR_MS) {
           setTimeout(() => { this.router.navigate(["/login"]); }, expiresMs);
