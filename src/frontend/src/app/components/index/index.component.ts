@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { GraphqlService } from 'src/app/services/graphql.service';
 import { Observable } from 'rxjs';
-import { HelferListenEintrag, Taetigkeit } from 'src/app/models/graphql-models';
+import { HelferListenEintrag, Taetigkeit, HelferDetail } from 'src/app/models/graphql-models';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { AuthService, UserInfo } from 'src/app/services/auth.service';
 
@@ -31,6 +31,7 @@ export class IndexComponent implements OnInit {
   istFreiwilliger = false;
   gesetzeFilter: string[];
   selectedHelfer: HelferListenEintrag | null;
+  selectedHelferDetail: HelferDetail | null;
   userinfo: UserInfo;
 
   constructor(private graphqlService: GraphqlService, private authService: AuthService) {
@@ -38,7 +39,7 @@ export class IndexComponent implements OnInit {
   }
 
   async ngOnInit() {
-    this.helfer$ = this.graphqlService.queryHelferListe({});
+    this.helfer$ = this.graphqlService.queryHelferListe({ istAusgelastet: false });
     this.bezirke = [];
     for (let i = 1010; i <= 1230; i += 10) {
       this.bezirke.push({ name: `${i}`, checked: false, nummer: i });
@@ -50,6 +51,14 @@ export class IndexComponent implements OnInit {
 
   onEinsatzAdded(event: string) {
     this.selectedHelfer.totalEinsaetze++;
+  }
+
+  async rowClick(row: HelferListenEintrag) {
+    this.selectedHelfer = this.selectedHelfer === row ? null : row;
+    this.selectedHelferDetail = null;
+    if (null != this.selectedHelfer) {
+      this.selectedHelferDetail = await this.graphqlService.getHelferDetail(this.selectedHelfer.id);
+    }
   }
 
   filterChange() {
@@ -80,7 +89,8 @@ export class IndexComponent implements OnInit {
       hatAuto,
       istRisikoGruppe,
       istZivildiener,
-      istFreiwilliger
+      istFreiwilliger,
+      istAusgelastet: false
     });
   }
 }

@@ -1,5 +1,5 @@
 <mat-card class="mat-elevation-z8 filter-panel">
-    <mat-card-title>Filter</mat-card-title>
+    <mat-card-title>Filter <button mat-icon-button routerLink="/helfer_innen"><mat-icon>search</mat-icon></button></mat-card-title>
     <mat-card-content>
         <div class="filter-panel__filter-group">
             <mat-button-toggle class="plz-filter" *ngFor="let bezirk of bezirke" id="bezirk-{{bezirk.name}}"
@@ -37,7 +37,7 @@
 <div class="main-panel__container">
     <div class="main-panel__header">
         <h1>Verfügbare Helfer:innen</h1>
-        <button mat-flat-button color="primary" routerLink="/createHelfer">Neue/n Helfer:in anlegen</button>    
+        <button mat-flat-button color="primary" routerLink="/helfer_innen/new">Neue/n Helfer:in anlegen</button>    
     </div>
     <div class="table-container">
         <table mat-table [dataSource]="helfer$ | async" multiTemplateDataRows>
@@ -63,28 +63,14 @@
             </ng-container>
             <ng-container matColumnDef="expandedHelfer">
                 <td mat-cell *matCellDef="let helfer" [attr.colspan]="5">
-                    <div class="add-einsatz-container"
-                        [@detailExpand]="helfer == selectedHelfer ? 'expanded' : 'collapsed'">
-                        <div class="helfer-details">
-                            <div>
-                                <mat-icon>phone</mat-icon>{{helfer.kontakt.telefon}}
-                            </div>
-                            <div>
-                                <mat-icon>email</mat-icon>{{helfer.kontakt.email}}
-                            </div>
-                            <div class="helfer-details-anmerkung">{{helfer.anmerkung}}</div>
-                        </div>
-                        <app-addEinsatz *ngIf="selectedHelfer === helfer" [vermitteltDurch]="userinfo.name"
-                            [helferId]="helfer.id" (added)="onEinsatzAdded($event)">
-                        </app-addEinsatz>
-                    </div>
+                    <helfer-detail [@detailExpand]="helfer == selectedHelfer ? 'expanded' : 'collapsed'"
+                        [helfer]="selectedHelferDetail" class="helfer-details-container"></helfer-detail>
                 </td>
             </ng-container>
 
             <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky : true"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="helfer-row"
-                [class.example-expanded-row]="selectedHelfer === row"
-                (click)="selectedHelfer = selectedHelfer === row ? null : row"></tr>
+                [class.example-expanded-row]="selectedHelfer === row" (click)="rowClick(row)"></tr>
             <tr mat-row *matRowDef="let row; columns: ['expandedHelfer']" class="expanded-helfer-row"></tr>
         </table>
     </div>

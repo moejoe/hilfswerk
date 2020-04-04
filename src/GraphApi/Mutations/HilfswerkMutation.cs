@@ -44,7 +44,7 @@ namespace Hilfswerk.GraphApi.Mutations
                         await store.EditHelfer(id, helfer);
                         return true;
                     }
-                    catch (InvalidOperationException)
+                    catch (InvalidOperationException ex)
                     {
                         return false;
                     }

@@ -5,7 +5,7 @@ import { map } from "rxjs/operators";
 import {
   HelferFilters, HelferListenEintrag, HelferCreateInput,
   HelferEditInput, EinsatzInput, Kontakt, HelferCreateResult,
-  EinsatzCreateResult, Taetigkeit, HelferEditResult
+  EinsatzCreateResult, Taetigkeit, HelferEditResult, HelferDetail
 } from '../models/graphql-models';
 import { AuthService } from './auth.service';
 
@@ -23,16 +23,10 @@ export class GraphqlService {
     }
   }
 
-  queryHelferListe(filters: HelferFilters) {
-    let query = `query HelferListe(
-  $inPlz: [Int]
-  $taetigkeitIn: [Taetigkeit]
-  $istRisikoGruppe: Boolean
-  $hatAuto: Boolean
-  $istZivildiener: Boolean
-  $istFreiwilliger: Boolean
-) {
-  helfer(inPlz: $inPlz, taetigkeitIn: $taetigkeitIn, istRisikoGruppe : $istRisikoGruppe, hatAuto: $hatAuto, istZivildiener: $istZivildiener, istFreiwilliger: $istFreiwilliger) {
+  queryHelferByName(searchTerms: string) {
+    let query = `query HeferByName($searchTerms: String!) {
+  helferByName(nameSearchTerms: $searchTerms)
+  {
     id
     kontakt {
       email,
@@ -42,6 +36,40 @@ export class GraphqlService {
       strasse,
       plz
     },
+    istAusgelastet,
+    totalEinsaetze,
+    anmerkung
+  }
+}`;
+    return this.httpClient.post<{ data: { helferByName: HelferListenEintrag[] } }>(`${environment.apiUrl}/graphql`, {
+      query: query,
+      variables: {
+        "searchTerms": searchTerms
+      }
+    }, { headers: this.headers() }).pipe(map(d => { return d.data.helferByName }));
+  }
+
+  queryHelferListe(filters: HelferFilters) {
+    let query = `query HelferListe(
+  $inPlz: [Int]
+  $taetigkeitIn: [Taetigkeit]
+  $istRisikoGruppe: Boolean
+  $hatAuto: Boolean
+  $istZivildiener: Boolean
+  $istFreiwilliger: Boolean
+  $istAusgelastet: Boolean
+) {
+  helfer(inPlz: $inPlz, taetigkeitIn: $taetigkeitIn, istRisikoGruppe : $istRisikoGruppe, hatAuto: $hatAuto, istZivildiener: $istZivildiener, istFreiwilliger: $istFreiwilliger, istAusgelastet: $istAusgelastet) {
+    id
+    kontakt {
+      email,
+      telefon,
+      nachname,
+      vorname,
+      strasse,
+      plz
+    },
+    istAusgelastet
     totalEinsaetze,
     anmerkung
   }
@@ -84,6 +112,73 @@ export class GraphqlService {
     catch {
       return new ErrorCreateResult([{ message: "Error sending graphQL mutation." }])
     }
+  }
+
+  async getHelferEditModel(helferId: string) {
+    let query = `query GetHelfer($helferId: ID) {
+      helferById(helferId: $helferId) {
+        istRisikogruppe
+        hatAuto
+        anmerkung
+        taetigkeiten
+        kontakt {
+          email
+          telefon
+          nachname
+          vorname
+          strasse
+          plz
+        }
+        istZivildiener
+        istFreiwilliger
+        istAusgelastet
+      }
+    }`;
+    return this.httpClient.post<{ data: { helferById: HelferEditInput } }>(`${environment.apiUrl}/graphql`, {
+      query: query,
+      variables: {
+        "helferId": helferId
+      },
+    }, { headers: this.headers() }).pipe(map(d => {
+      return d.data.helferById;
+    })).toPromise();
+  }
+
+  async getHelferDetail(helferId: string) {
+    let query = `query GetHelfer($helferId: ID) {
+      helferById(helferId: $helferId) {
+        id
+        istRisikogruppe
+        istZivildiener
+        istFreiwilliger
+        hatAuto
+        anmerkung
+        taetigkeiten,
+        einsaetze {
+          taetigkeit
+          anmerkungen
+          vermitteltDurch
+          vermitteltAm
+          hilfesuchender
+        }
+        kontakt {
+          email
+          telefon
+          nachname
+          vorname
+          strasse
+          plz
+        }
+      }
+    }`;
+    return this.httpClient.post<{ data: { helferById: HelferDetail } }>(`${environment.apiUrl}/graphql`, {
+      query: query,
+      variables: {
+        "helferId": helferId
+      },
+    }, { headers: this.headers() }).pipe(map(d => {
+      return d.data.helferById;
+    })).toPromise();
   }
 
   async editHelfer(id: string, helfer: HelferEditInput) {

@@ -1,0 +1,44 @@
+@mixin trennstrich {
+    border-bottom: 1px solid lightgray;
+}
+
+.helfer-detail {
+    &__info-cell {
+        &>mat-icon {
+            vertical-align: middle;
+            color: lightgray;
+        }
+
+        @include trennstrich();
+    }
+
+    &__info-block {
+        table-layout: auto;
+        @include trennstrich();
+        width: 100%;
+    }
+
+    &__einsaetze-table {
+        table-layout: auto;
+        width: 100%;
+
+        th {
+            text-align: left;
+        }
+
+        td,
+        th {
+            @include trennstrich();
+        }
+    }
+
+    &__button-pane {
+        padding: 0.5em;
+        display: flex;
+        justify-content: flex-end;
+        flex-direction: row;
+        & > button {
+            margin-left: 1em;
+        }
+    }
+}

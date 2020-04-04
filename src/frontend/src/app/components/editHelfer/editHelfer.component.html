@@ -1,0 +1,125 @@
+<div class="container">
+    <form #editHelferForm="ngForm">
+        <h2>Kontakt</h2>
+        <div class="edit-helfer-form__group">
+            <mat-form-field appearance="fill">
+                <mat-label for="vorname">Vorname</mat-label>
+                <input matInput type="text" id="vorname" [(ngModel)]="helfer.kontakt.vorname" name="vorname" required
+                    #vorname="ngModel" />
+
+                <div *ngIf="vorname.invalid && (vorname.dirty || vorname.touched)">
+                    <mat-error *ngIf="vorname.errors.required">
+                        Der Vorname ist ein Pflichtfeld.
+                    </mat-error>
+                </div>
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+                <mat-label for="nachanme">Nachname</mat-label>
+                <input matInput type="text" id="nachname" [(ngModel)]="helfer.kontakt.nachname" name="nachname" required
+                    #nachname="ngModel" />
+
+                <div *ngIf="nachname.invalid && (nachname.dirty || nachname.touched)">
+                    <mat-error *ngIf="nachname.errors.required">
+                        Der Nachname ist ein Pflichtfeld.
+                    </mat-error>
+                </div>
+            </mat-form-field>
+        </div>
+        <div class="edit-helfer-form__group">
+            <mat-form-field appearance="fill">
+                <mat-label for="plz">PLZ</mat-label>
+                <input matInput type="text" id="plz" [(ngModel)]="helfer.kontakt.plz" name="plz" required
+                    pattern="\d{4}" maxlength="4" minlength="4" #plz="ngModel" [ngModelOptions]="{updateOn: 'blur'}" />
+
+                <div *ngIf="plz.invalid && (plz.dirty || plz.touched)">
+                    <mat-error *ngIf="plz.errors.required">
+                        Die Postleizahl ist ein Pflichtfeld.
+                    </mat-error>
+                    <mat-error *ngIf="plz.errors.pattern || plz.errors.minlength || plz.errors.maxlength">
+                        Bitte als 4 Stellige Nummer eingeben (zb.: 1020)
+                    </mat-error>
+                </div>
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+                <mat-label for="strasse">Strasse</mat-label>
+                <input matInput type="text" id="strasse" [(ngModel)]="helfer.kontakt.strasse" name="strasse" />
+            </mat-form-field>
+        </div>
+        <div class="edit-helfer-form__group">
+            <mat-form-field appearance="fill">
+                <mat-label for="telefon">Telefon</mat-label>
+                <input matInput type="text" id="telefon" [(ngModel)]="helfer.kontakt.telefon" name="telefon" required
+                    #telfon="ngModel" minlength="5" maxlength="20" [ngModelOptions]="{updateOn: 'blur'}" />
+                <div *ngIf="telfon.invalid && (telfon.dirty || telfon.touched)">
+                    <div *ngIf="telfon.errors.required">
+                        Die Telefonnummer ist ein Pflichtfeld.
+                    </div>
+                    <mat-error *ngIf="telfon.errors.minlength">
+                        Telefonnummern müssen zumindest 5 Zeichen lang sein.
+                    </mat-error>
+                    <mat-error *ngIf="telfon.errors.maxlength">
+                        Telefonnummern dürfen nicht länger als 20 Zeichen lang sein.
+                    </mat-error>
+                </div>
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+                <mat-label for="email">Email</mat-label>
+                <input matInput type="email" id="email" [(ngModel)]="helfer.kontakt.email" name="email" required
+                    #email="ngModel" required email [ngModelOptions]="{updateOn: 'blur'}" />
+                <div *ngIf="email.invalid && (email.dirty || email.touched)">
+                    <mat-error *ngIf="email.errors.required">
+                        Die Postleizahl ist ein Pflichtfeld.
+                    </mat-error>
+                    <mat-error *ngIf="email.errors.email">
+                        Bitte darauf achten, dass eine gültige Emailadresse eingegeben wurde: beispiel@irgend.wo
+                    </mat-error>
+                </div>
+            </mat-form-field>
+        </div>
+        <div class="edit-helfer-form__group">
+            <mat-form-field appearance="fill">
+                <mat-label>Tätigkeiten</mat-label>
+                <mat-select multiple [(ngModel)]="helfer.taetigkeiten" name="taetigkeiten" required
+                    #taetigkeiten="ngModel">
+                    <mat-option value="ANDERE">Andere</mat-option>
+                    <mat-option value="BESORGUNG">Besorgungen</mat-option>
+                    <mat-option value="GASSI_GEHEN">Gassi gehen</mat-option>
+                    <mat-option value="TELEFON_KONTAKT">Telefonkontakt</mat-option>
+                </mat-select>
+                <div *ngIf="taetigkeiten.invalid && (taetigkeiten.dirty || taetigkeiten.touched)">
+                    <div *ngIf="taetigkeiten.errors.required">
+                        <mat-error>Bitte zumindest eine Tätigkeit auswählen.</mat-error>
+                    </div>
+                </div>
+            </mat-form-field>
+        </div>
+        <div class="edit-helfer-form__sonstiges">
+            <mat-checkbox [(ngModel)]="helfer.istRisikogruppe" name="istRisikogruppe" id="istRisikogruppe">
+                Risikogruppe</mat-checkbox>
+            <mat-checkbox id="hatAuto" [(ngModel)]="helfer.hatAuto" name="hatAuto">Auto verfügbar</mat-checkbox>
+            <mat-checkbox id="istZivildiener" [(ngModel)]="helfer.istZivildiener" name="istZivildiener">Zivildiener
+            </mat-checkbox>
+            <mat-checkbox id="istFreiwilliger" [(ngModel)]="helfer.istFreiwilliger" name="istFreiwilliger">Freiwilliger
+            </mat-checkbox>
+        </div>
+        <div class="edit-helfer-form__group">
+            <mat-form-field appearance="fill">
+                <mat-label for="anmerkungen">Anmerkungen</mat-label>
+                <textarea matInput name="anmerkung" rows="5" id="anmerkung" [(ngModel)]="helfer.anmerkung"></textarea>
+            </mat-form-field>
+        </div>
+
+        <div class="edit-helfer-form__group">
+            <mat-checkbox id="istAusgelastet" [(ngModel)]="helfer.istAusgelastet" name="istAusgelastet">Helfer:in ist
+                voll ausgelastet</mat-checkbox>
+        </div>
+
+        <div class="edit-helfer-form__submit">
+            <button mat-flat-button color="primary" *ngIf="editHelferForm.valid" type="reset"
+                (click)="editHelfer()">Helfer:in speichern</button>
+            <button mat-flat-button color="primary" *ngIf="editHelferForm.invalid" type="submit" (click)="editHelfer()"
+                disabled>Helfer:in speichern</button>
+            <button mat-flat-button color="primary" (click)="back()">Abbrechen</button>
+        </div>
+    </form>
+</div>
