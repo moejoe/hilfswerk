@@ -22,7 +22,9 @@ export class SearchHelferComponent implements OnInit {
     this.helfer$ = this.graphqlService.queryHelferListe({});
   }
 
-
+  async entlasten(helferId: string) {
+    this.selectedHelfer.istAusgelastet = !this.selectedHelfer.istAusgelastet;
+  }
   filterChange() {
     if(!this.searchTerms || this.searchTerms == '') {
       this.helfer$ = this.graphqlService.queryHelferListe({});

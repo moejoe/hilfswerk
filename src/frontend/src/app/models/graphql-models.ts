@@ -19,6 +19,7 @@ export interface HelferListenEintrag {
     kontakt: Kontakt;
     totalEinsaetze: number;
     anmerkung: string;
+    istAusgelastet?: boolean;
 }
 
 export interface Kontakt {

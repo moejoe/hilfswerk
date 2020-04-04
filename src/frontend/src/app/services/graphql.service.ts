@@ -32,6 +32,7 @@ export class GraphqlService {
       strasse,
       plz
     },
+    istAusgelastet,
     totalEinsaetze,
     anmerkung
   }
@@ -63,6 +64,7 @@ export class GraphqlService {
       strasse,
       plz
     },
+    istAusgelastet
     totalEinsaetze,
     anmerkung
   }

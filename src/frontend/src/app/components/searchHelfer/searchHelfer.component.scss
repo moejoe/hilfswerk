@@ -43,3 +43,6 @@ tr.selected-row {
 tr.helfer-row:not(.expanded-helfer-row):hover {
   background: whitesmoke;
 }
+tr.inactive-helfer > .mat-cell {
+  color: lightgray;
+}
