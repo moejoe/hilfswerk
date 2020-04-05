@@ -1,5 +1,12 @@
-.container {
+:host {
     margin: 3em;
+}
+
+h1 {
+  font-size: 1.5rem;
+  text-transform: uppercase;
+  font-weight: bold;
+  margin: 0 0 1rem 0;
 }
 
 .edit-helfer-form__group {
