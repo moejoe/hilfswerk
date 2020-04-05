@@ -1,5 +1,16 @@
 @import '../../variables';
 
+:host {
+    margin: 3em;
+}
+
+h1 {
+  font-size: 1.5rem;
+  text-transform: uppercase;
+  font-weight: bold;
+  margin: 0 0 1rem 0;
+}
+
 .add-einsatz-form {
     padding:1em 0em;
 }
@@ -24,4 +35,8 @@
     margin: 1em;
     background: #eeeeee;
     border-radius:0.5em;
+}
+
+#istAusgelastet {
+    margin:0 0 1em 0.5em;
 }

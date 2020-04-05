@@ -1,3 +1,4 @@
+    <h1>Einsatz protokolieren</h1> 
     <div class="add-einsatz-feedback-panel" *ngIf="state == State.SUCCESS">
         <h2>Einsatz erfolgreich protokoliert:</h2>
         <p>{{createResult.taetigkeit}} für {{createResult.hilfesuchender}} am {{ vermitteltAm | date:'shortDate' }}</p> 
@@ -46,10 +47,11 @@
         </div>
         <div class="add-einsatz-form__group">
             <button mat-flat-button color="primary" *ngIf="addEinsatzForm.valid && state == State.EDIT" type="submit"
-                (click)="addEinsatz()">Einsatz Protokolieren</button>
+                (click)="addEinsatz()">Einsatz speichern</button>
             <button mat-flat-button color="primary" *ngIf="addEinsatzForm.invalid || state == State.SAVING" type="submit" (click)="addEinsatz()"
                 disabled>Einsatz
-                Protokolieren</button>
+                speichern</button>
+            <button mat-flat-button color="primary" routerLink="/index">Abbrechen</button>
         </div>
         <div *ngIf="state == State.ERROR" class="add-einsatz-form__error">
             <h2>Fehler beim anlegen des Einsatzes:</h2>

@@ -2,13 +2,13 @@
   flex-grow: 1;
   display: flex;
   flex-direction: column;
+  margin:3em;
 }
 
 .table-container {
   flex-grow: 1;
   overflow: auto;
   min-height: 400px;
-  flex-basis: 200px;
 
   &>table {
     width: 100%;
@@ -32,6 +32,11 @@ h1 {
   margin: -3rem 0rem 0rem auto;
 }
 
+mat-form-field {
+  margin:2em 0 0;
+}
+
+
 tr.expanded-helfer-row {
   height: 0;
 }
@@ -43,6 +48,15 @@ tr.selected-row {
 tr.helfer-row:not(.expanded-helfer-row):hover {
   background: whitesmoke;
 }
+
+
+
 tr.inactive-helfer > .mat-cell {
   color: lightgray;
+}
+
+.actions {
+  &> button {
+    margin:0.001em 0.25em 0;
+  }
 }
