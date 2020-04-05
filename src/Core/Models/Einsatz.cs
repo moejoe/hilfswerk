@@ -11,5 +11,6 @@ namespace Hilfswerk.Models
         public string VermitteltDurch { get; set; }
         public DateTime VermitteltAm { get; set; }
         public string Anmerkungen { get; set; }
+        public int? Stunden { get; set; }
     }
 }

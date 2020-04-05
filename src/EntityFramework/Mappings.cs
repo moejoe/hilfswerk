@@ -50,6 +50,7 @@ namespace Hilfswerk.EntityFramework
             entity.TaetigkeitId = (int)model.Taetigkeit;
             entity.Hilfesuchender = model.Hilfesuchender;
             entity.VermitteltDurch = model.VermitteltDurch;
+            entity.Stunden = model.Stunden;
         }
 
         public static void ApplyTo(this HelferEditModel model, Entities.Helfer entity)

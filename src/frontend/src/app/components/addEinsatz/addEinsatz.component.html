@@ -1,9 +1,4 @@
     <h1>Einsatz protokolieren</h1> 
-    <div class="add-einsatz-feedback-panel" *ngIf="state == State.SUCCESS">
-        <h2>Einsatz erfolgreich protokoliert:</h2>
-        <p>{{createResult.taetigkeit}} für {{createResult.hilfesuchender}} am {{ vermitteltAm | date:'shortDate' }}</p> 
-        <button mat-flat-button color="primary" (click)="newEinsatz()" type="reset">Neuen Einsatz Protokolieren</button>
-    </div>
     <form class="add-einsatz-form" #addEinsatzForm="ngForm" *ngIf="state == State.EDIT || state == State.ERROR || state == State.SAVING ">
         <div class="add-einsatz-form__group">
             <mat-form-field appearance="fill">
@@ -39,6 +34,12 @@
                 <mat-label for="anmerkungen">Anmerkungen</mat-label>
                 <textarea matInput name="anmerkungen" rows="5" width="100%" id="anmerkungen"
                     placeholder="Anmerkungen zur vermittelten Tätigkeit" [(ngModel)]="einsatz.anmerkungen"></textarea>
+            </mat-form-field>
+        </div>
+        <div class="add-einsatz-form__group">
+            <mat-form-field appearance="fill">
+                <mat-label for="stunden">Stunden</mat-label>
+                <input matInput type="number" id="stunden" name="stunden" [value] ="einsatz.stunden" />
             </mat-form-field>
         </div>
         <div class="add-einsatz-form__group">

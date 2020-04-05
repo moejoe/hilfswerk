@@ -90,6 +90,7 @@ export interface EinsatzInput {
     anmerkungen: string;
     vermitteltDurch: string;
     helferAusgelastet: boolean;
+    stunden: number;
 }
 export interface EinsatzCreateResult {
     hilfesuchender: string;
