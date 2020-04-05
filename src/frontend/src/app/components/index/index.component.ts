@@ -57,7 +57,10 @@ export class IndexComponent implements OnInit {
     this.selectedHelfer = this.selectedHelfer === row ? null : row;
     this.selectedHelferDetail = null;
     if (null != this.selectedHelfer) {
-      this.selectedHelferDetail = await this.graphqlService.getHelferDetail(this.selectedHelfer.id);
+      var detail = await this.graphqlService.getHelferDetail(this.selectedHelfer.id);
+      //sort einsätze by date desc.
+      detail.einsaetze = detail.einsaetze.sort((p1, p2) => new Date(p2.vermitteltAm).getTime() - new Date(p1.vermitteltAm).getTime());
+      this.selectedHelferDetail = detail;
     }
   }
 

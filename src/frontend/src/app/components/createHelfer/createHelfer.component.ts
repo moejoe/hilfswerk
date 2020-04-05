@@ -42,6 +42,7 @@ class HelferCreateModel implements HelferCreateInput {
     this.istRisikogruppe = false;
     this.istZivildiener = false;
     this.istFreiwilliger = false;
+    this.istAusgelastet = false;
   }
   istRisikogruppe: boolean;
   hatAuto: boolean;
@@ -50,6 +51,7 @@ class HelferCreateModel implements HelferCreateInput {
   kontakt: Kontakt;
   istZivildiener: boolean;
   istFreiwilliger: boolean;
+  istAusgelastet: boolean;
 }
 class KontaktCreateModel implements Kontakt {
   vorname: string;

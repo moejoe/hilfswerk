@@ -13,6 +13,7 @@ namespace Hilfswerk.GraphApi
             Field(p => p.VermitteltDurch);
             Field(p => p.Anmerkungen);
             Field(p => p.HelferAusgelastet);
+            Field(p => p.Stunden, nullable: true);
         }
     }
 }

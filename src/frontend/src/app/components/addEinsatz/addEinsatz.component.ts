@@ -38,11 +38,12 @@ export class AddEinsatzComponent implements OnInit, OnDestroy {
     
     this.authServiceSubscription = this.authService.getUserInfo().subscribe(resp => {
       this.userinfo = { ...resp.body };
-      this.einsatz = new EinsatzInputModel(this.userinfo.name);
+      this.einsatz.vermitteltDurch = this.userinfo.name;
     });
     this.paramSubscription = this.route.params.subscribe(params => {
       this.helferId = params['helferId'];
     });
+    this.einsatz = new EinsatzInputModel("n/a");
     this.createResult = null;
     this.vermitteltAm = new Date();
     this.state = State.EDIT;
@@ -58,12 +59,6 @@ export class AddEinsatzComponent implements OnInit, OnDestroy {
     else {
       this.state = State.ERROR;
     }
-  }
-  newEinsatz() : void {
-    let newEinsatz =  new EinsatzInputModel(this.userinfo.name);
-    newEinsatz.hilfesuchender = this.einsatz.hilfesuchender;
-    this.einsatz = newEinsatz;
-    this.state = State.EDIT;
   }
   createError(): void {
     this.state = State.ERROR;
@@ -85,11 +80,12 @@ class EinsatzInputModel implements EinsatzInput {
   constructor(vermittler: string) {
     this.vermitteltDurch = vermittler;
     this.anmerkungen = "";
-    this.helferAusgelastet = true;
+    this.helferAusgelastet = false;
   }
   hilfesuchender: string;
   taetigkeit: Taetigkeit;
   anmerkungen: string;
   vermitteltDurch: string;
   helferAusgelastet: boolean;  
+  stunden: number;
 }
