@@ -85,7 +85,7 @@ class EinsatzInputModel implements EinsatzInput {
   constructor(vermittler: string) {
     this.vermitteltDurch = vermittler;
     this.anmerkungen = "";
-    this.helferAusgelastet = true;
+    this.helferAusgelastet = false;
   }
   hilfesuchender: string;
   taetigkeit: Taetigkeit;
