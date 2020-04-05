@@ -84,7 +84,7 @@ export class GraphqlService {
 
   async createHelfer(helfer: HelferCreateInput) {
     let mutation = `
-    mutation createHelfer($helfer: HelferCreateInput!) {
+    mutation createHelfer($helfer: CreateHelferInput!) {
       createHelfer(helfer: $helfer) {
         id
         kontakt {
