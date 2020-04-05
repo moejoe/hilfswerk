@@ -41,12 +41,14 @@ namespace Api
             });
             services.AddHilfswerkEntityFrameworkStores();
 
-            services.AddEntityFrameworkInMemoryDatabase();
             services.AddDbContext<HilfswerkDbContext>(opt =>
             {
                 opt.UseSqlite($"Data Source={_webHostEnvironment.WebRootPath}\\App_Data\\hilfswerk.db",
                     sql => sql.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name));
-                opt.EnableSensitiveDataLogging(sensitiveDataLoggingEnabled: true);
+                if(_webHostEnvironment.IsDevelopment())
+                {
+                    opt.EnableSensitiveDataLogging(sensitiveDataLoggingEnabled: false);
+                }
             });
 
             services.AddAuthorization(o =>
