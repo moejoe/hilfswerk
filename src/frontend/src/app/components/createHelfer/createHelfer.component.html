@@ -1,6 +1,6 @@
 <div class="container">
     <form #createHelferForm="ngForm">
-        <h2>Kontakt</h2>
+        <h1>Kontakt</h1>
         <div class="create-helfer-form__group">
             <mat-form-field appearance="fill">
                 <mat-label for="vorname">Vorname</mat-label>
@@ -68,7 +68,7 @@
                     #email="ngModel" required email [ngModelOptions]="{updateOn: 'blur'}" />
                 <div *ngIf="email.invalid && (email.dirty || email.touched)">
                     <mat-error *ngIf="email.errors.required">
-                        Die Postleizahl ist ein Pflichtfeld.
+                        Die Email ist ein Pflichtfeld.
                     </mat-error>
                     <mat-error *ngIf="email.errors.email">
                         Bitte darauf achten, dass eine gültige Emailadresse eingegeben wurde: beispiel@irgend.wo
@@ -109,10 +109,10 @@
 
         <div class="create-helfer-form__submit">
             <button mat-flat-button color="primary" *ngIf="createHelferForm.valid" type="reset"
-                (click)="[createHelfer(),  createHelferForm.reset()]">Anlegen</button>
+                (click)="[createHelfer(),  createHelferForm.reset()]">Helfer:in speichern</button>
             <button mat-flat-button color="primary" *ngIf="createHelferForm.invalid" type="submit"
-                (click)="createHelfer()" disabled>Anlegen</button>
-            <button mat-flat-button color="primary" routerLink="/index">&laquo; Zurück zur Liste</button>
+                (click)="createHelfer()" disabled>Helfer:in speichern</button>
+            <button mat-flat-button color="primary" routerLink="/index">Abbrechen</button>
             <mat-list>
                 <mat-list-item *ngFor="let createResult of createResults">
                     <div *ngIf="createResult && createResult.isSuccess">

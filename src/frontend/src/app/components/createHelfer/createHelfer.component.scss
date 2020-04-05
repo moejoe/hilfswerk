@@ -1,3 +1,14 @@
+:host {
+    margin:3em;
+}
+
+h1 {
+  font-size: 1.5rem;
+  text-transform: uppercase;
+  font-weight: bold;
+  margin: 0 0 1rem 0;
+}
+
 .create-helfer-form__group {
     display: flex;
     margin: 1em;
@@ -12,9 +23,9 @@
 }
 .create-helfer-form__sonstiges {
     display: flex;
-    padding: 1em;
+    padding: 0 0.5em 1em;
     &> mat-checkbox {
-        margin: 0.5em 1em 0em 1em;
+        margin: 0em 1em 0em 1em;
     }
 }
 
