@@ -114,12 +114,11 @@
                         Kontakt erfolgreich angelegt: {{createResult.kontakt.vorname}},
                         {{createResult.kontakt.nachname}},
                         {{createResult.kontakt.plz}} Wien (id: {{createResult.id}})    
-                    </div>
-                    <mat-error *ngIf="createResult && !createResult.isSuccess">
+                    </div>    
+                    <div *ngIf="createResult && !createResult.isSuccess">
                         Fehler beim anlgen des Kontakt:
                         <pre>{{createResult.errors | json}}</pre>
-                    </mat-error>
-    
+                    </div>
                 </mat-list-item>
             </mat-list>
         </div>

@@ -15,6 +15,7 @@ namespace Hilfswerk.EntityFramework
                 istRisikogrupepe = createModel.istRisikogruppe,
                 istFreiwilliger = createModel.istFreiwilliger,
                 istZivildiener = createModel.istZivildiener,
+                istAusgelastet = createModel.istAusgelastet,
                 Kontakt = createModel.Kontakt.ToEntity()
             };
         }
