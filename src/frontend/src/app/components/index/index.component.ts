@@ -20,7 +20,7 @@ import { AuthService, UserInfo } from 'src/app/services/auth.service';
 export class IndexComponent implements OnInit {
   helfer$: Observable<HelferListenEintrag[]>;
   bezirke: any;
-  displayedColumns: string[] = ['name', 'einsaetze', 'strasse', 'plz', 'anmerkung'];
+  displayedColumns: string[] = ['name', 'einsaetze', 'strasse', 'plz'];
   taetigkeiten = [{ name: "andere", id: Taetigkeit.ANDERE, checked: false },
   { name: "Besorgung", id: Taetigkeit.BESORGUNG, checked: false },
   { name: "Gassi gehen", id: Taetigkeit.GASSI_GEHEN, checked: false },
