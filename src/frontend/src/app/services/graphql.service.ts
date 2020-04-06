@@ -46,7 +46,11 @@ export class GraphqlService {
       variables: {
         "searchTerms": searchTerms
       }
-    }, { headers: this.headers() }).pipe(map(d => { return d.data.helferByName }));
+    }, { headers: this.headers() }).pipe(map(d => { return d.data.helferByName }), map(d => {
+      return d.sort((a, b) => {
+        return a.kontakt.nachname.localeCompare(b.kontakt.nachname);
+      });
+    }));
   }
 
   queryHelferListe(filters: HelferFilters) {
@@ -79,6 +83,10 @@ export class GraphqlService {
       variables: filters,
     }, { headers: this.headers() }).pipe(map(d => {
       return d.data.helfer;
+    }), map(d => {
+      return d.sort((a, b) => {
+        return a.kontakt.nachname.localeCompare(b.kontakt.nachname);
+      });
     }));
   }
 
