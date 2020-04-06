@@ -54,11 +54,14 @@ export class AddEinsatzComponent implements OnInit, OnDestroy {
     this.createResult = await this.graphqlService.addEinsatz(this.helferId, this.einsatz);
     if (this.createResult.isSuccess) {
       this.state = State.SUCCESS;
-      this.location.back();
+      this.back();
     }
     else {
       this.state = State.ERROR;
     }
+  }
+  back() : void {
+    this.location.back();
   }
   createError(): void {
     this.state = State.ERROR;
