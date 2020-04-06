@@ -11,7 +11,7 @@ import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 })
 export class SearchHelferComponent implements OnInit {
   helfer$: Observable<HelferListenEintrag[]>;
-  displayedColumns: string[] = ['name', 'einsaetze', 'strasse', 'plz', 'anmerkung'];
+  displayedColumns: string[] = ['name', 'einsaetze', 'strasse', 'plz'];
   selectedHelfer: HelferListenEintrag | null;
   searchTerms: string;
   filterChange = new Subject<string>();
