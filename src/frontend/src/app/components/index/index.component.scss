@@ -1,13 +1,17 @@
 :host {
-  flex-grow: 1;
   display: flex;
+  flex-grow: 1;
   flex-direction: row;
-  height:100%;
+  flex-basis:auto;
+}
+
+.page {
+  background:red;
 }
 
 .table-container {
   flex-grow: 1;
-  overflow: auto;
+  overflow: scroll;
   min-height: 400px;
   flex-basis: 200px;
 
@@ -26,12 +30,11 @@ h1, mat-card-title {
 mat-card {
   flex-basis: 25%;
   background: #eeeeee;
-  overflow: scroll;
+  overflow: auto;
 }
 
 .filter-panel {
   padding: 2em 1em 3em 1em;
-  height:100%;
   border-radius:0;
   box-shadow: 0 0 10px rgba(0,0,0,0.3);
   margin-right:1.5em;  
@@ -66,6 +69,7 @@ mat-icon {
 .main-panel__container{
   flex-basis: 75%;
   padding: 2em 1em 0em 1em;
+  overflow: scroll;
 }
 .main-panel__header{
   display:flex;
