@@ -43,7 +43,8 @@ namespace Api
 
             services.AddDbContext<HilfswerkDbContext>(opt =>
             {
-                opt.UseSqlite($"Data Source={_webHostEnvironment.WebRootPath}\\App_Data\\hilfswerk.db",
+                var dbPath = Path.Combine(_webHostEnvironment.WebRootPath, "App_Data", "hilfswerk.db");
+                opt.UseSqlite($"Data Source={dbPath}",
                     sql => sql.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name));
                 if(_webHostEnvironment.IsDevelopment())
                 {
