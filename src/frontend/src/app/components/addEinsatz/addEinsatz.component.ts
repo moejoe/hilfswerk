@@ -1,10 +1,11 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { GraphqlService } from 'src/app/services/graphql.service';
 import { EinsatzInput, Taetigkeit, EinsatzCreateResult } from 'src/app/models/graphql-models';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { AuthService } from 'src/app/services/auth.service';
 import { Subscription } from 'rxjs';
+import { NgForm } from "@angular/forms";
 
 @Component({
   selector: 'app-addEinsatz',
@@ -13,14 +14,14 @@ import { Subscription } from 'rxjs';
 })
 export class AddEinsatzComponent implements OnInit, OnDestroy {
   State = State;
-  
+
   einsatz: EinsatzInput;
   createResult: EinsatzCreateResult;
   taetigkeiten = [
-    { "key": Taetigkeit.GASSI_GEHEN, "label": "Gassi gehen"},
-    { "key": Taetigkeit.BESORGUNG, "label": "Besorgung"},
-    { "key": Taetigkeit.ANDERE, "label": "Andere"},
-    { "key": Taetigkeit.TELEFON_KONTAKT, "label": "Telefon kontakt"}
+    { "key": Taetigkeit.GASSI_GEHEN, "label": "Gassi gehen" },
+    { "key": Taetigkeit.BESORGUNG, "label": "Besorgung" },
+    { "key": Taetigkeit.ANDERE, "label": "Andere" },
+    { "key": Taetigkeit.TELEFON_KONTAKT, "label": "Telefon kontakt" }
   ];
   vermitteltAm: Date;
   state: State;
@@ -29,38 +30,54 @@ export class AddEinsatzComponent implements OnInit, OnDestroy {
   helferId: any;
   userinfo: { name: string; };
 
-  constructor(private graphqlService: GraphqlService,  private route: ActivatedRoute, private authService: AuthService, private location: Location ) {}
+  @ViewChild("addEinsatzForm") addEinsatzForm: NgForm;
+
+  constructor(private graphqlService: GraphqlService, 
+    private route: ActivatedRoute, 
+    private authService: AuthService, 
+    private location: Location,
+    private changeDetectorRef : ChangeDetectorRef) { }
   ngOnDestroy(): void {
     this.paramSubscription.unsubscribe();
   }
 
+  resetEinsatzForm(vorherigerEinsatz: EinsatzInputModel) {    
+    let neuerEinsatz = new EinsatzInputModel(this.userinfo.name);
+    if (vorherigerEinsatz) {
+      neuerEinsatz.hilfesuchender = vorherigerEinsatz.hilfesuchender;
+      neuerEinsatz.helferAusgelastet = vorherigerEinsatz.helferAusgelastet;
+    }
+    this.addEinsatzForm.resetForm();
+    this.changeDetectorRef.detectChanges();
+    this.einsatz = neuerEinsatz;
+  }
+
   ngOnInit(): void {
-    
+    this.einsatz = new EinsatzInputModel("n/a");
     this.authServiceSubscription = this.authService.getUserInfo().subscribe(resp => {
       this.userinfo = { ...resp.body };
-      this.einsatz.vermitteltDurch = this.userinfo.name;
+      this.resetEinsatzForm(null);
     });
     this.paramSubscription = this.route.params.subscribe(params => {
       this.helferId = params['helferId'];
     });
-    this.einsatz = new EinsatzInputModel("n/a");
     this.createResult = null;
     this.vermitteltAm = new Date();
     this.state = State.EDIT;
   }
 
   async addEinsatz() {
-    this.state = State.SUCCESS;
+    this.state = State.SAVING;
     this.createResult = await this.graphqlService.addEinsatz(this.helferId, this.einsatz);
     if (this.createResult.isSuccess) {
       this.state = State.SUCCESS;
-      this.back();
+      this.resetEinsatzForm(this.einsatz);
     }
     else {
       this.state = State.ERROR;
     }
   }
-  back() : void {
+  back(): void {
     this.location.back();
   }
   createError(): void {
@@ -68,7 +85,7 @@ export class AddEinsatzComponent implements OnInit, OnDestroy {
     this.createResult = {
       "hilfesuchender": null,
       "taetigkeit": null,
-      "errors": [{"message": "Das ist eine Testfehlermeldung."}],
+      "errors": [{ "message": "Das ist eine Testfehlermeldung." }],
       "isSuccess": false
     };
   }
@@ -84,11 +101,12 @@ class EinsatzInputModel implements EinsatzInput {
     this.vermitteltDurch = vermittler;
     this.anmerkungen = "";
     this.helferAusgelastet = false;
+    this.stunden = null;
   }
   hilfesuchender: string;
   taetigkeit: Taetigkeit;
   anmerkungen: string;
   vermitteltDurch: string;
-  helferAusgelastet: boolean;  
+  helferAusgelastet: boolean;
   stunden: number;
 }
