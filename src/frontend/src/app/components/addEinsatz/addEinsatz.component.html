@@ -1,65 +1,71 @@
-    <h1>Einsatz protokolieren</h1> 
-    <form class="add-einsatz-form" #addEinsatzForm="ngForm" *ngIf="state == State.EDIT || state == State.ERROR || state == State.SAVING ">
-        <div class="add-einsatz-form__group">
-            <mat-form-field appearance="fill">
-                <mat-label>Name des/der Hilfesuchenden</mat-label>
-                <input matInput type="text" placeholder="ex. Rainer Rosenthal" id="hilfesuchender"
-                    [(ngModel)]="einsatz.hilfesuchender" name="hilfesuchender" required #hilfesuchender="ngModel" />
-                <div *ngIf="hilfesuchender.invalid && (hilfesuchender.dirty || hilfesuchender.touched)">
-                    <mat-error *ngIf="hilfesuchender.errors.required">
-                        Bitte den Hilfesuchenden eintragen.
-                    </mat-error>
-                </div>
-            </mat-form-field>
-            <mat-form-field appearance="fill">
-                <mat-label>Tätigkeit</mat-label>
-                <mat-select required [(ngModel)]="einsatz.taetigkeit" name="taetigkeit" #taetigkeit="ngModel">
-                    <mat-option *ngFor="let taetigkeit of taetigkeiten" [value]="taetigkeit.key">{{taetigkeit.label}}
-                    </mat-option>
-                </mat-select>
-                <div *ngIf="taetigkeit.invalid && (taetigkeit.dirty || taetigkeit.touched)">
-                    <mat-error *ngIf="taetigkeit.errors.required">
-                        Bitte eine Tätigkeit auswählen!
-                    </mat-error>
-                </div>
-            </mat-form-field>
-            <mat-form-field appearance="fill">
-                <mat-label for="hilfesuchender">vermittlet Durch</mat-label>
-                <input matInput type="text" id="vermittlerin" name="vermittlerin" [value]="einsatz.vermitteltDurch"
-                    disabled />
-            </mat-form-field>
-        </div>
-        <div class="add-einsatz-form__group">
-            <mat-form-field appearance="fill">
-                <mat-label for="anmerkungen">Anmerkungen</mat-label>
-                <textarea matInput name="anmerkungen" rows="5" width="100%" id="anmerkungen"
-                    placeholder="Anmerkungen zur vermittelten Tätigkeit" [(ngModel)]="einsatz.anmerkungen"></textarea>
-            </mat-form-field>
-        </div>
-        <div class="add-einsatz-form__group">
-            <mat-form-field appearance="fill">
-                <mat-label for="stunden">Stunden</mat-label>
-                <input matInput type="number" id="stunden" name="stunden" [value] ="einsatz.stunden" />
-            </mat-form-field>
-        </div>
-        <div class="add-einsatz-form__group">
-            <mat-checkbox id="istAusgelastet" [(ngModel)]="einsatz.helferAusgelastet" name="istAusgelastet">Helfer:in ist
-                voll ausgelastet</mat-checkbox>
-        </div>
-        <div class="add-einsatz-form__group">
-            <button mat-flat-button color="primary" *ngIf="addEinsatzForm.valid && state == State.EDIT" type="submit"
-                (click)="addEinsatz()">Einsatz speichern</button>
-            <button mat-flat-button color="primary" *ngIf="addEinsatzForm.invalid || state == State.SAVING" type="submit" (click)="addEinsatz()"
-                disabled>Einsatz
-                speichern</button>
-            <button mat-stroked-button color="primary" (click)="back()">&laquo; Zurück</button>
-        </div>
-        <div *ngIf="state == State.ERROR" class="add-einsatz-form__error">
-            <h2>Fehler beim anlegen des Einsatzes:</h2>
-            <pre>{{createResult.errors | json}}</pre>
-            <div class="add-einsatz-form__group">
-                <button mat-flat-button color="primary" *ngIf="addEinsatzForm.valid" type="submit"
-                (click)="addEinsatz()">Erneut probieren</button>
+<h1>Einsatz protokolieren</h1>
+<div class="add-einsatz-form__success" *ngIf="state == State.SUCCESS">
+    <mat-icon>done</mat-icon> Einsatz wurde erfolgreich gespeichert. Es kann nun ein weiterer Einsatz für diese/n
+    Helfer/in protokolliert werden,
+    oder <a routerLink="/">zurück zur Liste</a>.
+</div>
+<form class="add-einsatz-form" #addEinsatzForm="ngForm">
+    <div class="add-einsatz-form__group">
+        <mat-form-field appearance="fill">
+            <mat-label>Name des/der Hilfesuchenden</mat-label>
+            <input matInput type="text" placeholder="ex. Rainer Rosenthal" id="hilfesuchender"
+                [(ngModel)]="einsatz.hilfesuchender" name="hilfesuchender" required #hilfesuchender="ngModel" />
+            <div *ngIf="hilfesuchender.invalid && (hilfesuchender.dirty || hilfesuchender.touched)">
+                <mat-error *ngIf="hilfesuchender.errors.required">
+                    Bitte den Hilfesuchenden eintragen.
+                </mat-error>
             </div>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+            <mat-label>Tätigkeit</mat-label>
+            <mat-select required [(ngModel)]="einsatz.taetigkeit" name="taetigkeit" #taetigkeit="ngModel">
+                <mat-option *ngFor="let taetigkeit of taetigkeiten" [value]="taetigkeit.key">{{taetigkeit.label}}
+                </mat-option>
+            </mat-select>
+            <div *ngIf="taetigkeit.invalid && (taetigkeit.dirty || taetigkeit.touched)">
+                <mat-error *ngIf="taetigkeit.errors.required">
+                    Bitte eine Tätigkeit auswählen!
+                </mat-error>
+            </div>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+            <mat-label for="hilfesuchender">vermittlet Durch</mat-label>
+            <input matInput type="text" id="vermittlerin" name="vermittlerin" [value]="einsatz.vermitteltDurch"
+                disabled />
+        </mat-form-field>
+    </div>
+    <div class="add-einsatz-form__group">
+        <mat-form-field appearance="fill">
+            <mat-label for="anmerkungen">Anmerkungen</mat-label>
+            <textarea matInput name="anmerkungen" rows="5" width="100%" id="anmerkungen"
+                placeholder="Anmerkungen zur vermittelten Tätigkeit" [(ngModel)]="einsatz.anmerkungen"></textarea>
+        </mat-form-field>
+    </div>
+    <div class="add-einsatz-form__group">
+        <mat-form-field appearance="fill">
+            <mat-label for="stunden">Stunden</mat-label>
+            <input matInput type="number" id="stunden" name="stunden" [(ngModel)]="einsatz.stunden" />
+        </mat-form-field>
+    </div>
+    <div class="add-einsatz-form__group">
+        <mat-checkbox id="istAusgelastet" [(ngModel)]="einsatz.helferAusgelastet" name="istAusgelastet">Helfer:in ist
+            voll ausgelastet</mat-checkbox>
+    </div>
+    <div class="add-einsatz-form__group">
+        <button mat-flat-button color="primary"
+            *ngIf="addEinsatzForm.valid && (state == State.EDIT || state == State.SUCCESS)" type="submit"
+            (click)="addEinsatz()">Einsatz speichern</button>
+        <button mat-flat-button color="primary" *ngIf="addEinsatzForm.invalid || state == State.SAVING" type="submit"
+            (click)="addEinsatz()" disabled>Einsatz
+            speichern</button>
+        <button mat-stroked-button color="primary" (click)="back()">&laquo; Zurück</button>
+    </div>
+    <div *ngIf="state == State.ERROR" class="add-einsatz-form__error">
+        <h2>Fehler beim Anlegen des Einsatzes:</h2>
+        <pre>{{createResult.errors | json}}</pre>
+        <div class="add-einsatz-form__group">
+            <button mat-flat-button color="primary" *ngIf="addEinsatzForm.valid" type="submit"
+                (click)="addEinsatz()">Erneut probieren</button>
         </div>
-    </form>
+    </div>
+</form>
