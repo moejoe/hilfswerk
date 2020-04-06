@@ -37,8 +37,7 @@ export class GraphqlService {
       plz
     },
     istAusgelastet,
-    totalEinsaetze,
-    anmerkung
+    totalEinsaetze
   }
 }`;
     return this.httpClient.post<{ data: { helferByName: HelferListenEintrag[] } }>(`${environment.apiUrl}/graphql`, {
@@ -74,8 +73,7 @@ export class GraphqlService {
       plz
     },
     istAusgelastet
-    totalEinsaetze,
-    anmerkung
+    totalEinsaetze
   }
 }`;
     return this.httpClient.post<{ data: { helfer: HelferListenEintrag[] } }>(`${environment.apiUrl}/graphql`, {
