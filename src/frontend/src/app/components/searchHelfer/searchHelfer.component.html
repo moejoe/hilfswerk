@@ -29,6 +29,7 @@
                 <div class="actions" *ngIf="h === selectedHelfer">
                     <button mat-flat-button color="primary" [routerLink]="['/helfer_innen', h.id ]">Helfer:in Bearbeiten</button>
                     <button *ngIf="h.istAusgelastet" mat-flat-button color="primary" (click)="entlasten(h.id)">Wieder Verfügbar</button>
+                    <button mat-flat-button color="primary" [routerLink]="['/helfer_innen', h.id, 'einsaetze', 'new' ]">Einsatz protokollieren</button>
                 </div>
             </td>
         </ng-container>
