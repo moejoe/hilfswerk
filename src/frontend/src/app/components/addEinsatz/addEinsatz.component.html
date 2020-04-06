@@ -52,7 +52,7 @@
             <button mat-flat-button color="primary" *ngIf="addEinsatzForm.invalid || state == State.SAVING" type="submit" (click)="addEinsatz()"
                 disabled>Einsatz
                 speichern</button>
-            <button mat-flat-button color="primary" routerLink="/index">Abbrechen</button>
+            <button mat-stroked-button color="primary" routerLink="/index">&laquo; Zurück</button>
         </div>
         <div *ngIf="state == State.ERROR" class="add-einsatz-form__error">
             <h2>Fehler beim anlegen des Einsatzes:</h2>

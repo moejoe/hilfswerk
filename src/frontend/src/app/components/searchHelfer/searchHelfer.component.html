@@ -1,6 +1,6 @@
 <div class="main-panel__header">
     <h1>Helfer:innen suchen</h1>
-    <button mat-flat-button color="primary" routerLink="/index">&laquo; Zurück zur Liste</button>
+    <button mat-stroked-button color="primary" routerLink="/index">&laquo; Zurück zur Liste</button>
 </div>
 <mat-form-field appearance="fill">
     <input matInput id="search-input" placeholder="Helfer:innen Name" type="text" [(ngModel)]="searchTerms" (ngModelChange)="filterChange.next($event)"/>

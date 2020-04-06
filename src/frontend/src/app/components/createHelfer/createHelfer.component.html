@@ -106,7 +106,7 @@
                 (click)="[createHelfer(),  createHelferForm.reset()]">Helfer:in speichern</button>
             <button mat-flat-button color="primary" *ngIf="createHelferForm.invalid" type="submit"
                 (click)="createHelfer()" disabled>Helfer:in speichern</button>
-            <button mat-flat-button color="primary" routerLink="/index">Abbrechen</button>
+            <button mat-stroked-button color="primary" routerLink="/index">&laquo; Zurück</button>
             <mat-list>
                 <mat-list-item *ngFor="let createResult of createResults">
                     <div *ngIf="createResult && createResult.isSuccess">
