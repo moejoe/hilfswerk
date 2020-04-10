@@ -11,7 +11,7 @@ namespace Hilfswerk.GraphApi
             Field(x => x.Vorname);
             Field(x => x.Nachname);
             Field(x => x.Plz);
-            Field(x => x.Strasse);
+            Field(x => x.Strasse, nullable: true);
             Field(x => x.Telefon, nullable: true);
             Field(x => x.Email, nullable: true);
         }
