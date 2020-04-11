@@ -6,7 +6,7 @@ export enum Taetigkeit {
 }
 
 export interface HelferFilters {
-    inPlz?: number;
+    inPlz?: number[];
     taetigkeitIn?: Taetigkeit[];
     istRisikoGruppe?: boolean;
     hatAuto?: boolean;

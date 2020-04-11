@@ -1,9 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { GraphqlService } from 'src/app/services/graphql.service';
-import { Observable } from 'rxjs';
-import { HelferListenEintrag, Taetigkeit, HelferDetail } from 'src/app/models/graphql-models';
+import { Subscription } from 'rxjs';
+import { HelferListenEintrag, Taetigkeit, HelferDetail, HelferFilters } from 'src/app/models/graphql-models';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { AuthService, UserInfo } from 'src/app/services/auth.service';
+import { Router, ActivatedRoute } from '@angular/router';
+import { FilterQueryParamsFormatterService } from 'src/app/services/filter-query-params-formatter.service';
+import { NavigationPresitenceService } from 'src/app/services/navigation-presitence.service';
+import { tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-index',
@@ -17,8 +21,8 @@ import { AuthService, UserInfo } from 'src/app/services/auth.service';
     ]),
   ],
 })
-export class IndexComponent implements OnInit {
-  helfer$: Observable<HelferListenEintrag[]>;
+export class IndexComponent implements OnInit, OnDestroy {
+  helfer: HelferListenEintrag[];
   bezirke: any;
   displayedColumns: string[] = ['name', 'einsaetze', 'strasse', 'plz'];
   taetigkeiten = [{ name: "andere", id: Taetigkeit.ANDERE, checked: false },
@@ -33,13 +37,22 @@ export class IndexComponent implements OnInit {
   selectedHelfer: HelferListenEintrag | null;
   selectedHelferDetail: HelferDetail | null;
   userinfo: UserInfo;
+  firstTimeUrlFiltersOnly = false;
+  sub: Subscription;
 
-  constructor(private graphqlService: GraphqlService, private authService: AuthService) {
+  constructor(private graphqlService: GraphqlService,
+    private authService: AuthService,
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
+    private queryParamsService: FilterQueryParamsFormatterService,
+    private navigationPersistence: NavigationPresitenceService) {
 
+  }
+  ngOnDestroy(): void {
+    this.sub.unsubscribe();
   }
 
   async ngOnInit() {
-    this.helfer$ = this.graphqlService.queryHelferListe({ istAusgelastet: false });
     this.bezirke = [];
     for (let i = 1010; i <= 1230; i += 10) {
       this.bezirke.push({ name: `${i}`, checked: false, nummer: i });
@@ -47,46 +60,95 @@ export class IndexComponent implements OnInit {
     this.authService.getUserInfo().subscribe(resp => {
       this.userinfo = { ...resp.body };
     });
+    this.sub = this.activatedRoute.queryParams.subscribe(params => {
+      if (!this.firstTimeUrlFiltersOnly) {
+        this.firstTimeUrlFiltersOnly = true;
+        let filters = this.queryParamsService.fromQueryParams(params);
+        filters.istAusgelastet = false;
+        let querySub = this.graphqlService.queryHelferListe(filters)
+          // side-effect: select the "last helfer" again
+          .pipe(tap(helfer => {
+            let lastHelferId = this.navigationPersistence.getLastHelfer();
+            if (lastHelferId) {
+              let eintrag = helfer.find(d => d.id == lastHelferId);
+              if (eintrag) {
+                this.selectHelfer(eintrag);
+              }
+            }
+          })).subscribe(helfer => {
+            this.helfer = helfer;
+            querySub.unsubscribe();
+          });
+        this.updateFilterUi(filters);
+      }
+    });
   }
 
-  onEinsatzAdded(event: string) {
+  private updateFilterUi(filters: HelferFilters) {
+    if (filters.inPlz) {
+      for (let plz of filters.inPlz) {
+        this.bezirke.find(b => b.nummer == plz).checked = true;
+      }
+    }
+    this.istFreiwilliger = filters.istFreiwilliger;
+    this.istRisikoGruppe = filters.istRisikoGruppe;
+    this.hatAuto = filters.hatAuto;
+    this.istZivildiener = filters.istZivildiener;
+    if (filters.taetigkeitIn) {
+      for (let t of filters.taetigkeitIn) {
+        this.taetigkeiten.find(b => b.id == t).checked = true;
+      }
+    }
+    this.updateGesetzteFilter();
+  }
+
+  onEinsatzAdded() {
     this.selectedHelfer.totalEinsaetze++;
   }
 
-  async rowClick(row: HelferListenEintrag) {
-    this.selectedHelfer = this.selectedHelfer === row ? null : row;
+  private async selectHelfer(eintrag: HelferListenEintrag) {
+    this.selectedHelfer = this.selectedHelfer === eintrag ? null : eintrag;
     this.selectedHelferDetail = null;
     if (null != this.selectedHelfer) {
       var detail = await this.graphqlService.getHelferDetail(this.selectedHelfer.id);
       //sort einsätze by date desc.
       detail.einsaetze = detail.einsaetze.sort((p1, p2) => new Date(p2.vermitteltAm).getTime() - new Date(p1.vermitteltAm).getTime());
       this.selectedHelferDetail = detail;
+      this.navigationPersistence.storeLastHelfer(this.selectedHelfer.id);
     }
   }
 
+  async rowClick(row: HelferListenEintrag) {
+    await this.selectHelfer(row);
+  }
+
+  updateGesetzteFilter() {
+    this.gesetzeFilter = [
+      ...this.bezirke.filter(v => v.checked).map(v => v.name),
+      ...this.taetigkeiten.filter(v => v.checked).map(v => v.name),
+      ...(this.hatAuto ? ["Auto verfügbar"] : []),
+      ...(this.istRisikoGruppe ? ["Ist Risikogruppe"] : []),
+      ...(this.istFreiwilliger ? ["Ist FW"] : []),
+      ...(this.istZivildiener ? ["Ist ZDL"] : [])
+    ];
+  }
+
   filterChange() {
+    this.navigationPersistence.clearLastHelfer();
     let inPlz = null;
     let taetigkeitIn = null
     let hatAuto = this.hatAuto ? true : null;
     let istRisikoGruppe = this.istRisikoGruppe ? true : null;
     let istZivildiener = this.istZivildiener ? true : null;
     let istFreiwilliger = this.istFreiwilliger ? true : null;
-
     if (this.bezirke.filter(b => b.checked).length > 0) {
       inPlz = this.bezirke.filter(v => v.checked).map(v => v.nummer);
     }
     if (this.taetigkeiten.filter(b => b.checked).length > 0) {
       taetigkeitIn = this.taetigkeiten.filter(v => v.checked).map(v => v.id);
     }
-    this.gesetzeFilter = [
-      ...this.bezirke.filter(v => v.checked).map(v => v.name),
-      ...this.taetigkeiten.filter(v => v.checked).map(v => v.name),
-      ...(hatAuto ? ["Auto verfügbar"] : []),
-      ...(istRisikoGruppe ? ["Ist Risikogruppe"] : []),
-      ...(istFreiwilliger ? ["Ist FW"] : []),
-      ...(istZivildiener ? ["Ist ZDL"] : [])
-    ];
-    this.helfer$ = this.graphqlService.queryHelferListe({
+    this.updateGesetzteFilter();
+    let filter: HelferFilters = {
       inPlz,
       taetigkeitIn,
       hatAuto,
@@ -94,6 +156,17 @@ export class IndexComponent implements OnInit {
       istZivildiener,
       istFreiwilliger,
       istAusgelastet: false
-    });
+    };
+    let sub = this.graphqlService.queryHelferListe(filter).subscribe(helfer => {
+      this.helfer = helfer;
+      sub.unsubscribe();
+    })
+    this.router.navigate(
+      [],
+      {
+        relativeTo: this.activatedRoute,
+        queryParams: this.queryParamsService.toQueryParams(filter),
+        replaceUrl: true
+      });
   }
 }
