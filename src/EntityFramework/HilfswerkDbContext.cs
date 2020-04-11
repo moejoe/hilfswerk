@@ -60,10 +60,9 @@ namespace Hilfswerk.EntityFramework
                     .HasMaxLength(50);
                 entity.HasData(Taetigkeit.TELEFON_KONTAKT, Taetigkeit.GASSI_GEHEN, Taetigkeit.BESORGUNG, Taetigkeit.ANDERE);
             });
-
-
-
         }
-
+        [DbFunction("contains_ignore_case")]
+        public static bool ContainsIgnoreCase(string term, string containedin)
+                => containedin.IndexOf(term, System.StringComparison.OrdinalIgnoreCase) > -1;
     }
 }
