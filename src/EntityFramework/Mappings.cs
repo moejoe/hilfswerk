@@ -51,6 +51,7 @@ namespace Hilfswerk.EntityFramework
             entity.TaetigkeitId = (int)model.Taetigkeit;
             entity.Hilfesuchender = model.Hilfesuchender;
             entity.VermitteltDurch = model.VermitteltDurch;
+            entity.VermitteltAm = model.VermitteltAm.UtcDateTime;
             entity.Stunden = model.Stunden;
         }
 

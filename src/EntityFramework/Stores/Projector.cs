@@ -13,7 +13,7 @@ namespace Hilfswerk.EntityFramework.Stores
                 Anmerkungen = x.Anmerkungen,
                 Hilfesuchender = x.Hilfesuchender,
                 Taetigkeit = TaetigkeitFromId(x.TaetigkeitId),
-                VermitteltAm = x.VermitteltAm,
+                VermitteltAm = new DateTimeOffset(x.VermitteltAm, TimeSpan.Zero),
                 VermitteltDurch = x.VermitteltDurch,
                 Helfer = new Models.Helfer
                 {
@@ -53,7 +53,7 @@ namespace Hilfswerk.EntityFramework.Stores
                     Anmerkungen = d.Anmerkungen,
                     Hilfesuchender = d.Hilfesuchender,
                     Taetigkeit = TaetigkeitFromId(d.TaetigkeitId),
-                    VermitteltAm = d.VermitteltAm,
+                    VermitteltAm = new DateTimeOffset(d.VermitteltAm, TimeSpan.Zero),
                     VermitteltDurch = d.VermitteltDurch,
                     Helfer = new Models.Helfer
                     {

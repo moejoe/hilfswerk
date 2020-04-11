@@ -23,7 +23,7 @@ export interface HelferListenEintrag {
 }
 
 export interface HelferDetail {
-    id : string;
+    id: string;
     istRisikoGruppe?: boolean;
     hatAuto?: boolean;
     istZivildiener?: boolean;
@@ -90,6 +90,7 @@ export interface EinsatzInput {
     vermitteltDurch: string;
     helferAusgelastet: boolean;
     stunden: number;
+    vermitteltAm: Date;
 }
 export interface EinsatzCreateResult {
     hilfesuchender: string;

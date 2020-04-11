@@ -32,16 +32,16 @@ export class AddEinsatzComponent implements OnInit, OnDestroy {
 
   @ViewChild("addEinsatzForm") addEinsatzForm: NgForm;
 
-  constructor(private graphqlService: GraphqlService, 
-    private route: ActivatedRoute, 
-    private authService: AuthService, 
+  constructor(private graphqlService: GraphqlService,
+    private route: ActivatedRoute,
+    private authService: AuthService,
     private location: Location,
-    private changeDetectorRef : ChangeDetectorRef) { }
+    private changeDetectorRef: ChangeDetectorRef) { }
   ngOnDestroy(): void {
     this.paramSubscription.unsubscribe();
   }
 
-  resetEinsatzForm(vorherigerEinsatz: EinsatzInputModel) {    
+  resetEinsatzForm(vorherigerEinsatz: EinsatzInputModel) {
     let neuerEinsatz = new EinsatzInputModel(this.userinfo.name);
     if (vorherigerEinsatz) {
       neuerEinsatz.hilfesuchender = vorherigerEinsatz.hilfesuchender;
@@ -102,7 +102,9 @@ class EinsatzInputModel implements EinsatzInput {
     this.anmerkungen = "";
     this.helferAusgelastet = false;
     this.stunden = null;
+    this.vermitteltAm = new Date();
   }
+  vermitteltAm: Date;
   hilfesuchender: string;
   taetigkeit: Taetigkeit;
   anmerkungen: string;
