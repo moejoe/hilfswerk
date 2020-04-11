@@ -24,9 +24,15 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatListModule } from '@angular/material/list';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatCardModule } from '@angular/material/card';
 import { HelferDetailComponent } from './components/helfer-detail/helfer-detail.component';
+import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
+import { registerLocaleData } from '@angular/common';
+import localeDeAT from '@angular/common/locales/de-AT';
+import { DateFnsDateAdapter, MAT_DATE_FNS_DATE_FORMATS } from './date-fns-date-adapter';
 
+registerLocaleData(localeDeAT);
 
 
 @NgModule({
@@ -57,9 +63,20 @@ import { HelferDetailComponent } from './components/helfer-detail/helfer-detail.
     MatSelectModule,
     MatCheckboxModule,
     MatListModule,
-    MatCardModule
+    MatCardModule,
+    MatDatepickerModule
   ],
-  providers: [AuthGuard],
+  providers: [
+    AuthGuard,
+    {
+      provide: DateAdapter,
+      useClass: DateFnsDateAdapter
+    },
+    {
+      provide: MAT_DATE_FORMATS,
+      useValue: MAT_DATE_FNS_DATE_FORMATS
+    },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
