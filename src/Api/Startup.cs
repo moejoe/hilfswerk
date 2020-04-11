@@ -5,10 +5,12 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System;
 using System.IO;
 using System.Reflection;
 
@@ -34,7 +36,7 @@ namespace Api
             services.AddSimpleTokenAuthentication(_configuration.GetSection("Authentication"));
             services.AddHilfswerkGraphApi(opt =>
             {
-                if(!_webHostEnvironment.IsDevelopment())
+                if (!_webHostEnvironment.IsDevelopment())
                 {
                     opt.AuthorizationPolicy = "DefaultPolicy";
                 }
@@ -44,9 +46,12 @@ namespace Api
             services.AddDbContext<HilfswerkDbContext>(opt =>
             {
                 var dbPath = Path.Combine(_webHostEnvironment.WebRootPath, "App_Data", "hilfswerk.db");
-                opt.UseSqlite($"Data Source={dbPath}",
+                var connection = new SqliteConnection($"Data Source={dbPath}");
+                connection.Open();
+                connection.CreateFunction("contains_ignore_case", (Func<string, string, bool>)HilfswerkDbContext.ContainsIgnoreCase);
+                opt.UseSqlite(connection,
                     sql => sql.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name));
-                if(_webHostEnvironment.IsDevelopment())
+                if (_webHostEnvironment.IsDevelopment())
                 {
                     opt.EnableSensitiveDataLogging(sensitiveDataLoggingEnabled: false);
                 }

@@ -123,7 +123,7 @@ namespace Hilfswerk.EntityFramework.Stores
             var query = _db.Helfer.AsQueryable();
             foreach (var term in terms)
             {
-                query = query.Where(p => p.Kontakt.Nachname.ToUpper().Contains(term.ToUpper()) || p.Kontakt.Vorname.ToUpper().Contains(term.ToUpper()));
+                query = query.Where(p => HilfswerkDbContext.ContainsIgnoreCase(term, p.Kontakt.Nachname) || HilfswerkDbContext.ContainsIgnoreCase(term, p.Kontakt.Vorname));
             }
             return query.Select(Projector.HelferProjection).ToArrayAsync();
         }
@@ -143,7 +143,7 @@ namespace Hilfswerk.EntityFramework.Stores
                     _db.Remove(existingTaetigkeit);
                 }
             }
-            foreach(var newTaetigkeit in newTaetigkeiten)
+            foreach (var newTaetigkeit in newTaetigkeiten)
             {
                 if (helfer.HelferTaetigkeiten.All(p => p.TaetigkeitId != newTaetigkeit.TaetigkeitId))
                 {
