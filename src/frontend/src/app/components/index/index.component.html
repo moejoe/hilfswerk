@@ -43,7 +43,7 @@
         <button mat-flat-button color="primary" routerLink="/helfer_innen/new">Neue/n Helfer:in anlegen</button>
     </div>
     <div class="table-container">
-        <table mat-table [dataSource]="helfer$ | async" multiTemplateDataRows>
+        <table mat-table [dataSource]="helfer" multiTemplateDataRows>
             <ng-container matColumnDef="name">
                 <th mat-header-cell *matHeaderCellDef>Name</th>
                 <td mat-cell *matCellDef="let h">{{h.kontakt.nachname}} {{h.kontakt.vorname}}</td>

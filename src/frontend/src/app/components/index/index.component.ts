@@ -1,11 +1,13 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { GraphqlService } from 'src/app/services/graphql.service';
-import { Observable, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { HelferListenEintrag, Taetigkeit, HelferDetail, HelferFilters } from 'src/app/models/graphql-models';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { AuthService, UserInfo } from 'src/app/services/auth.service';
-import { Router, Params, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { FilterQueryParamsFormatterService } from 'src/app/services/filter-query-params-formatter.service';
+import { NavigationPresitenceService } from 'src/app/services/navigation-presitence.service';
+import { tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-index',
@@ -20,7 +22,7 @@ import { FilterQueryParamsFormatterService } from 'src/app/services/filter-query
   ],
 })
 export class IndexComponent implements OnInit, OnDestroy {
-  helfer$: Observable<HelferListenEintrag[]>;
+  helfer: HelferListenEintrag[];
   bezirke: any;
   displayedColumns: string[] = ['name', 'einsaetze', 'strasse', 'plz'];
   taetigkeiten = [{ name: "andere", id: Taetigkeit.ANDERE, checked: false },
@@ -38,8 +40,12 @@ export class IndexComponent implements OnInit, OnDestroy {
   firstTimeUrlFiltersOnly = false;
   sub: Subscription;
 
-  constructor(private graphqlService: GraphqlService, private authService: AuthService,
-    private router: Router, private activatedRoute: ActivatedRoute, private queryParamsService: FilterQueryParamsFormatterService) {
+  constructor(private graphqlService: GraphqlService,
+    private authService: AuthService,
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
+    private queryParamsService: FilterQueryParamsFormatterService,
+    private navigationPersistence: NavigationPresitenceService) {
 
   }
   ngOnDestroy(): void {
@@ -59,39 +65,61 @@ export class IndexComponent implements OnInit, OnDestroy {
         this.firstTimeUrlFiltersOnly = true;
         let filters = this.queryParamsService.fromQueryParams(params);
         filters.istAusgelastet = false;
-        this.helfer$ = this.graphqlService.queryHelferListe(filters);
-        if (filters.inPlz) {
-          for (let plz of filters.inPlz) {
-            this.bezirke.find(b => b.nummer == plz).checked = true;
-          }
-        }
-        this.istFreiwilliger = filters.istFreiwilliger;
-        this.istRisikoGruppe = filters.istRisikoGruppe;
-        this.hatAuto = filters.hatAuto;
-        this.istZivildiener = filters.istZivildiener;
-        if (filters.taetigkeitIn) {
-          for (let t of filters.taetigkeitIn) {
-            this.taetigkeiten.find(b => b.id == t).checked = true;
-          }
-        }
-        this.updateGesetzteFilter();
+        let querySub = this.graphqlService.queryHelferListe(filters)
+          // side-effect: select the "last helfer" again
+          .pipe(tap(helfer => {
+            let lastHelferId = this.navigationPersistence.getLastHelfer();
+            if (lastHelferId) {
+              let eintrag = helfer.find(d => d.id == lastHelferId);
+              if (eintrag) {
+                this.selectHelfer(eintrag);
+              }
+            }
+          })).subscribe(helfer => {
+            this.helfer = helfer;
+            querySub.unsubscribe();
+          });
+        this.updateFilterUi(filters);
       }
     });
   }
 
-  onEinsatzAdded(event: string) {
+  private updateFilterUi(filters: HelferFilters) {
+    if (filters.inPlz) {
+      for (let plz of filters.inPlz) {
+        this.bezirke.find(b => b.nummer == plz).checked = true;
+      }
+    }
+    this.istFreiwilliger = filters.istFreiwilliger;
+    this.istRisikoGruppe = filters.istRisikoGruppe;
+    this.hatAuto = filters.hatAuto;
+    this.istZivildiener = filters.istZivildiener;
+    if (filters.taetigkeitIn) {
+      for (let t of filters.taetigkeitIn) {
+        this.taetigkeiten.find(b => b.id == t).checked = true;
+      }
+    }
+    this.updateGesetzteFilter();
+  }
+
+  onEinsatzAdded() {
     this.selectedHelfer.totalEinsaetze++;
   }
 
-  async rowClick(row: HelferListenEintrag) {
-    this.selectedHelfer = this.selectedHelfer === row ? null : row;
+  private async selectHelfer(eintrag: HelferListenEintrag) {
+    this.selectedHelfer = this.selectedHelfer === eintrag ? null : eintrag;
     this.selectedHelferDetail = null;
     if (null != this.selectedHelfer) {
       var detail = await this.graphqlService.getHelferDetail(this.selectedHelfer.id);
       //sort einsätze by date desc.
       detail.einsaetze = detail.einsaetze.sort((p1, p2) => new Date(p2.vermitteltAm).getTime() - new Date(p1.vermitteltAm).getTime());
       this.selectedHelferDetail = detail;
+      this.navigationPersistence.storeLastHelfer(this.selectedHelfer.id);
     }
+  }
+
+  async rowClick(row: HelferListenEintrag) {
+    await this.selectHelfer(row);
   }
 
   updateGesetzteFilter() {
@@ -106,6 +134,7 @@ export class IndexComponent implements OnInit, OnDestroy {
   }
 
   filterChange() {
+    this.navigationPersistence.clearLastHelfer();
     let inPlz = null;
     let taetigkeitIn = null
     let hatAuto = this.hatAuto ? true : null;
@@ -128,7 +157,10 @@ export class IndexComponent implements OnInit, OnDestroy {
       istFreiwilliger,
       istAusgelastet: false
     };
-    this.helfer$ = this.graphqlService.queryHelferListe(filter);
+    let sub = this.graphqlService.queryHelferListe(filter).subscribe(helfer => {
+      this.helfer = helfer;
+      sub.unsubscribe();
+    })
     this.router.navigate(
       [],
       {
