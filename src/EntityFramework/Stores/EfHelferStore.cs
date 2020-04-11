@@ -107,8 +107,7 @@ namespace Hilfswerk.EntityFramework.Stores
             var einsatz = new Entities.Einsatz
             {
                 Helfer = helfer,
-                Id = Guid.NewGuid().ToString(),
-                VermitteltAm = DateTimeOffset.Now.UtcDateTime
+                Id = Guid.NewGuid().ToString()
             };
             createModel.ApplyTo(einsatz);
             _db.Add(einsatz);
