@@ -1,5 +1,7 @@
 <mat-card class="mat-elevation-z8 filter-panel">
-    <mat-card-title>Filter <button mat-icon-button routerLink="/helfer_innen"><mat-icon>search</mat-icon></button></mat-card-title>
+    <mat-card-title>Filter <button mat-icon-button routerLink="/helfer_innen">
+            <mat-icon>search</mat-icon>
+        </button></mat-card-title>
     <mat-card-content>
         <div class="filter-panel__filter-group">
             <mat-button-toggle class="plz-filter" *ngFor="let bezirk of bezirke" id="bezirk-{{bezirk.name}}"
@@ -9,24 +11,24 @@
         </div>
         <div class="filter-panel__filter-group">
             <mat-button-toggle class="taetigkeit-filter" *ngFor="let taetigkeit of taetigkeiten"
-                id="taetigkeit-{{taetigkeit.id}}"
+                id="taetigkeit-{{taetigkeit.id}}" [checked]="taetigkeit.checked"
                 (change)="[taetigkeit.checked = $event.source.checked, filterChange()]"
                 name="taetigkeit-{{taetigkeit.id}}">
                 {{taetigkeit.name}}</mat-button-toggle>
         </div>
         <div class="filter-panel__filter-group">
-            <mat-button-toggle id="hat-auto" class="sonstiges-filter"
+            <mat-button-toggle id="hat-auto" class="sonstiges-filter" [checked]="hatAuto"
                 (change)="[hatAuto = $event.source.checked, filterChange()]">Auto verfügbar
             </mat-button-toggle>
-            <mat-button-toggle id="ist-risikogruppe" class="sonstiges-filter"
+            <mat-button-toggle id="ist-risikogruppe" class="sonstiges-filter" [checked]="istRisikoGruppe"
                 (change)="[istRisikoGruppe = $event.source.checked, filterChange()]">
                 Risikogruppe
             </mat-button-toggle>
-            <mat-button-toggle id="ist-freiwilliger" class="sonstiges-filter"
+            <mat-button-toggle id="ist-freiwilliger" class="sonstiges-filter" [checked]="istFreiwilliger"
                 (change)="[istFreiwilliger = $event.source.checked, filterChange()]">
                 WHW FW
             </mat-button-toggle>
-            <mat-button-toggle id="ist-zivildiener" class="sonstiges-filter"
+            <mat-button-toggle id="ist-zivildiener" class="sonstiges-filter" [checked]="istZivildiener"
                 (change)="[istZivildiener = $event.source.checked, filterChange()]">
                 Zivildiener
             </mat-button-toggle>
@@ -38,7 +40,7 @@
 <div class="main-panel__container">
     <div class="main-panel__header">
         <h1>Verfügbare Helfer:innen</h1>
-        <button mat-flat-button color="primary" routerLink="/helfer_innen/new">Neue/n Helfer:in anlegen</button>    
+        <button mat-flat-button color="primary" routerLink="/helfer_innen/new">Neue/n Helfer:in anlegen</button>
     </div>
     <div class="table-container">
         <table mat-table [dataSource]="helfer$ | async" multiTemplateDataRows>
