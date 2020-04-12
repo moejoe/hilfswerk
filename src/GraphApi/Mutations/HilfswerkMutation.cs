@@ -32,8 +32,8 @@ namespace Hilfswerk.GraphApi.Mutations
                     return await store.AddEinsatz(helferId, einsatz);
                 });
             FieldAsync<EinsatzType>("editEinsatz",
-                arguments: new QueryArguments(new QueryArgument<NonNullGraphType<StringGraphType>> { Name = "helferId" },
-                    new QueryArgument<NonNullGraphType<StringGraphType>> { Name = "einsatzId" },
+                arguments: new QueryArguments(new QueryArgument<NonNullGraphType<IdGraphType>> { Name = "helferId" },
+                    new QueryArgument<NonNullGraphType<IdGraphType>> { Name = "einsatzId" },
                     new QueryArgument<NonNullGraphType<EinsatzEditInputType>> { Name = "einsatz" }),
                 resolve: async context =>
                 {

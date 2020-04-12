@@ -171,7 +171,8 @@ namespace Hilfswerk.EntityFramework.Stores
         public async Task<Einsatz> EditEinsatz(string helferId, string einsatzId, EinsatzEditModel einsatzEdit)
         {
             var einsatz = (await _db.Einsaetze.Where(p => p.Id == einsatzId && p.Helfer.Id == helferId)
-                    .SingleOrDefaultAsync()) ?? throw new InvalidOperationException($"Einsatz {einsatzId} for helfer {helferId} not found");
+                .Include(p => p.Helfer)
+                .SingleOrDefaultAsync()) ?? throw new InvalidOperationException($"Einsatz {einsatzId} for helfer {helferId} not found");
 
             einsatzEdit.ApplyTo(einsatz);
             await _db.SaveChangesAsync();
