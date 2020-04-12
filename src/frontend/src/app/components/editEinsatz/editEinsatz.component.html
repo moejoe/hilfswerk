@@ -1,0 +1,47 @@
+<h1>Einsatz bearbeiten</h1>
+<form class="edit-einsatz-form" #editEinsatzForm="ngForm">
+    <div class="edit-einsatz-form__group">
+        <mat-form-field appearance="fill">
+            <mat-label>Name des/der Hilfesuchenden</mat-label>
+            <input matInput type="text" id="hilfesuchender"
+                [value]="einsatz.hilfesuchender" name="hilfesuchender" disabled />
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+            <mat-label>Tätigkeit</mat-label>
+            <input matInput type="text" name="taetigkeit" [value]="einsatz.taetigkeit" disabled />
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+            <mat-label for="hilfesuchender">vermittlet Durch</mat-label>
+            <input matInput type="text" id="vermittlerin" name="vermittlerin" [value]="einsatz.vermitteltDurch" disabled />
+        </mat-form-field>
+    </div>
+    <div class="edit-einsatz-form__group">
+        <mat-form-field appearance="fill">
+            <mat-label for="anmerkungen">Anmerkungen</mat-label>
+            <textarea matInput name="anmerkungen" rows="5" width="100%" id="anmerkungen"
+                placeholder="Anmerkungen zur vermittelten Tätigkeit" [(ngModel)]="einsatz.anmerkungen"></textarea>
+        </mat-form-field>
+    </div>
+    <div class="edit-einsatz-form__group">
+        <mat-form-field appearance="fill">
+            <mat-label for="stunden">Stunden</mat-label>
+            <input matInput type="number" id="stunden" name="stunden" [(ngModel)]="einsatz.stunden" />
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+            <mat-label for="vermitteltAm">vermittelt Am</mat-label>
+            <input matInput id="vermitteltAm" [matDatepicker]="vermitteltAmPicker" name="vermitteltAm" [(ngModel)]="einsatz.vermitteltAm" />
+            <mat-datepicker-toggle matSuffix [for]="vermitteltAmPicker"></mat-datepicker-toggle>
+            <mat-datepicker #vermitteltAmPicker></mat-datepicker>
+          </mat-form-field>
+          
+    </div>
+    {{einsatz | json}}
+    <div class="edit-einsatz-form__group">
+        <button mat-flat-button color="primary"
+            *ngIf="editEinsatzForm.valid" type="submit"
+            (click)="editEinsatz()">Einsatz speichern</button>
+        <button mat-flat-button color="primary" *ngIf="editEinsatzForm.invalid" type="submit" disabled>Einsatz
+            speichern</button>
+        <button mat-stroked-button color="primary" (click)="back()">&laquo; Zurück</button>
+    </div>
+</form>
