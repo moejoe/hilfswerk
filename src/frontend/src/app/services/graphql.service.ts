@@ -5,7 +5,7 @@ import { map } from "rxjs/operators";
 import {
   HelferFilters, HelferListenEintrag, HelferCreateInput,
   HelferEditInput, EinsatzInput, Kontakt, HelferCreateResult,
-  EinsatzCreateResult, Taetigkeit, HelferEditResult, HelferDetail
+  EinsatzCreateResult, Taetigkeit, HelferEditResult, HelferDetail, EinsatzEditInput, EinsatzEditResult, EinsatzListenEintrag
 } from '../models/graphql-models';
 import { AuthService } from './auth.service';
 
@@ -50,6 +50,31 @@ export class GraphqlService {
         return a.kontakt.nachname.localeCompare(b.kontakt.nachname);
       });
     }));
+  }
+
+  async removeEinsatz(helferId :string, einsatzId: string) {
+    let mutation = `
+    mutation removeEinsatz($helferId: ID!, $einsatzId: ID!) {
+      removeEinsatz(helferId: $helferId, einsatzId: $einsatzId) 
+    }`;
+    var request = {
+      "query": mutation,
+      variables: {
+        "helferId": helferId,
+        "einsatzId": einsatzId
+      }
+    };
+    try {
+      var result = await this.httpClient.post<{ data: { removeEinsatz: Boolean }, errors: any[] }>(`${environment.apiUrl}/graphql`, request,
+        { headers: this.headers() }).toPromise();
+      if (result.errors || !result.data.removeEinsatz) {
+        return new ErrorEditResult(result.errors);
+      }
+      return new SuccessEditResult();
+    }
+    catch {
+      return new ErrorEditResult([{ message: "Error sending graphQL mutation." }])
+    }
   }
 
   queryHelferListe(filters: HelferFilters) {
@@ -164,6 +189,7 @@ export class GraphqlService {
         anmerkung
         taetigkeiten,
         einsaetze {
+          id
           taetigkeit
           anmerkungen
           vermitteltDurch
@@ -189,7 +215,65 @@ export class GraphqlService {
       return d.data.helferById;
     })).toPromise();
   }
+  async getEinsatz(helferId: string, einsatzId: string) {
+    let query = `query GetEinsatz($helferId: ID, $einsatzId: ID) {
+      einsatzById(helferId: $helferId, einsatzId: $einsatzId) {
+        id
+        taetigkeit
+        anmerkungen
+        vermitteltDurch
+        vermitteltAm
+        hilfesuchender
+      }
+    }`;
+    return this.httpClient.post<{ data: { einsatzById: EinsatzListenEintrag } }>(`${environment.apiUrl}/graphql`, {
+      query: query,
+      variables: {
+        "helferId": helferId,
+        "einsatzId": einsatzId
+      },
+    }, { headers: this.headers() }).pipe(map(d => {
+      return d.data.einsatzById;
+    })).toPromise();
+  }
 
+  async editEinsatz(helferId: string, einsatzId: string, einsatz: EinsatzEditInput) {
+    let mutation = `
+    mutation editEinsatz($einsatz: EinsatzEditInput!, $helferId: ID!, $einsatzId: ID!) {
+      editEinsatz(helferId: $helferId, einsatzId: $einsatzId, einsatz: $einsatz){
+        id
+        hilfesuchender
+        taetigkeit
+      }
+    }`;
+    var request = {
+      "query": mutation,
+      variables: {
+        "einsatz": einsatz,
+        "helferId": helferId,
+        "einsatzId": einsatzId
+      }
+    };
+    try {
+      var result = await this.httpClient.post<{
+        data: {
+          editEinsatz: {
+            id: string,
+            hilfesuchender: string,
+            taetigkeit: Taetigkeit
+          }
+        }, errors: any[]
+      }>(`${environment.apiUrl}/graphql`, request,
+        { headers: this.headers() }).toPromise();
+      if (result.errors || !result.data.editEinsatz) {
+        return new ErrorEditResult(result.errors);
+      }
+      return new EditEinsatzSuccessResult(result.data.editEinsatz.hilfesuchender, result.data.editEinsatz.taetigkeit);
+    }
+    catch {
+      return new EditEinsatzErrorResult([{ message: "Error sending graphQL mutation." }])
+    }
+  }
   async editHelfer(id: string, helfer: HelferEditInput) {
     let mutation = `
     mutation editHelfer($helfer: HelferEditInput!, $id : ID) {
@@ -269,6 +353,28 @@ export class GraphqlService {
   }
 
 }
+class EditEinsatzSuccessResult implements EinsatzEditResult {
+  constructor(hilfesuchender: string, taetigkeit: Taetigkeit) {
+    this.hilfesuchender = hilfesuchender;
+    this.taetigkeit = taetigkeit;
+    this.isSuccess = true;
+  }
+  hilfesuchender: string;
+  taetigkeit: Taetigkeit;
+  errors: { message: string; }[];
+  isSuccess: boolean;
+}
+class EditEinsatzErrorResult implements EinsatzEditResult {
+  constructor(errors: { message: string; }[]) {
+    this.errors = errors;
+    this.isSuccess = false;
+  }
+  hilfesuchender: string;
+  taetigkeit: Taetigkeit;
+  errors: { message: string; }[];
+  isSuccess: boolean;
+}
+
 class AddEinsatzSuccessResult implements EinsatzCreateResult {
   constructor(hilfesuchender: string, taetigkeit: Taetigkeit) {
     this.hilfesuchender = hilfesuchender;

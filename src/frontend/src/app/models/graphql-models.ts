@@ -42,6 +42,7 @@ export interface EinsatzListenEintrag {
     anmerkungen: string;
     vermitteltDurch: string;
     vermitteltAm: Date;
+    id: string;
 }
 
 export interface Kontakt {
@@ -62,6 +63,12 @@ export interface HelferCreateInput {
     istZivildiener: boolean;
     istFreiwilliger: boolean;
     istDSGVOKonform: boolean;
+}
+
+export interface EinsatzEditInput {
+    anmerkungen: string;
+    vermitteltAm: Date;
+    stunden: number;
 }
 
 export interface HelferEditInput {
@@ -97,6 +104,13 @@ export interface EinsatzInput {
     vermitteltAm: Date;
 }
 export interface EinsatzCreateResult {
+    hilfesuchender: string;
+    taetigkeit: Taetigkeit;
+    errors: { message: string }[];
+    isSuccess: boolean;
+}
+
+export interface EinsatzEditResult {
     hilfesuchender: string;
     taetigkeit: Taetigkeit;
     errors: { message: string }[];

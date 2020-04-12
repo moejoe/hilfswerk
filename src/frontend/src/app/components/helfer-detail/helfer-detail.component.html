@@ -31,6 +31,7 @@
             <th>Hilfesuchende/r</th>
             <th>Tätigkeit</th>
             <th>Anmerkungen</th>
+            <th>Aktionen</th>
         </tr>
     </thead>
     <tbody>
@@ -49,6 +50,14 @@
             </td>
             <td>
                 {{einsatz.anmerkungen}}
+            </td>
+            <td>
+                <button mat-icon-button [routerLink]="['/helfer_innen', helfer.id, 'einsaetze', einsatz.id]">
+                    <mat-icon>edit</mat-icon>
+                </button>
+                <button mat-icon-button (click)="removeEinsatz(einsatz.id)">
+                    <mat-icon>delete</mat-icon>
+                </button>
             </td>
         </tr>
     </tbody>

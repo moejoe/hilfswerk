@@ -55,6 +55,13 @@ namespace Hilfswerk.EntityFramework
             entity.VermitteltAm = model.VermitteltAm.UtcDateTime;
             entity.Stunden = model.Stunden;
         }
+        public static void ApplyTo(this EinsatzEditModel model, Entities.Einsatz entity)
+        {
+            entity.Anmerkungen = model.Anmerkungen;
+            entity.VermitteltAm = model.VermitteltAm.UtcDateTime;
+            entity.Stunden = model.Stunden;
+        }
+
 
         public static void ApplyTo(this HelferEditModel model, Entities.Helfer entity)
         {

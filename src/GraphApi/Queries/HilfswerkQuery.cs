@@ -38,7 +38,14 @@ namespace Hilfswerk.GraphApi.Queries
                     return await store.GetHelfer(context.GetArgument<string>("helferId"));
                 }
             );
-
+            FieldAsync<EinsatzType>(
+                name: "einsatzById",
+                arguments: new QueryArguments(new QueryArgument<IdGraphType> { Name = "helferId" }, new QueryArgument<IdGraphType> { Name = "einsatzId" }),
+                resolve: async context =>
+                {
+                    return await store.GetEinsatz(context.GetArgument<string>("helferId"), context.GetArgument<string>("einsatzId"));
+                }
+            );
             FieldAsync<ListGraphType<HelferType>>(
                 name: "helfer",
                 arguments: new QueryArguments(new QueryArgument<ListGraphType<IntGraphType>> { Name = "inPlz" },

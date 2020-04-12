@@ -31,6 +31,17 @@ namespace Hilfswerk.GraphApi.Mutations
                     var einsatz = context.GetArgument<EinsatzCreateModel>("einsatz");
                     return await store.AddEinsatz(helferId, einsatz);
                 });
+            FieldAsync<EinsatzType>("editEinsatz",
+                arguments: new QueryArguments(new QueryArgument<NonNullGraphType<IdGraphType>> { Name = "helferId" },
+                    new QueryArgument<NonNullGraphType<IdGraphType>> { Name = "einsatzId" },
+                    new QueryArgument<NonNullGraphType<EinsatzEditInputType>> { Name = "einsatz" }),
+                resolve: async context =>
+                {
+                    var helferId = context.GetArgument<string>("helferId");
+                    var einsatzId = context.GetArgument<string>("einsatzId");
+                    var einsatz = context.GetArgument<EinsatzEditModel>("einsatz");
+                    return await store.EditEinsatz(helferId, einsatzId, einsatz);
+                });
             FieldAsync<BooleanGraphType>("editHelfer",
                 arguments: new QueryArguments(
                     new QueryArgument<NonNullGraphType<EditHelferInputType>> { Name = "helfer" },
@@ -48,6 +59,16 @@ namespace Hilfswerk.GraphApi.Mutations
                     {
                         return false;
                     }
+                });
+            FieldAsync<BooleanGraphType>("removeEinsatz",
+                arguments: new QueryArguments(new QueryArgument<IdGraphType> { Name = "helferId" },
+                    new QueryArgument<IdGraphType> { Name = "einsatzId" }),
+                resolve: async context =>
+                {
+                    var helferId = context.GetArgument<string>("helferId");
+                    var einsatzId = context.GetArgument<string>("einsatzId");
+                    await store.RemoveEinsatz(helferId, einsatzId);
+                    return true;
                 });
             FieldAsync<BooleanGraphType>("setAusgelastet",
                 arguments: new QueryArguments(

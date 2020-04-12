@@ -31,6 +31,7 @@ import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
 import { registerLocaleData } from '@angular/common';
 import localeDeAT from '@angular/common/locales/de-AT';
 import { DateFnsDateAdapter, MAT_DATE_FNS_DATE_FORMATS } from './date-fns-date-adapter';
+import { EditEinsatzComponent } from './components/editEinsatz/editEinsatz.component';
 
 registerLocaleData(localeDeAT);
 
@@ -45,7 +46,8 @@ registerLocaleData(localeDeAT);
     AddEinsatzComponent,
     SearchHelferComponent,
     EditHelferComponent,
-    HelferDetailComponent
+    HelferDetailComponent,
+    EditEinsatzComponent
   ],
   imports: [
     BrowserModule,
