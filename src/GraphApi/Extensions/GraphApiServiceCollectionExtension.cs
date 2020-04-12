@@ -16,6 +16,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 .AddScoped<HilfswerkMutation>()
                 .AddScoped<EinsatzType>()
                 .AddScoped<EinsatzInputType>()
+                .AddScoped<EinsatzEditInputType>()
                 .AddScoped<CreateHelferInputType>()
                 .AddScoped<EditHelferInputType>()
                 .AddScoped<HelferType>()

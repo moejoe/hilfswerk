@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { HelferDetail, Taetigkeit } from 'src/app/models/graphql-models';
+import { GraphqlService } from 'src/app/services/graphql.service';
 
 @Component({
   selector: 'helfer-detail',
@@ -28,7 +29,7 @@ export class HelferDetailComponent implements OnInit, OnChanges {
     }
   }
 
-  constructor() { }
+  constructor(private graphQlService: GraphqlService) { }
   ngOnChanges(changes: SimpleChanges): void {
     if (this.helfer) {
       this.taetigkeiten = this.helfer.taetigkeiten.map(this.formatTaetigkeit).join(", ");
@@ -42,6 +43,11 @@ export class HelferDetailComponent implements OnInit, OnChanges {
     else {
       this.taetigkeiten = this.labels = "";
     }
+  }
+  async removeEinsatz(einsatzId: string) {
+    await this.graphQlService.removeEinsatz(this.helfer.id, einsatzId);
+    let removedEinsatz = this.helfer.einsaetze.find(el => el.id == einsatzId);
+    this.helfer.einsaetze.splice(this.helfer.einsaetze.indexOf(removedEinsatz), 1);
   }
 
   ngOnInit(): void {

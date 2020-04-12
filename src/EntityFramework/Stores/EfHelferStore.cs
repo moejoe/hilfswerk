@@ -160,5 +160,31 @@ namespace Hilfswerk.EntityFramework.Stores
             helfer.istAusgelastet = istAusgelastet;
             await _db.SaveChangesAsync();
         }
+
+        public Task<Einsatz> GetEinsatz(string helferId, string einsatzId)
+        {
+            return _db.Einsaetze.Where(p => p.Id == einsatzId && p.Helfer.Id == helferId)
+                    .Select(Projector.EinsatzProjection)
+                    .SingleOrDefaultAsync();
+        }
+
+        public async Task<Einsatz> EditEinsatz(string helferId, string einsatzId, EinsatzEditModel einsatzEdit)
+        {
+            var einsatz = (await _db.Einsaetze.Where(p => p.Id == einsatzId && p.Helfer.Id == helferId)
+                .Include(p => p.Helfer)
+                .SingleOrDefaultAsync()) ?? throw new InvalidOperationException($"Einsatz {einsatzId} for helfer {helferId} not found");
+
+            einsatzEdit.ApplyTo(einsatz);
+            await _db.SaveChangesAsync();
+            return Projector.EinsatzProjection.Compile().Invoke(einsatz);
+        }
+
+        public async Task RemoveEinsatz(string helferId, string einsatzId)
+        {
+            var einsatz = (await _db.Einsaetze.Where(p => p.Id == einsatzId && p.Helfer.Id == helferId)
+                .Include(p => p.Helfer)
+                .SingleOrDefaultAsync()) ?? throw new InvalidOperationException($"Einsatz {einsatzId} for helfer {helferId} not found");
+            _db.Remove(einsatz);
+            await _db.SaveChangesAsync();        }
     }
 }
