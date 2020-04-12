@@ -11,5 +11,6 @@ namespace Hilfswerk.Core.Stores
         public bool? IstZivildienerFilter { get; set; }
         public bool? IstFreiwilligerFilter { get; set; }
         public bool? IstAusgelastetFilter { get; set; }
+        public bool? IstDSGVOKonform { get; set; }
     }
 }

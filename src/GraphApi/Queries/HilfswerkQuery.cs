@@ -47,7 +47,8 @@ namespace Hilfswerk.GraphApi.Queries
                     new QueryArgument<BooleanGraphType> { Name = "hatAuto" },
                     new QueryArgument<BooleanGraphType> { Name = "istZivildiener" },
                     new QueryArgument<BooleanGraphType> { Name = "istFreiwilliger" },
-                    new QueryArgument<BooleanGraphType> { Name = "istAusgelastet" }
+                    new QueryArgument<BooleanGraphType> { Name = "istAusgelastet" },
+                    new QueryArgument<BooleanGraphType> { Name = "istDSGVOKonform" }
                     ),
                 resolve: async context =>
                 {
@@ -60,7 +61,8 @@ namespace Hilfswerk.GraphApi.Queries
                         IstRisikoGruppeFilter = context.GetArgument<bool?>("istRisikoGruppe"),
                         IstZivildienerFilter = context.GetArgument<bool?>("istZivildiener"),
                         IstFreiwilligerFilter = context.GetArgument<bool?>("istFreiwilliger"),
-                        IstAusgelastetFilter = context.GetArgument<bool?>("istAusgelastet")
+                        IstAusgelastetFilter = context.GetArgument<bool?>("istAusgelastet"),
+                        IstDSGVOKonform = context.GetArgument<bool?>("istDSGVOKonform")
                     };
                     return await store.FindHelfer(filter);
                 }

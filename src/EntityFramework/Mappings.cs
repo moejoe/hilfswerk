@@ -16,6 +16,7 @@ namespace Hilfswerk.EntityFramework
                 istFreiwilliger = createModel.istFreiwilliger,
                 istZivildiener = createModel.istZivildiener,
                 istAusgelastet = createModel.istAusgelastet,
+                istDSGVOKonform = createModel.istDSGVOKonform,
                 Kontakt = createModel.Kontakt.ToEntity()
             };
         }
@@ -63,6 +64,7 @@ namespace Hilfswerk.EntityFramework
             entity.istFreiwilliger = model.istFreiwilliger;
             entity.istZivildiener = model.istZivildiener;
             entity.istAusgelastet = model.istAusgelastet;
+            entity.istDSGVOKonform = model.istDSGVOKonform;
             model.Kontakt.ApplyTo(entity.Kontakt);
         }
     }

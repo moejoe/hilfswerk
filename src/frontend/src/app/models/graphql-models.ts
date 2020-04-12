@@ -13,6 +13,7 @@ export interface HelferFilters {
     istZivildiener?: boolean;
     istFreiwilliger?: boolean;
     istAusgelastet?: boolean;
+    istDSGVOKonform?: boolean;
 }
 
 export interface HelferListenEintrag {
@@ -28,6 +29,7 @@ export interface HelferDetail {
     hatAuto?: boolean;
     istZivildiener?: boolean;
     istFreiwilliger?: boolean;
+    istDSGVOKonform?: boolean;
     anmerkung: string;
     taetigkeiten: Taetigkeit[];
     kontakt: Kontakt;
@@ -59,6 +61,7 @@ export interface HelferCreateInput {
     kontakt: Kontakt;
     istZivildiener: boolean;
     istFreiwilliger: boolean;
+    istDSGVOKonform: boolean;
 }
 
 export interface HelferEditInput {
@@ -70,6 +73,7 @@ export interface HelferEditInput {
     istZivildiener: boolean;
     istFreiwilliger: boolean;
     istAusgelastet: boolean;
+    istDSGVOKonform: boolean;
 }
 
 export interface HelferCreateResult {

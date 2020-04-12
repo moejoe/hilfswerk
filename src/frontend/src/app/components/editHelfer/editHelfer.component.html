@@ -88,6 +88,8 @@
             </mat-form-field>
         </div>
         <div class="edit-helfer-form__sonstiges">
+            <mat-checkbox id="istDSGVOKonform" [(ngModel)]="helfer.istDSGVOKonform" name="istDSGVOKonform">DSGVO Konform
+            </mat-checkbox>
             <mat-checkbox [(ngModel)]="helfer.istRisikogruppe" name="istRisikogruppe" id="istRisikogruppe">
                 Risikogruppe</mat-checkbox>
             <mat-checkbox id="hatAuto" [(ngModel)]="helfer.hatAuto" name="hatAuto">Auto verfügbar</mat-checkbox>

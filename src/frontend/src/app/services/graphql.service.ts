@@ -61,8 +61,9 @@ export class GraphqlService {
   $istZivildiener: Boolean
   $istFreiwilliger: Boolean
   $istAusgelastet: Boolean
+  $istDSGVOKonform: Boolean
 ) {
-  helfer(inPlz: $inPlz, taetigkeitIn: $taetigkeitIn, istRisikoGruppe : $istRisikoGruppe, hatAuto: $hatAuto, istZivildiener: $istZivildiener, istFreiwilliger: $istFreiwilliger, istAusgelastet: $istAusgelastet) {
+  helfer(inPlz: $inPlz, taetigkeitIn: $taetigkeitIn, istRisikoGruppe : $istRisikoGruppe, hatAuto: $hatAuto, istZivildiener: $istZivildiener, istFreiwilliger: $istFreiwilliger, istAusgelastet: $istAusgelastet, istDSGVOKonform: $istDSGVOKonform) {
     id
     kontakt {
       email,
@@ -138,6 +139,7 @@ export class GraphqlService {
         istZivildiener
         istFreiwilliger
         istAusgelastet
+        istDSGVOKonform
       }
     }`;
     return this.httpClient.post<{ data: { helferById: HelferEditInput } }>(`${environment.apiUrl}/graphql`, {
@@ -157,6 +159,7 @@ export class GraphqlService {
         istRisikogruppe
         istZivildiener
         istFreiwilliger
+        istDSGVOKonform
         hatAuto
         anmerkung
         taetigkeiten,

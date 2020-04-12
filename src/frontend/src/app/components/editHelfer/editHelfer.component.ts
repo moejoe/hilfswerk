@@ -52,6 +52,7 @@ class HelferEditModel implements HelferEditInput {
     this.istRisikogruppe = false;
     this.istZivildiener = false;
     this.istFreiwilliger = false;
+    this.istDSGVOKonform = false;
   }
   istAusgelastet: boolean;
   istRisikogruppe: boolean;
@@ -61,6 +62,7 @@ class HelferEditModel implements HelferEditInput {
   kontakt: Kontakt;
   istZivildiener: boolean;
   istFreiwilliger: boolean;
+  istDSGVOKonform: boolean;
 }
 class KontaktEditModel implements Kontakt {
   vorname: string;

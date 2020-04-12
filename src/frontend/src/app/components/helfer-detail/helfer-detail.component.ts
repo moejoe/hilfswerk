@@ -37,6 +37,7 @@ export class HelferDetailComponent implements OnInit, OnChanges {
         this.helfer.istFreiwilliger ? "Ist FW" : null,
         this.helfer.istZivildiener ? "Ist ZDL" : null,
         this.helfer.istRisikoGruppe ? "Ist Risikogruppe" : null,
+        this.helfer.istDSGVOKonform ? "DSGVO Konform": null
       ].filter(v => v).join(", ");
     }
     else {

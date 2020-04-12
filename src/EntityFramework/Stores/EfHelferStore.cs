@@ -77,6 +77,10 @@ namespace Hilfswerk.EntityFramework.Stores
             {
                 helferQuery = helferQuery.Where(p => p.istAusgelastet == filter.IstAusgelastetFilter.Value);
             }
+            if(filter.IstDSGVOKonform.HasValue)
+            {
+                helferQuery = helferQuery.Where(p => p.istDSGVOKonform == filter.IstDSGVOKonform.Value);
+            }
 
             return await helferQuery
                 .Include(v => v.Einsaetze)
