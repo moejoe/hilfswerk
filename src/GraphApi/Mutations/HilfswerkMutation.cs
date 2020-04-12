@@ -60,6 +60,16 @@ namespace Hilfswerk.GraphApi.Mutations
                         return false;
                     }
                 });
+            FieldAsync<BooleanGraphType>("removeEinsatz",
+                arguments: new QueryArguments(new QueryArgument<IdGraphType> { Name = "helferId" },
+                    new QueryArgument<IdGraphType> { Name = "einsatzId" }),
+                resolve: async context =>
+                {
+                    var helferId = context.GetArgument<string>("helferId");
+                    var einsatzId = context.GetArgument<string>("einsatzId");
+                    await store.RemoveEinsatz(helferId, einsatzId);
+                    return true;
+                });
             FieldAsync<BooleanGraphType>("setAusgelastet",
                 arguments: new QueryArguments(
                     new QueryArgument<BooleanGraphType> { Name = "istAusgelastet" },

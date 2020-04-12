@@ -176,7 +176,15 @@ namespace Hilfswerk.EntityFramework.Stores
 
             einsatzEdit.ApplyTo(einsatz);
             await _db.SaveChangesAsync();
-            return Projector.EinsatzProjection.Compile().Invoke(einsatz);   
+            return Projector.EinsatzProjection.Compile().Invoke(einsatz);
         }
+
+        public async Task RemoveEinsatz(string helferId, string einsatzId)
+        {
+            var einsatz = (await _db.Einsaetze.Where(p => p.Id == einsatzId && p.Helfer.Id == helferId)
+                .Include(p => p.Helfer)
+                .SingleOrDefaultAsync()) ?? throw new InvalidOperationException($"Einsatz {einsatzId} for helfer {helferId} not found");
+            _db.Remove(einsatz);
+            await _db.SaveChangesAsync();        }
     }
 }

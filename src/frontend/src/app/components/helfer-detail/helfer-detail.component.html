@@ -55,6 +55,9 @@
                 <button mat-icon-button [routerLink]="['/helfer_innen', helfer.id, 'einsaetze', einsatz.id]">
                     <mat-icon>edit</mat-icon>
                 </button>
+                <button mat-icon-button (click)="removeEinsatz(einsatz.id)">
+                    <mat-icon>delete</mat-icon>
+                </button>
             </td>
         </tr>
     </tbody>

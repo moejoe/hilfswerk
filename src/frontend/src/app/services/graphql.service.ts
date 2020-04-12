@@ -52,6 +52,31 @@ export class GraphqlService {
     }));
   }
 
+  async removeEinsatz(helferId :string, einsatzId: string) {
+    let mutation = `
+    mutation removeEinsatz($helferId: ID!, $einsatzId: ID!) {
+      removeEinsatz(helferId: $helferId, einsatzId: $einsatzId) 
+    }`;
+    var request = {
+      "query": mutation,
+      variables: {
+        "helferId": helferId,
+        "einsatzId": einsatzId
+      }
+    };
+    try {
+      var result = await this.httpClient.post<{ data: { removeEinsatz: Boolean }, errors: any[] }>(`${environment.apiUrl}/graphql`, request,
+        { headers: this.headers() }).toPromise();
+      if (result.errors || !result.data.removeEinsatz) {
+        return new ErrorEditResult(result.errors);
+      }
+      return new SuccessEditResult();
+    }
+    catch {
+      return new ErrorEditResult([{ message: "Error sending graphQL mutation." }])
+    }
+  }
+
   queryHelferListe(filters: HelferFilters) {
     let query = `query HelferListe(
   $inPlz: [Int]

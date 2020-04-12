@@ -62,7 +62,7 @@ export class AddEinsatzComponent implements OnInit, OnDestroy {
       this.helferId = params['helferId'];
     });
     this.createResult = null;
-    this.vermitteltAm = new Date();
+      
     this.state = State.EDIT;
   }
 

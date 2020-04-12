@@ -17,5 +17,6 @@ namespace Hilfswerk.Core.Stores
         Task SetAusgelastet(string helferId, bool istAusgelastet);
         Task<Einsatz> AddEinsatz(string helferId, EinsatzCreateModel createModel);
         Task<Einsatz> EditEinsatz(string helferId, string einsatzId, EinsatzEditModel einsatzEdit);
+        Task RemoveEinsatz(string helferId, string einsatzId);
     }
 }
