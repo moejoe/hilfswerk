@@ -11,11 +11,11 @@ h1 {
     margin: 0 0 1rem 0;
 }
 
-.edit-einsatz-form {
+.add-einsatz-form {
     padding: 1em 0em;
 }
 
-.edit-einsatz-form__group {
+.add-einsatz-form__group {
     display: flex;
 
     &>mat-form-field {
@@ -28,11 +28,11 @@ h1 {
     }
 }
 
-.edit-einsatz-form__error {
+.add-einsatz-form__error {
     color: $warn;
 }
 
-.edit-einsatz-form__success {
+.add-einsatz-form__success {
     &>mat-icon {
         vertical-align: bottom;
     }
