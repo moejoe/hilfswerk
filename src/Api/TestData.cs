@@ -69,7 +69,8 @@ namespace Microsoft.Extensions.DependencyInjection
                         Telefon = "+43 650 1234567"
                     },
                     Anmerkung = "Wirkt eher verdächtig",
-                    HelferTaetigkeiten = new [] { HelferTaetigkeit.BESORGUNG, HelferTaetigkeit.TELEFON_KONTAKT }
+                    HelferTaetigkeiten = new [] { HelferTaetigkeit.BESORGUNG, HelferTaetigkeit.TELEFON_KONTAKT },
+                    istDSGVOKonform = true
                 },
                 new Helfer
                 {
@@ -132,6 +133,7 @@ namespace Microsoft.Extensions.DependencyInjection
                     Anmerkung = "Ist Mittags nicht erreichbar.",
                     hatAuto = false,
                     HelferTaetigkeiten = new [] { HelferTaetigkeit.BESORGUNG, HelferTaetigkeit.GASSI_GEHEN, HelferTaetigkeit.TELEFON_KONTAKT },
+                    istDSGVOKonform = true,
 
                     Einsaetze = new Einsatz[]
                     {
@@ -142,7 +144,8 @@ namespace Microsoft.Extensions.DependencyInjection
                             Hilfesuchender = "Anna Alisg",
                             VermitteltAm = DateTime.Parse("2020-03-22 14:17:00"),
                             TaetigkeitId = Taetigkeit.BESORGUNG.Id,
-                            VermitteltDurch = "Martha Mitarbeiterin"
+                            VermitteltDurch = "Martha Mitarbeiterin",
+                            Stunden = 1
                         },
                         new Einsatz
                         {
@@ -152,7 +155,8 @@ namespace Microsoft.Extensions.DependencyInjection
                             Hilfesuchender = "Anna Alisg",
                             VermitteltAm = DateTime.Parse("2020-03-21 16:17:00"),
                             TaetigkeitId = Taetigkeit.BESORGUNG.Id,
-                            VermitteltDurch = "Martha Mitarbeiterin"
+                            VermitteltDurch = "Martha Mitarbeiterin",
+                            Stunden = 2
                         },
                         new Einsatz
                         {
