@@ -10,7 +10,7 @@ namespace Hilfswerk.GraphApi
             Name = "EinsatzEditInput";
             Field(p => p.Anmerkungen);
             Field(p => p.VermitteltAm);
-            Field(p => p.Stunden, nullable: true);
+            Field(p => p.Dauer, nullable: true);
         }
     }
 }

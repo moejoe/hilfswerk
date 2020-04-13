@@ -16,7 +16,7 @@ namespace Hilfswerk.GraphApi
             Field(p => p.VermitteltAm);
             Field(p => p.Anmerkungen);
             Field(p => p.Id);
-            Field(p => p.Stunden, nullable: true);
+            Field(p => p.Dauer, nullable: true);
         }
     }
 }

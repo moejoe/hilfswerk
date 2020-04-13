@@ -10,6 +10,6 @@ namespace Hilfswerk.Models
         public string VermitteltDurch { get; set; }
         public DateTimeOffset VermitteltAm { get; set; }
         public bool HelferAusgelastet { get; set; }
-        public int? Stunden { get; set; }
+        public TimeSpan? Dauer{ get; set; }
     }
 }

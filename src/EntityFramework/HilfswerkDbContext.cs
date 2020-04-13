@@ -1,5 +1,7 @@
 ﻿using Hilfswerk.EntityFramework.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using System;
 
 namespace Hilfswerk.EntityFramework
 {
@@ -50,6 +52,12 @@ namespace Hilfswerk.EntityFramework
                     .IsRequired();
                 entity.Property(p => p.Anmerkungen)
                     .HasMaxLength(2000);
+                entity.Property(p => p.Dauer)
+                    .HasConversion(
+                        p => p.HasValue ? Convert.ToInt32(p.Value.TotalSeconds) : null as int?,
+                        p => p.HasValue ? TimeSpan.FromSeconds(p.Value) : null as TimeSpan?);
+
+
             });
             builder.Entity<Taetigkeit>(entity =>
             {
@@ -64,5 +72,7 @@ namespace Hilfswerk.EntityFramework
         [DbFunction("contains_ignore_case")]
         public static bool ContainsIgnoreCase(string term, string containedin)
                 => containedin.IndexOf(term, System.StringComparison.OrdinalIgnoreCase) > -1;
+
+
     }
 }
