@@ -14,6 +14,7 @@ namespace Hilfswerk.EntityFramework.Stores
                 Hilfesuchender = x.Hilfesuchender,
                 Taetigkeit = TaetigkeitFromId(x.TaetigkeitId),
                 VermitteltAm = new DateTimeOffset(x.VermitteltAm, TimeSpan.Zero),
+                Dauer = x.Dauer,
                 VermitteltDurch = x.VermitteltDurch,
                 Helfer = new Models.Helfer
                 {
@@ -56,6 +57,7 @@ namespace Hilfswerk.EntityFramework.Stores
                     Taetigkeit = TaetigkeitFromId(d.TaetigkeitId),
                     VermitteltAm = new DateTimeOffset(d.VermitteltAm, TimeSpan.Zero),
                     VermitteltDurch = d.VermitteltDurch,
+                    Dauer = d.Dauer,
                     Helfer = new Models.Helfer
                     {
                         Id = d.Helfer.Id

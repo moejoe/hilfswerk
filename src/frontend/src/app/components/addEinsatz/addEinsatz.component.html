@@ -42,16 +42,17 @@
         </mat-form-field>
     </div>
     <div class="add-einsatz-form__group">
-        <mat-form-field appearance="fill">
-            <mat-label for="stunden">Stunden</mat-label>
-            <input matInput type="number" id="stunden" name="stunden" [(ngModel)]="einsatz.stunden" />
-        </mat-form-field>
+        <duration-picker [duration]="einsatz.dauer" (durationChange)="einsatz.dauer = $event">
+        </duration-picker>
+    </div>
+    <div class="add-einsatz-form__group">
         <mat-form-field appearance="fill">
             <mat-label for="vermitteltAm">vermittelt Am</mat-label>
-            <input matInput id="vermitteltAm" [matDatepicker]="vermitteltAmPicker" name="vermitteltAm" [(ngModel)]="einsatz.vermitteltAm" />
+            <input matInput id="vermitteltAm" [matDatepicker]="vermitteltAmPicker" name="vermitteltAm"
+                [(ngModel)]="einsatz.vermitteltAm" />
             <mat-datepicker-toggle matSuffix [for]="vermitteltAmPicker"></mat-datepicker-toggle>
             <mat-datepicker #vermitteltAmPicker></mat-datepicker>
-          </mat-form-field>
+        </mat-form-field>
     </div>
     <div class="add-einsatz-form__group">
         <mat-checkbox id="istAusgelastet" [(ngModel)]="einsatz.helferAusgelastet" name="istAusgelastet">Helfer:in ist

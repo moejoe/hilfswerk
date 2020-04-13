@@ -45,7 +45,7 @@ export class EditEinsatzComponent implements OnInit, OnDestroy {
     let result = await this.graphqlService.editEinsatz(this.helferId, this.einsatzId, {
       "vermitteltAm": this.einsatz.vermitteltAm,
       "anmerkungen": this.einsatz.anmerkungen,
-      "stunden": this.einsatz.stunden
+      "dauer": this.einsatz.dauer
     });
     if (result.isSuccess) {
       this.back();
@@ -59,7 +59,7 @@ class EinsatzEditModel implements EinsatzListenEintrag {
   constructor() {
     this.vermitteltAm = new Date();
     this.anmerkungen = "";
-    this.stunden = 0;
+    this.dauer = 0;
     this.vermitteltDurch = "n/a";
     this.hilfesuchender = "n/a";
     this.id = "";
@@ -70,6 +70,6 @@ class EinsatzEditModel implements EinsatzListenEintrag {
   vermitteltDurch: string;
   vermitteltAm: Date;
   anmerkungen: string;
-  stunden: number;
+  dauer: number;
 
 }

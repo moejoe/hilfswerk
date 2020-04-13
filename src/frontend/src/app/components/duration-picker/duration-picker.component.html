@@ -1,0 +1,12 @@
+<div class="duration-picker">
+    <mat-form-field appearance="fill">
+        <mat-label for="dauerStunden">Stunden</mat-label>
+        <input matInput id="durationHours" type="number" max="24" name="durationHours" [(ngModel)]="hours"
+            (change)="onDurationChanged()" />
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+        <mat-label for="dauerMinuten">Minuten</mat-label>
+        <input matInput id="durationMinutes" type="number" max="60" name="durationMinutes" [(ngModel)]="minutes"
+            (change)="onDurationChanged()" />
+    </mat-form-field>
+</div>

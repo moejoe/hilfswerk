@@ -42,6 +42,7 @@ export interface EinsatzListenEintrag {
     anmerkungen: string;
     vermitteltDurch: string;
     vermitteltAm: Date;
+    dauer: number;
     id: string;
 }
 
@@ -68,7 +69,7 @@ export interface HelferCreateInput {
 export interface EinsatzEditInput {
     anmerkungen: string;
     vermitteltAm: Date;
-    stunden: number;
+    dauer: number;
 }
 
 export interface HelferEditInput {
@@ -100,7 +101,7 @@ export interface EinsatzInput {
     anmerkungen: string;
     vermitteltDurch: string;
     helferAusgelastet: boolean;
-    stunden: number;
+    dauer: number;
     vermitteltAm: Date;
 }
 export interface EinsatzCreateResult {

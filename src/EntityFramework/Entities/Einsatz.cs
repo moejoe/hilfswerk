@@ -13,6 +13,7 @@ namespace Hilfswerk.EntityFramework.Entities
         public DateTime VermitteltAm { get; set; }
         public string Anmerkungen { get; set; }
         public int? Stunden { get; set; }
+        public TimeSpan? Dauer { get; set; }
 
     }
 

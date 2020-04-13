@@ -3,14 +3,16 @@ using System;
 using Hilfswerk.EntityFramework;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Hilfswerk.Api.Migrations
 {
     [DbContext(typeof(HilfswerkDbContext))]
-    partial class HilfswerkDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200413095855_#70-timespan-dauer")]
+    partial class _70timespandauer
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

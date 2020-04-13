@@ -1,4 +1,5 @@
 ﻿using Hilfswerk.Models;
+using System;
 using System.Linq;
 
 namespace Hilfswerk.EntityFramework
@@ -53,13 +54,13 @@ namespace Hilfswerk.EntityFramework
             entity.Hilfesuchender = model.Hilfesuchender;
             entity.VermitteltDurch = model.VermitteltDurch;
             entity.VermitteltAm = model.VermitteltAm.UtcDateTime;
-            entity.Stunden = model.Stunden;
+            entity.Dauer = model.Dauer;
         }
         public static void ApplyTo(this EinsatzEditModel model, Entities.Einsatz entity)
         {
             entity.Anmerkungen = model.Anmerkungen;
             entity.VermitteltAm = model.VermitteltAm.UtcDateTime;
-            entity.Stunden = model.Stunden;
+            entity.Dauer = model.Dauer;
         }
 
 
