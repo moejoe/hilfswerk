@@ -17,10 +17,6 @@ export class EditEinsatzComponent implements OnInit, OnDestroy {
   einsatzId: string;
   einsatz: EinsatzEditModel;
   paramSubscription: Subscription;
-  dauer = {
-    stunden: 0,
-    minuten: 0,
-  };
 
   @ViewChild("editEinsatzForm") editEinsatzForm: NgForm;
 
@@ -39,8 +35,6 @@ export class EditEinsatzComponent implements OnInit, OnDestroy {
         this.graphqlService.getEinsatz(this.helferId, this.einsatzId).then(p => {
           this.einsatz = { ...this.einsatz, ...p }
           this.einsatz.vermitteltAm = new Date(this.einsatz.vermitteltAm);
-          this.dauer.stunden = Math.floor(this.einsatz.dauer / 3600);
-          this.dauer.minuten = Math.floor((this.einsatz.dauer - this.dauer.stunden*3600) / 60);
         });
       }
     });
@@ -59,9 +53,6 @@ export class EditEinsatzComponent implements OnInit, OnDestroy {
   }
   back(): void {
     this.location.back();
-  }
-  onDurationChanged() {
-    this.einsatz.dauer = (this.dauer.stunden || 0 )*3600 + (this.dauer.minuten || 0 )*60;
   }
 }
 class EinsatzEditModel implements EinsatzListenEintrag {

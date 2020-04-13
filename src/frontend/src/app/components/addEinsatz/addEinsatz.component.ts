@@ -14,10 +14,6 @@ import { NgForm } from "@angular/forms";
 })
 export class AddEinsatzComponent implements OnInit, OnDestroy {
   State = State;
-  dauer = {
-    stunden: 0,
-    minuten: 0
-  };
   einsatz: EinsatzInput;
   createResult: EinsatzCreateResult;
   taetigkeiten = [
@@ -67,9 +63,6 @@ export class AddEinsatzComponent implements OnInit, OnDestroy {
     this.createResult = null;
       
     this.state = State.EDIT;
-  }
-  onDurationChanged() {
-    this.einsatz.dauer = (this.dauer.stunden || 0 )*3600 + (this.dauer.minuten || 0 )*60;
   }
   async addEinsatz() {
     this.state = State.SAVING;
