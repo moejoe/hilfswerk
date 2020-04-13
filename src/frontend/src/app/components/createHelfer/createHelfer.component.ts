@@ -43,7 +43,9 @@ class HelferCreateModel implements HelferCreateInput {
     this.istZivildiener = false;
     this.istFreiwilliger = false;
     this.istAusgelastet = false;
+    this.istDSGVOKonform = true;
   }
+  istDSGVOKonform: boolean;
   istRisikogruppe: boolean;
   hatAuto: boolean;
   anmerkung: string;

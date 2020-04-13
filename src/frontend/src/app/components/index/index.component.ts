@@ -33,6 +33,7 @@ export class IndexComponent implements OnInit, OnDestroy {
   istRisikoGruppe = false;
   istZivildiener = false;
   istFreiwilliger = false;
+  nichtDSGVOKonform = false;
   gesetzeFilter: string[];
   selectedHelfer: HelferListenEintrag | null;
   selectedHelferDetail: HelferDetail | null;
@@ -94,6 +95,8 @@ export class IndexComponent implements OnInit, OnDestroy {
     this.istRisikoGruppe = filters.istRisikoGruppe;
     this.hatAuto = filters.hatAuto;
     this.istZivildiener = filters.istZivildiener;
+    this.nichtDSGVOKonform = filters.istDSGVOKonform === false;
+
     if (filters.taetigkeitIn) {
       for (let t of filters.taetigkeitIn) {
         this.taetigkeiten.find(b => b.id == t).checked = true;
@@ -129,7 +132,8 @@ export class IndexComponent implements OnInit, OnDestroy {
       ...(this.hatAuto ? ["Auto verfügbar"] : []),
       ...(this.istRisikoGruppe ? ["Ist Risikogruppe"] : []),
       ...(this.istFreiwilliger ? ["Ist FW"] : []),
-      ...(this.istZivildiener ? ["Ist ZDL"] : [])
+      ...(this.istZivildiener ? ["Ist ZDL"] : []),
+      ...(this.nichtDSGVOKonform ? ["DSVGO fehlt"] : [])
     ];
   }
 
@@ -141,6 +145,8 @@ export class IndexComponent implements OnInit, OnDestroy {
     let istRisikoGruppe = this.istRisikoGruppe ? true : null;
     let istZivildiener = this.istZivildiener ? true : null;
     let istFreiwilliger = this.istFreiwilliger ? true : null;
+    let istDSGVOKonform = this.nichtDSGVOKonform === true ? false : null;
+
     if (this.bezirke.filter(b => b.checked).length > 0) {
       inPlz = this.bezirke.filter(v => v.checked).map(v => v.nummer);
     }
@@ -155,7 +161,8 @@ export class IndexComponent implements OnInit, OnDestroy {
       istRisikoGruppe,
       istZivildiener,
       istFreiwilliger,
-      istAusgelastet: false
+      istAusgelastet: false,
+      istDSGVOKonform
     };
     let sub = this.graphqlService.queryHelferListe(filter).subscribe(helfer => {
       this.helfer = helfer;

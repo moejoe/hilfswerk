@@ -37,6 +37,7 @@ namespace Hilfswerk.EntityFramework.Stores
                 istZivildiener = x.istZivildiener,
                 istFreiwilliger = x.istFreiwilliger,
                 istAusgelastet = x.istAusgelastet,
+                istDSGVOKonform = x.istDSGVOKonform,
                 Kontakt = new Models.Kontakt
                 {
                     Email = x.Kontakt.Email,

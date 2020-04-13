@@ -1,13 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Hilfswerk.Models
 {
-
-    
-
-
     public class Helfer
     {
         public string Id { get; set; }
@@ -20,6 +15,7 @@ namespace Hilfswerk.Models
         public bool istZivildiener { get; set; }
         public bool istFreiwilliger { get; set; }
         public bool istAusgelastet { get; set; }
+        public bool istDSGVOKonform { get; set; }
 
     }
 }

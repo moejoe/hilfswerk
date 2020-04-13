@@ -36,6 +36,7 @@ namespace Hilfswerk.GraphApi
             Field(x => x.istFreiwilliger);
             Field(x => x.istZivildiener);
             Field(x => x.istAusgelastet);
+            Field(x => x.istDSGVOKonform);
         }
     }
 }

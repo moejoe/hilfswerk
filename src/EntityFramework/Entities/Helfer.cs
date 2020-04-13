@@ -15,6 +15,7 @@ namespace Hilfswerk.EntityFramework.Entities
         public bool istZivildiener { get; set; }
         public bool istFreiwilliger { get; set; }
         public bool istAusgelastet { get; set; }
+        public bool istDSGVOKonform { get; set; }
     }
 
 }

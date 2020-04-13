@@ -32,6 +32,10 @@
                 (change)="[istZivildiener = $event.source.checked, filterChange()]">
                 Zivildiener
             </mat-button-toggle>
+            <mat-button-toggle id="nicht-dsgvoKonfom" class="sonstiges-filter" [checked]="nichtDSGVOKonform"
+                (change)="[nichtDSGVOKonform = $event.source.checked, filterChange()]">
+                DSGVO fehlt
+            </mat-button-toggle>
         </div>
         <div class="spacer"></div>
     </mat-card-content>
