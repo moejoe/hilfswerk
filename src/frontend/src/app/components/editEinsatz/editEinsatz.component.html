@@ -22,11 +22,19 @@
                 placeholder="Anmerkungen zur vermittelten Tätigkeit" [(ngModel)]="einsatz.anmerkungen"></textarea>
         </mat-form-field>
     </div>
-    <div class="edit-einsatz-form__group">
+    <div class="add-einsatz-form__group">
         <mat-form-field appearance="fill">
-            <mat-label for="stunden">Stunden</mat-label>
-            <input matInput type="number" id="stunden" name="stunden" [(ngModel)]="einsatz.stunden" />
+            <mat-label for="dauerStunden">Stunden</mat-label>
+            <input matInput id="dauerStunden" type="number" max="24" name="dauerStunden" [(ngModel)]="dauer.stunden"
+                (change)="onDurationChanged()" />
         </mat-form-field>
+        <mat-form-field appearance="fill">
+            <mat-label for="dauerMinuten">Minuten</mat-label>
+            <input matInput id="dauerMinuten" type="number" max="60" name="dauerMinuten" [(ngModel)]="dauer.minuten"
+                (change)="onDurationChanged()" />
+        </mat-form-field>
+    </div>
+    <div class="edit-einsatz-form__group">
         <mat-form-field appearance="fill">
             <mat-label for="vermitteltAm">vermittelt Am</mat-label>
             <input matInput id="vermitteltAm" [matDatepicker]="vermitteltAmPicker" name="vermitteltAm" [(ngModel)]="einsatz.vermitteltAm" />

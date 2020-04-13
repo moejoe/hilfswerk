@@ -224,6 +224,7 @@ export class GraphqlService {
         vermitteltDurch
         vermitteltAm
         hilfesuchender
+        dauer
       }
     }`;
     return this.httpClient.post<{ data: { einsatzById: EinsatzListenEintrag } }>(`${environment.apiUrl}/graphql`, {

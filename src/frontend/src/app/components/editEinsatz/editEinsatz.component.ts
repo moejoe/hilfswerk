@@ -17,6 +17,10 @@ export class EditEinsatzComponent implements OnInit, OnDestroy {
   einsatzId: string;
   einsatz: EinsatzEditModel;
   paramSubscription: Subscription;
+  dauer = {
+    stunden: 0,
+    minuten: 0,
+  };
 
   @ViewChild("editEinsatzForm") editEinsatzForm: NgForm;
 
@@ -35,6 +39,8 @@ export class EditEinsatzComponent implements OnInit, OnDestroy {
         this.graphqlService.getEinsatz(this.helferId, this.einsatzId).then(p => {
           this.einsatz = { ...this.einsatz, ...p }
           this.einsatz.vermitteltAm = new Date(this.einsatz.vermitteltAm);
+          this.dauer.stunden = Math.floor(this.einsatz.dauer / 3600);
+          this.dauer.minuten = Math.floor((this.einsatz.dauer - this.dauer.stunden*3600) / 60);
         });
       }
     });
@@ -45,7 +51,7 @@ export class EditEinsatzComponent implements OnInit, OnDestroy {
     let result = await this.graphqlService.editEinsatz(this.helferId, this.einsatzId, {
       "vermitteltAm": this.einsatz.vermitteltAm,
       "anmerkungen": this.einsatz.anmerkungen,
-      "stunden": this.einsatz.stunden
+      "dauer": this.einsatz.dauer
     });
     if (result.isSuccess) {
       this.back();
@@ -54,12 +60,15 @@ export class EditEinsatzComponent implements OnInit, OnDestroy {
   back(): void {
     this.location.back();
   }
+  onDurationChanged() {
+    this.einsatz.dauer = (this.dauer.stunden || 0 )*3600 + (this.dauer.minuten || 0 )*60;
+  }
 }
 class EinsatzEditModel implements EinsatzListenEintrag {
   constructor() {
     this.vermitteltAm = new Date();
     this.anmerkungen = "";
-    this.stunden = 0;
+    this.dauer = 0;
     this.vermitteltDurch = "n/a";
     this.hilfesuchender = "n/a";
     this.id = "";
@@ -70,6 +79,6 @@ class EinsatzEditModel implements EinsatzListenEintrag {
   vermitteltDurch: string;
   vermitteltAm: Date;
   anmerkungen: string;
-  stunden: number;
+  dauer: number;
 
 }

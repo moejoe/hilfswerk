@@ -14,7 +14,10 @@ import { NgForm } from "@angular/forms";
 })
 export class AddEinsatzComponent implements OnInit, OnDestroy {
   State = State;
-
+  dauer = {
+    stunden: 0,
+    minuten: 0
+  };
   einsatz: EinsatzInput;
   createResult: EinsatzCreateResult;
   taetigkeiten = [
@@ -29,7 +32,7 @@ export class AddEinsatzComponent implements OnInit, OnDestroy {
   authServiceSubscription: Subscription;
   helferId: any;
   userinfo: { name: string; };
-
+  
   @ViewChild("addEinsatzForm") addEinsatzForm: NgForm;
 
   constructor(private graphqlService: GraphqlService,
@@ -65,7 +68,9 @@ export class AddEinsatzComponent implements OnInit, OnDestroy {
       
     this.state = State.EDIT;
   }
-
+  onDurationChanged() {
+    this.einsatz.dauer = (this.dauer.stunden || 0 )*3600 + (this.dauer.minuten || 0 )*60;
+  }
   async addEinsatz() {
     this.state = State.SAVING;
     this.createResult = await this.graphqlService.addEinsatz(this.helferId, this.einsatz);
@@ -101,14 +106,14 @@ class EinsatzInputModel implements EinsatzInput {
     this.vermitteltDurch = vermittler;
     this.anmerkungen = "";
     this.helferAusgelastet = false;
-    this.stunden = null;
     this.vermitteltAm = new Date();
+    this.dauer = null;
   }
+  dauer: number;
   vermitteltAm: Date;
   hilfesuchender: string;
   taetigkeit: Taetigkeit;
   anmerkungen: string;
   vermitteltDurch: string;
   helferAusgelastet: boolean;
-  stunden: number;
 }
