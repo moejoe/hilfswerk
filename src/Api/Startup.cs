@@ -41,7 +41,7 @@ namespace Api
                     opt.AuthorizationPolicy = "DefaultPolicy";
                 }
             });
-            services.AddHilfswerkEntityFrameworkStores();
+            services.AddHilfswerkEntityFramework();
 
             services.AddDbContext<HilfswerkDbContext>(opt =>
             {

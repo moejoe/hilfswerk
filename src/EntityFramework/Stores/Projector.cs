@@ -65,7 +65,7 @@ namespace Hilfswerk.EntityFramework.Stores
                 })
             };
 
-        private static Func<int, Models.Taetigkeit> CompiledTaetigkeitProjection = TaetigkeitProjection.Compile();
+        public static Func<int, Models.Taetigkeit> CompiledTaetigkeitProjection = TaetigkeitProjection.Compile();
         public static Models.Taetigkeit TaetigkeitFromId(int id)
         {
             return CompiledTaetigkeitProjection.Invoke(id);

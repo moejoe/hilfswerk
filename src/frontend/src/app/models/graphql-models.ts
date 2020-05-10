@@ -117,3 +117,21 @@ export interface EinsatzEditResult {
     errors: { message: string }[];
     isSuccess: boolean;
 }
+
+export interface ReportByMonth {
+    helferInnenGesamt: number;
+    helferInnenEingesetzt: number;
+    groups: ReportGroupMonth[]
+}
+export interface ReportGroupMonth {
+    year: number,
+    month: number,
+    helferInnen: number;
+    details: ReportDetail[]
+}
+export interface ReportDetail {
+    taetigkeit: Taetigkeit,
+    einsaetze: number,
+    helferInnen: number,
+    dauer: number
+}

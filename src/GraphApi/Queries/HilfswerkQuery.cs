@@ -1,24 +1,26 @@
 ﻿using GraphQL;
 using GraphQL.Authorization;
 using GraphQL.Types;
+using Hilfswerk.Core.Reporting;
 using Hilfswerk.Core.Stores;
 using Microsoft.Extensions.Options;
 using System;
 
 namespace Hilfswerk.GraphApi.Queries
 {
-    public class GraphQLAuthorizationOptions 
+    public class GraphQLAuthorizationOptions
     {
         public string AuthorizationPolicy { get; set; }
     }
     public class HilfswerkQuery : ObjectGraphType
     {
-        public HilfswerkQuery(IHelferStore store, IOptionsSnapshot<GraphQLAuthorizationOptions> options)
+        public HilfswerkQuery(IHelferStore store, IReportGenerator reportGenerator, IOptionsSnapshot<GraphQLAuthorizationOptions> options)
         {
-            if(!string.IsNullOrWhiteSpace(options.Value.AuthorizationPolicy)) {
+            if (!string.IsNullOrWhiteSpace(options.Value.AuthorizationPolicy))
+            {
                 this.AuthorizeWith(options.Value.AuthorizationPolicy);
             }
-            
+
             Name = "Query";
 
             FieldAsync<ListGraphType<HelferType>>(
@@ -72,6 +74,13 @@ namespace Hilfswerk.GraphApi.Queries
                         IstDSGVOKonform = context.GetArgument<bool?>("istDSGVOKonform")
                     };
                     return await store.FindHelfer(filter);
+                }
+            );
+            FieldAsync<ReportByMonthType>(
+                name: "reportByMonth",
+                resolve: async context =>
+                {
+                    return await reportGenerator.GenerateReport();
                 }
             );
         }

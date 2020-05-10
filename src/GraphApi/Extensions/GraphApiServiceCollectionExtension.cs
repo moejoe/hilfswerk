@@ -22,7 +22,10 @@ namespace Microsoft.Extensions.DependencyInjection
                 .AddScoped<HelferType>()
                 .AddScoped<KontaktInputType>()
                 .AddScoped<KontaktType>()
-                .AddScoped<TaetigkeitEnumType>();
+                .AddScoped<TaetigkeitEnumType>()
+                .AddScoped<ReportByMonthType>()
+                .AddScoped<ReportGroupMonthType>()
+                .AddScoped<ReportDetailType>();
             return services;
         }
     }
