@@ -1,7 +1,13 @@
 <mat-card class="mat-elevation-z8 filter-panel">
-    <mat-card-title>Filter <button mat-icon-button routerLink="/helfer_innen">
-            <mat-icon>search</mat-icon>
-        </button></mat-card-title>
+    <mat-card-title>Filter <span class="filter-panel__links">
+            <button mat-icon-button routerLink="/helfer_innen">
+                <mat-icon>search</mat-icon>
+            </button>
+            <button mat-icon-button routerLink="/report">
+                <mat-icon>timeline</mat-icon>
+            </button>
+        </span>
+    </mat-card-title>
     <mat-card-content>
         <div class="filter-panel__filter-group">
             <mat-button-toggle class="plz-filter" *ngFor="let bezirk of bezirke" id="bezirk-{{bezirk.name}}"

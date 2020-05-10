@@ -11,7 +11,7 @@ namespace Hilfswerk.GraphApi
             Name = "ReportDetail";
             Field<TaetigkeitEnumType>("taetigkeit", resolve: p => p.Source.Taetigkeit);
             Field(p => p.Dauer);
-            Field(p => p.Helfer);
+            Field(p => p.HelferInnen);
             Field(p => p.Einsaetze);
         }
     }

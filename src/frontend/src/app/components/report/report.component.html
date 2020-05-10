@@ -1,0 +1,74 @@
+<div class="main-panel__header">
+    <h1>Bericht</h1>
+    <button mat-stroked-button color="primary" routerLink="/index">&laquo; Zurück zur Liste</button>
+</div>
+
+<div>
+    <h2>Gesamtzahlen</h2>
+    Helfer_Innen angemeldet: <b>{{report.helferInnenGesamt}}</b><br />
+    Helfer_Innen eingesetzt: <b>{{report.helferInnenEingesetzt}}</b><br />
+    Einsätze: <b>{{reportTotalEinsaetze()}}</b> <br />
+    Stunden: <b> {{reportTotalDauer() | number }}</b>
+</div>
+
+<div *ngFor="let monthReport of report.groups; index as i" class="table-container">
+    <table mat-table [dataSource]="dataSource(report.groups[i])">
+
+        <ng-container matColumnDef="taetigkeit">
+            <th mat-header-cell *matHeaderCellDef class="group-header"> {{nameOfMonth(monthReport.month)}}
+                {{monthReport.year}}</th>
+            <td mat-cell *matCellDef="let element"> {{element.taetigkeit}} </td>
+            <td mat-footer-cell *matFooterCellDef class="group-footer">
+                Gesamt
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="einsaetze">
+            <th mat-header-cell *matHeaderCellDef> Einsätze </th>
+            <td mat-cell *matCellDef="let element"> {{element.einsaetze | number}} </td>
+            <td mat-footer-cell *matFooterCellDef class="group-footer">
+                {{totalEinsaetze(report.groups[i]) | number}}
+            </td>
+        </ng-container>
+
+        <!-- Name Column -->
+        <ng-container matColumnDef="dauer">
+            <th mat-header-cell *matHeaderCellDef> Stunden (h) </th>
+            <td mat-cell *matCellDef="let element"> {{element.dauer / 3600 | number}} </td>
+            <td mat-footer-cell *matFooterCellDef class="group-footer">
+                {{totalDauer(report.groups[i]) | number}}
+            </td>
+        </ng-container>
+
+        <!-- Weight Column -->
+        <ng-container matColumnDef="helfer">
+            <th mat-header-cell *matHeaderCellDef> Helfer im Einsatz </th>
+            <td mat-cell *matCellDef="let element"> {{element.helferInnen}} </td>
+            <td mat-footer-cell *matFooterCellDef class="group-footer">
+                {{report.groups[i].helferInnen | number}}
+            </td>
+        </ng-container>
+
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="einsaetze2">
+            <th mat-header-cell *matHeaderCellDef> Einsätze / Helfer </th>
+            <td mat-cell *matCellDef="let element"> {{element.einsaetze / element.helferInnen | number}} </td>
+            <td mat-footer-cell *matFooterCellDef class="group-footer">
+                {{totalEinsaetze(report.groups[i]) / report.groups[i].helferInnen | number}}
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="dauer2">
+            <th mat-header-cell *matHeaderCellDef> h / Einsatz </th>
+            <td mat-cell *matCellDef="let element"> {{element.dauer / element.helferInnen / 3600  | number}} </td>
+            <td mat-footer-cell *matFooterCellDef class="group-footer">
+                {{totalDauer(report.groups[i]) / totalEinsaetze(report.groups[i]) | number}}
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        <tr mat-footer-row *matFooterRowDef="displayedColumns"></tr>
+    </table>
+
+</div>

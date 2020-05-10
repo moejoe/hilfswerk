@@ -1,0 +1,33 @@
+:host {
+    margin:3em;
+}
+h1 {
+    font-size: 1.5rem;
+    text-transform: uppercase;
+    font-weight: bold;
+    margin: 0 0 1rem 0;
+  }
+  
+.main-panel__header{
+    display:flex;
+    flex-direction: column;
+  }
+  .mat-stroked-button {
+    width: 12rem;
+    margin: -3rem 0rem 0rem auto;
+  }
+.table-container {
+    flex-grow: 1;
+    padding-bottom: 1em;
+    &>table {
+      width: 100%;
+    }
+  }
+.group-header {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: black;
+}
+.group-footer {
+    font-style: italic;
+}

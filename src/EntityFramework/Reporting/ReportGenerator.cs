@@ -60,18 +60,20 @@ namespace EntityFramework.Reporting
             //}).ToArrayAsync();
             return new ReportByMonth
             {
-                HelferInnen = await _hilfswerkDbContext.Helfer.CountAsync(),
+                HelferInnenGesamt = await _hilfswerkDbContext.Helfer.CountAsync(),
+                HelferInnenEingesetzt = await _hilfswerkDbContext.Einsaetze.Select(p => p.Helfer.Id).Distinct().CountAsync(),
                 Groups = details.GroupBy(p => new { p.Year, p.Month })
                 .Select(p => new ReportGroupMonth
                 {
                     Year = p.Key.Year,
                     Month = p.Key.Month,
+                    HelferInnen = p.Select(r => r.HelferId).Distinct().Count(),
                     Details = p.GroupBy(q => q.TaetigkeitId)
                     .Select(q => new ReportDetail
                     {
                         Taetigkeit = Projector.CompiledTaetigkeitProjection.Invoke(q.Key),
                         Einsaetze = q.Sum(r => r.Einsatz),
-                        Helfer = q.Select(r => r.HelferId).Distinct().Count(),
+                        HelferInnen = q.Select(r => r.HelferId).Distinct().Count(),
                         Dauer = q.Aggregate(TimeSpan.Zero, (acc, cur) => acc += (cur?.Dauer ?? TimeSpan.Zero))
                     }).ToArray()
                 }).ToArray()

@@ -11,6 +11,7 @@ namespace Hilfswerk.GraphApi
             Field(p => p.Year);
             Field(p => p.Month);
             Field<ListGraphType<ReportDetailType>>("details", resolve: p => p.Source.Details);
+            Field(p => p.HelferInnen);
         }
     }
 }

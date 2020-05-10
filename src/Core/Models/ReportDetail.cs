@@ -9,6 +9,6 @@ namespace Hilfswerk.Core.Models
         public Taetigkeit Taetigkeit { get; set; }
         public int Einsaetze { get; set; }
         public TimeSpan Dauer { get; set; }
-        public int Helfer { get; set; }
+        public int HelferInnen { get; set; }
     }
 }

@@ -2,7 +2,8 @@
 {
     public class ReportByMonth
     {
-        public int HelferInnen { get; set; }
+        public int HelferInnenGesamt { get; set; }
+        public int HelferInnenEingesetzt { get; set; }
         public ReportGroupMonth[] Groups { get; set; }
     }
 }

@@ -33,6 +33,7 @@ import localeDeAT from '@angular/common/locales/de-AT';
 import { DateFnsDateAdapter, MAT_DATE_FNS_DATE_FORMATS } from './date-fns-date-adapter';
 import { EditEinsatzComponent } from './components/editEinsatz/editEinsatz.component';
 import { DurationPickerComponent } from './components/duration-picker/duration-picker.component';
+import { ReportComponent } from './components/report/report.component';
 
 registerLocaleData(localeDeAT);
 
@@ -49,7 +50,8 @@ registerLocaleData(localeDeAT);
     EditHelferComponent,
     HelferDetailComponent,
     EditEinsatzComponent,
-    DurationPickerComponent
+    DurationPickerComponent,
+    ReportComponent
   ],
   imports: [
     BrowserModule,

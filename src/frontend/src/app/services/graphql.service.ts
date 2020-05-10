@@ -5,7 +5,7 @@ import { map } from "rxjs/operators";
 import {
   HelferFilters, HelferListenEintrag, HelferCreateInput,
   HelferEditInput, EinsatzInput, Kontakt, HelferCreateResult,
-  EinsatzCreateResult, Taetigkeit, HelferEditResult, HelferDetail, EinsatzEditInput, EinsatzEditResult, EinsatzListenEintrag
+  EinsatzCreateResult, Taetigkeit, HelferEditResult, HelferDetail, EinsatzEditInput, EinsatzEditResult, EinsatzListenEintrag, ReportByMonth
 } from '../models/graphql-models';
 import { AuthService } from './auth.service';
 
@@ -52,7 +52,7 @@ export class GraphqlService {
     }));
   }
 
-  async removeEinsatz(helferId :string, einsatzId: string) {
+  async removeEinsatz(helferId: string, einsatzId: string) {
     let mutation = `
     mutation removeEinsatz($helferId: ID!, $einsatzId: ID!) {
       removeEinsatz(helferId: $helferId, einsatzId: $einsatzId) 
@@ -351,6 +351,38 @@ export class GraphqlService {
     catch {
       return new EinsatzCreateErrorResult([{ message: "Error sending graphQL mutation." }]);
     }
+  }
+
+  getReportByMonth() {
+    let query = `{
+      reportByMonth {
+        helferInnenGesamt
+        helferInnenEingesetzt
+        groups {
+          year
+          month
+          helferInnen
+          details {
+            taetigkeit
+            einsaetze
+            helferInnen
+            dauer
+          }
+        }
+      }
+    }`;
+    return this.httpClient.post<{ data: { reportByMonth: ReportByMonth } }>(`${environment.apiUrl}/graphql`, {
+      query: query,
+    }, { headers: this.headers() })
+      .pipe(map(d => {
+        return {
+          helferInnenGesamt: d.data.reportByMonth.helferInnenGesamt,
+          helferInnenEingesetzt: d.data.reportByMonth.helferInnenEingesetzt,
+          groups: d.data.reportByMonth.groups.sort( (a,b) => {
+            return (a.year * 100 + a.month) - (b.year * 100 + b.month);
+          })
+        }
+      }));
   }
 
 }

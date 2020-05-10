@@ -9,7 +9,8 @@ namespace Hilfswerk.GraphApi
         {
             Name = "ReportByMonth";
             Field<ListGraphType<ReportGroupMonthType>>("groups", resolve: p => p.Source.Groups);
-            Field(p => p.HelferInnen);
+            Field(p => p.HelferInnenGesamt);
+            Field(p => p.HelferInnenEingesetzt);
         }
     }
 }
